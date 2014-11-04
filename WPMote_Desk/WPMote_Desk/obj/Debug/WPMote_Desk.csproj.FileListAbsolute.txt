@@ -1,0 +1,11 @@
+c:\users\nguyen\documents\visual studio 2013\Projects\WPMote_Desk\WPMote_Desk\bin\Debug\WPMote_Desk.exe.config
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.csprojResolveAssemblyReference.cache
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.Form1.resources
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.Properties.Resources.resources
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.csproj.GenerateResource.Cache
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\bin\Debug\WPMote_Desk.exe
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\bin\Debug\WPMote_Desk.pdb
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\bin\Debug\InTheHand.Net.Personal.dll
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\bin\Debug\InTheHand.Net.Personal.xml
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.exe
+C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.pdb
