@@ -8,13 +8,12 @@ using System.IO;
 using InTheHand.Net;
 using InTheHand.Net.Sockets;
 using InTheHand.Net.Bluetooth;
-using System.Collections.ObjectModel;
 
 namespace WPMote_Desk.Connectivity
 {
     public class Comm_Bluetooth
     {
-        ObservableCollection<BluetoothDeviceInfo> lstDevices;
+        BluetoothListener objServer;
         BluetoothClient objClient;
         private static readonly Guid gService = new Guid("04528CB9-6CB3-4713-85A0-9C47D8E283CB");
 
@@ -42,29 +41,36 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
-        //Selecting devices
-        public void UpdatePeers()
+        // Awaiting devices
+        public void StartListening()
         {
             try
             {
-                if (objClient==null) { objClient = new BluetoothClient(); }
+                if (objServer==null) { objServer = new BluetoothListener(gService); }
+                objServer.Start();
+            }
+            catch
+            {                
+                throw;
+            }
+        }
 
-                BluetoothDeviceInfo[] arrPeers = objClient.DiscoverDevices();
+        public void AcceptDevice()
+        {
+            objClient = objServer.AcceptBluetoothClient();
+            StopListening();
 
-                foreach (var objDevice in lstDevices)
-                {
-                    if (arrPeers.Contains(objDevice)) { lstDevices.Remove(objDevice); }
-                }
+            objStream = objClient.GetStream();
+        }
 
-                foreach (var objDevice in arrPeers)
-                {
-                    if (!lstDevices.Contains(objDevice)) { lstDevices.Add(objDevice); }
-                }
-
+        public void StopListening()
+        {
+            try
+            {
+                if (objServer != null) { objServer.Stop() }
             }
             catch
             {
-                
                 throw;
             }
         }
@@ -85,23 +91,7 @@ namespace WPMote_Desk.Connectivity
                 }
             }
         }
-
-
-        public void AcceptDevice(BluetoothDeviceInfo objDevice)
-        {
-            try
-            {
-                if (objClient == null) { objClient = new BluetoothClient(); } // just in case
-                objClient.Connect(objDevice.DeviceAddress, gService);
-                objStream=objClient.GetStream();
-            }
-            catch
-            {                
-                throw;
-            }
-
-        }
-
+        
         public void Close()
         {
             if (objClient!=null)
