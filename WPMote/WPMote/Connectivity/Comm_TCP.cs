@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net;
+using Windows.Networking.Sockets;
+using Windows.Networking;
 
 namespace WPMote.Connectivity
 {
     class Comm_TCP
     {
         int intPort = 8046;
+        StreamSocket objClient;
 
         public int Port
         {
@@ -23,19 +25,24 @@ namespace WPMote.Connectivity
             }
         }
 
-        public bool Connect(string strHost, int intPort)
+        public async void Connect(string strHost, int intPort)
         {
             try
             {
-
-
-                return true;
+                objClient = new StreamSocket();
+                await objClient.ConnectAsync(new HostName(strHost), intPort.ToString());
+                
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
-                throw;
+                if (SocketError.GetStatus(ex.HResult) == SocketErrorStatus.Unknown)
+                {
+                    throw;
+                }
+                
+                objClient.Dispose();
             }
         }
+
     }
 }
