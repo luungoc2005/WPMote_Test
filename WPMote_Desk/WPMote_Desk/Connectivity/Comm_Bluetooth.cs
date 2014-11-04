@@ -16,7 +16,7 @@ namespace WPMote_Desk.Connectivity
     {
         ObservableCollection<BluetoothDeviceInfo> lstDevices;
         BluetoothClient objClient;
-        Guid gService = new Guid("{04528CB9-6CB3-4713-85A0-9C47D8E283CB}");
+        private static readonly Guid gService = new Guid("04528CB9-6CB3-4713-85A0-9C47D8E283CB");
 
         Stream objStream;
 
@@ -47,7 +47,8 @@ namespace WPMote_Desk.Connectivity
         {
             try
             {
-                objClient = new BluetoothClient();
+                if (objClient==null) { objClient = new BluetoothClient(); }
+
                 BluetoothDeviceInfo[] arrPeers = objClient.DiscoverDevices();
 
                 foreach (var objDevice in lstDevices)
@@ -60,7 +61,6 @@ namespace WPMote_Desk.Connectivity
                     if (!lstDevices.Contains(objDevice)) { lstDevices.Add(objDevice); }
                 }
 
-                objClient.Dispose();
             }
             catch
             {
@@ -90,7 +90,8 @@ namespace WPMote_Desk.Connectivity
         public void AcceptDevice(BluetoothDeviceInfo objDevice)
         {
             try
-            {                
+            {
+                if (objClient == null) { objClient = new BluetoothClient(); } // just in case
                 objClient.Connect(objDevice.DeviceAddress, gService);
                 objStream=objClient.GetStream();
             }

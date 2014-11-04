@@ -9,3 +9,6 @@ C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\bi
 C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\bin\Debug\InTheHand.Net.Personal.xml
 C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.exe
 C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.pdb
+C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote_Desk\WPMote_Desk\bin\Debug\WPMote_Desk.exe.config
+C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.exe
+C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.pdb
