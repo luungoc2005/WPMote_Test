@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPMote_Desk.Connectivity;
+using System.Net.Sockets;
 
 namespace WPMote_Desk.Connectivity
 {
     public class Comm_Common
     {
+        public static delegate void ConnectedEvent(NetworkStream objRetStream);
+        private CommMode objMode;
+        NetworkStream objMainStream;
+
         public enum CommMode
         {
             Bluetooth,
@@ -17,6 +22,8 @@ namespace WPMote_Desk.Connectivity
 
         public void New(CommMode mode)
         {
+            objMode = mode;
+
             switch (mode)
             {
                 case CommMode.Bluetooth:
@@ -30,7 +37,11 @@ namespace WPMote_Desk.Connectivity
                     {
                         var objBluetooth=new Comm_Bluetooth();
 
-                        if (avail == Comm_Bluetooth.BluetoothAvailability.TurnedOff) { objBluetooth.EnableBluetooth(); }
+                        if (avail == Comm_Bluetooth.BluetoothAvailability.TurnedOff) objBluetooth.EnableBluetooth();
+
+                        objBluetooth.Connected += ConnectedHandler;
+
+                        objBluetooth.StartListening();
 
                         //TODO: Bluetooth - interface handling
                     }
@@ -42,6 +53,11 @@ namespace WPMote_Desk.Connectivity
                 default:
                     break;
             }
+        }
+
+        public void ConnectedHandler(NetworkStream objStream)
+        {
+            objMainStream = objStream;
         }
     }
 }

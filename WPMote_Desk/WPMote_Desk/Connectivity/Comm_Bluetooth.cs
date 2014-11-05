@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
+using System.Net.Sockets;
 using InTheHand.Net;
 using InTheHand.Net.Sockets;
 using InTheHand.Net.Bluetooth;
@@ -17,7 +17,9 @@ namespace WPMote_Desk.Connectivity
         BluetoothClient objClient;
         private static readonly Guid gService = new Guid("04528CB9-6CB3-4713-85A0-9C47D8E283CB");
 
-        Stream objStream;
+        NetworkStream objStream;
+
+        public event Connectivity.Comm_Common.ConnectedEvent Connected;
 
         public enum BluetoothAvailability
         {
@@ -36,7 +38,7 @@ namespace WPMote_Desk.Connectivity
             }
             else
             {
-                if (objRadio.Mode == RadioMode.PowerOff) { return BluetoothAvailability.TurnedOff; }
+                if (objRadio.Mode == RadioMode.PowerOff) return BluetoothAvailability.TurnedOff;
                 else { return BluetoothAvailability.Available; }
             }
         }
@@ -46,11 +48,23 @@ namespace WPMote_Desk.Connectivity
         {
             try
             {
-                if (objServer==null) { objServer = new BluetoothListener(gService); }
+                if (objServer==null) objServer = new BluetoothListener(gService);
                 objServer.Start();
             }
             catch
             {                
+                throw;
+            }
+        }
+
+        public void StopListening()
+        {
+            try
+            {
+                if (objServer != null) objServer.Stop();
+            }
+            catch
+            {
                 throw;
             }
         }
@@ -61,20 +75,10 @@ namespace WPMote_Desk.Connectivity
             StopListening();
 
             objStream = objClient.GetStream();
-        }
 
-        public void StopListening()
-        {
-            try
-            {
-                if (objServer != null) { objServer.Stop() }
-            }
-            catch
-            {
-                throw;
-            }
+            Connected(objStream);
         }
-
+        
         public void EnableBluetooth()
         {
             var objRadio = BluetoothRadio.PrimaryRadio;

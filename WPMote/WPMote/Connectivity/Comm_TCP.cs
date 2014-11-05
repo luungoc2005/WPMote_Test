@@ -13,6 +13,8 @@ namespace WPMote.Connectivity
         int intPort = 8046;
         StreamSocket objClient;
 
+        public event Connectivity.Comm_Common.ConnectedEvent Connected;
+
         public int Port
         {
             get
@@ -21,7 +23,7 @@ namespace WPMote.Connectivity
             }
             set
             {
-                if (value > 0) { intPort = value; }
+                if (value > 0) intPort = value;
             }
         }
 
@@ -31,7 +33,7 @@ namespace WPMote.Connectivity
             {
                 objClient = new StreamSocket();
                 await objClient.ConnectAsync(new HostName(strHost), intPort.ToString());
-                
+                Connected(objClient);
             }
             catch (Exception ex)
             {

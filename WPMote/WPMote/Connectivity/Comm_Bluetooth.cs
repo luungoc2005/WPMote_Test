@@ -18,8 +18,7 @@ namespace WPMote.Connectivity
         RfcommDeviceService objClient;
         StreamSocket objSocket;
 
-        Stream objInputStream;
-        Stream objOutputStream;
+        public event Connectivity.Comm_Common.ConnectedEvent Connected;
 
         //Selecting devices
         public async void UpdatePeers()
@@ -33,12 +32,12 @@ namespace WPMote.Connectivity
 
                 foreach (var objDevice in lstDevices)
                 {
-                    if (arrPeers.Contains(objDevice)) { lstDevices.Remove(objDevice); }
+                    if (arrPeers.Contains(objDevice)) lstDevices.Remove(objDevice);
                 }
 
                 foreach (var objDevice in arrPeers)
                 {
-                    if (!lstDevices.Contains(objDevice)) { lstDevices.Add(objDevice); }
+                    if (!lstDevices.Contains(objDevice)) lstDevices.Add(objDevice);
                 }
             }
             catch
@@ -65,7 +64,7 @@ namespace WPMote.Connectivity
 
             await objSocket.ConnectAsync(objClient.ConnectionHostName, objClient.ConnectionServiceName);
 
-            // Problem: stream is split into separate input/output streams
+            Connected(objSocket);
         }
     }
 }
