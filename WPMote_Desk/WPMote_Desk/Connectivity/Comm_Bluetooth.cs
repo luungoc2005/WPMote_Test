@@ -98,6 +98,8 @@ namespace WPMote_Desk.Connectivity
         
         public void Close()
         {
+            StopListening();
+
             if (objClient!=null)
             {
                 objClient.Close();

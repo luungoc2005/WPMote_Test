@@ -61,6 +61,7 @@ namespace WPMote_Desk.Connectivity
         public void StopListen()
         {
             tskListen.Abort();
+            objServer.Stop();
         }
 
 

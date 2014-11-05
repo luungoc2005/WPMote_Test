@@ -14,7 +14,7 @@ namespace WPMote.Connectivity
     class Comm_Bluetooth
     {
         private static readonly Guid gService = Guid.Parse("34B1CF4D-1069-4AD6-89B6-E161D79BE4D8");
-        List<DeviceInformation> lstDevices;
+        public List<DeviceInformation> lstDevices;
         RfcommDeviceService objClient;
         StreamSocket objSocket;
 
@@ -40,9 +40,12 @@ namespace WPMote.Connectivity
                     if (!lstDevices.Contains(objDevice)) lstDevices.Add(objDevice);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                if ((uint)ex.HResult == 0x8007048F)
+                {
+                    //
+                }
                 throw;
             }
         }
@@ -65,6 +68,11 @@ namespace WPMote.Connectivity
             await objSocket.ConnectAsync(objClient.ConnectionHostName, objClient.ConnectionServiceName);
 
             Connected(objSocket);
+        }
+
+        public void Close()
+        {
+
         }
     }
 }

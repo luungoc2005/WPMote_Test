@@ -14,13 +14,20 @@ namespace WPMote_Desk.Connectivity
         private CommMode objMode;
         NetworkStream objMainStream;
 
+        Comm_Bluetooth objBluetooth;
+        Comm_TCP objTCP;
+
+
+
         public enum CommMode
         {
             Bluetooth,
             TCP,
         }
 
-        public void New(CommMode mode)
+        public bool IsConnected() { return (objMainStream == null); }
+
+        public Comm_Common(CommMode mode, int intTCPPort = 8046)
         {
             objMode = mode;
 
@@ -35,7 +42,7 @@ namespace WPMote_Desk.Connectivity
                     }
                     else
                     {
-                        var objBluetooth=new Comm_Bluetooth();
+                        objBluetooth=new Comm_Bluetooth();
 
                         if (avail == Comm_Bluetooth.BluetoothAvailability.TurnedOff) objBluetooth.EnableBluetooth();
 
@@ -48,6 +55,10 @@ namespace WPMote_Desk.Connectivity
 
                     break;
                 case CommMode.TCP:
+                    objTCP = new Comm_TCP();
+                    objTCP.Port = intTCPPort;
+
+                    objTCP.StartListen();
 
                     break;
                 default:
@@ -58,6 +69,25 @@ namespace WPMote_Desk.Connectivity
         public void ConnectedHandler(NetworkStream objStream)
         {
             objMainStream = objStream;
+        }
+
+        public void Close()
+        {
+            try
+            {
+                if (!IsConnected()) //Not yet connected
+                {
+                    if (objMode == CommMode.Bluetooth) objBluetooth.Close();
+                    else objTCP.StopListen();
+                }
+                else
+                {
+                    objMainStream.Close();
+                }
+            }
+            catch 
+            { 
+            }
         }
     }
 }
