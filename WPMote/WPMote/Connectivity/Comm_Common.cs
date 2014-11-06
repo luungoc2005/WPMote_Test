@@ -14,7 +14,7 @@ namespace WPMote.Connectivity
     class Comm_Common
         //Note: this class also handles closing of sockets
     {
-        public static delegate void ConnectedEvent(StreamSocket objRetSocket);
+        public delegate void ConnectedEvent(StreamSocket objRetSocket);
         public delegate void MessageReceived(Comm_Message objMessage);
 
         public Comm_MsgMaster MessagesEvents;
