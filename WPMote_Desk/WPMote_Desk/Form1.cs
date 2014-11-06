@@ -23,7 +23,7 @@ namespace WPMote_Desk
 
         private void button1_Click(object sender, EventArgs e)
         {
-            objComm = new Comm_Common(Comm_Common.CommMode.Bluetooth);
+            objComm = new Comm_Common(Comm_Common.CommMode.TCP);
         }
 
         private void button2_Click(object sender, EventArgs e)

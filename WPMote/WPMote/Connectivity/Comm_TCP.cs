@@ -10,7 +10,7 @@ namespace WPMote.Connectivity
 {
     class Comm_TCP
     {
-        int intPort = 8046;
+        int intPort = 8019;
         StreamSocket objClient;
 
         public event Connectivity.Comm_Common.ConnectedEvent Connected;

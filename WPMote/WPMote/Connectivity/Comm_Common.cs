@@ -40,7 +40,7 @@ namespace WPMote.Connectivity
 
         public bool IsConnected() { return (objMainSocket == null); }
 
-        public Comm_Common(CommMode mode, string strHost = "127.0.0.1", int intTCPPort = 8046)
+        public Comm_Common(CommMode mode, string strHost = "127.0.0.1", int intTCPPort = 8019)
         {
             objMode = mode;
             MessagesEvents=new Comm_MsgMaster();

@@ -35,7 +35,7 @@ namespace WPMote_Desk.Connectivity
 
         public bool IsConnected() { return (objMainStream == null); }
 
-        public Comm_Common(CommMode mode, int intTCPPort = 8046)
+        public Comm_Common(CommMode mode, int intTCPPort = 8019)
         {
             objMode = mode;
 
