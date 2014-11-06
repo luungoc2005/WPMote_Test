@@ -14,7 +14,8 @@ namespace WPMote_Desk.Connectivity
 {
     public class Comm_Common
     {
-        public static delegate void ConnectedEvent(NetworkStream objRetStream);
+        public delegate void ConnectedEvent(NetworkStream objRetStream);
+
         private CommMode objMode;
         NetworkStream objMainStream;
 
@@ -124,7 +125,7 @@ namespace WPMote_Desk.Connectivity
                         //MSG type
 
                         byte intMsgType = objRead.ReadByte();
-                        var objStream = new MemoryStream();
+                        Debug.Print("Byte received {0}", intMsgType);
                         
                         byte[] bData = new byte[Comm_Message.BUFFER_SIZE - 2];
                         bData = objRead.ReadBytes(Comm_Message.BUFFER_SIZE - 2);

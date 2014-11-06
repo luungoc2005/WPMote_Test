@@ -40,6 +40,7 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Start Bluetooth";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -49,6 +50,7 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "Stop";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
@@ -61,6 +63,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "WPMote";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }

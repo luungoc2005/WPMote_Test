@@ -12,37 +12,19 @@ namespace WPMote.Connectivity.Messages
     abstract class Comm_Message : IDisposable
     {
         public byte intID;
-        public int intLength;
         MemoryStream objStream;
 
-        internal static const int BUFFER_SIZE = 256;
+        internal const int BUFFER_SIZE = 256;
 
         internal static Dictionary<byte, UInt16> dictMessages = new Dictionary<byte, UInt16> 
         { 
             {100,sizeof(UInt16)}
         };
 
-        public readonly int Length
-        {
-            get
-            {
-                return intLength;
-            }
-        }
-
-        public readonly byte ID
-        {
-            get
-            {
-                return intID;
-            }
-        }
-
         //Constructor
         public Comm_Message(byte iID, byte[] data)
         {
             intID = iID;
-            intLength = data.Length;
 
             objStream = new MemoryStream();
 
@@ -51,6 +33,11 @@ namespace WPMote.Connectivity.Messages
                 objWrite.Write(data, 0, data.Length);
                 objWrite.Flush();
             }
+        }
+
+        public Comm_Message()
+        {
+
         }
 
         public byte[] ToByteArray()

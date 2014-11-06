@@ -9,12 +9,6 @@ namespace WPMote.Connectivity.Messages
     class Comm_Msg_Test : Comm_Message
     {
         //Constructor
-
-        void Comm_Msg_Test()
-        {
-            intID = 100;
-        }
-
-
+        
     }
 }
