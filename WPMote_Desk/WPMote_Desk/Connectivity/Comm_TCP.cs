@@ -26,9 +26,8 @@ namespace WPMote_Desk.Connectivity
         //http://stackoverflow.com/questions/6803073/get-local-ip-address-c-sharp
         public static string LocalIPAddress()
         {
-            IPHostEntry host;
             string localIP = "";
-            host = Dns.GetHostEntry(Dns.GetHostName());
+            var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (IPAddress ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)

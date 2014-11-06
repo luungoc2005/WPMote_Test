@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WPMote.Connectivity;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -22,6 +23,8 @@ namespace WPMote
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        Comm_Common objComm;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -48,6 +51,17 @@ namespace WPMote
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+            objComm = new Comm_Common(Comm_Common.CommMode.TCP, txt1.Text);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (objComm!=null) objComm.Close();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            objComm.SendBytes(new byte[] { 19 });
         }
     }
 }
