@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WPMote_Desk.Connectivity;
 using System.Net.Sockets;
 using System.IO;
-using WPMote.Connectivity;
+using WPMote.Connectivity.Messages;
 
 namespace WPMote_Desk.Connectivity
 {

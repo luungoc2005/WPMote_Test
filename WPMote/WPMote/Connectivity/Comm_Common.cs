@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
+using WPMote.Connectivity.Messages;
 
 namespace WPMote.Connectivity
 {
@@ -15,7 +16,9 @@ namespace WPMote.Connectivity
     {
         public static delegate void ConnectedEvent(StreamSocket objRetSocket);
         public delegate void MessageReceived(Comm_Message objMessage);
-        
+
+        public Comm_MsgMaster MessagesEvents;
+
         public event MessageReceived OnMessageReceived;
 
         private CommMode objMode;
@@ -40,6 +43,7 @@ namespace WPMote.Connectivity
         public Comm_Common(CommMode mode, string strHost = "127.0.0.1", int intTCPPort = 8046)
         {
             objMode = mode;
+            MessagesEvents=new Comm_MsgMaster();
 
             switch (mode)
             {

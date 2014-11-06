@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace WPMote.Connectivity.Messages
 {
-    class Comm_Msg_Acclr: Comm_Message
+    class Comm_Msg_Test : Comm_Message
     {
         //Constructor
 
-        void Comm_Msg_Acclr()
+        void Comm_Msg_Test()
         {
             intID = 100;
         }
 
-        
+
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace WPMote.Connectivity
+namespace WPMote.Connectivity.Messages
 {
     //TODO: predetermined length for each message type
 
@@ -39,7 +39,7 @@ namespace WPMote.Connectivity
         }
 
         //Constructor
-        abstract Comm_Message(byte iID, byte[] data)
+        public Comm_Message(byte iID, byte[] data)
         {
             intID = iID;
             intLength = data.Length;
