@@ -9,12 +9,17 @@ namespace WPMote.Connectivity
 {
     //TODO: predetermined length for each message type
 
-    abstract class Comm_Message
+    abstract class Comm_Message: IDisposable
     {
         public byte intID;
         public int intLength;
         MemoryStream objStream;
 
+        internal static Dictionary<byte, UInt16> dictMessages = new Dictionary<byte, UInt16> 
+        { 
+            {100,sizeof(UInt16)}
+        };
+        
         public readonly int Length
         {
             get
@@ -23,7 +28,7 @@ namespace WPMote.Connectivity
             }
         }
 
-        public readonly Int16 ID
+        public readonly byte ID
         {
             get
             {
@@ -59,5 +64,10 @@ namespace WPMote.Connectivity
             return bData;
         }
 
+
+        public void Dispose()
+        {
+            objStream.Dispose();
+        }
     }
 }

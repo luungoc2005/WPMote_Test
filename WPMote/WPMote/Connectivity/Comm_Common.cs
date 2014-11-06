@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.Networking.Sockets;
+using Windows.Storage.Streams;
 
 namespace WPMote.Connectivity
 {
@@ -75,6 +77,48 @@ namespace WPMote.Connectivity
             }
             catch
             {
+            }
+        }
+
+        public async void ReceiveThread()
+        {
+            if (objMainSocket!=null)
+            {
+                var objStream = new MemoryStream();
+                var objRead = new DataReader(objMainSocket.InputStream);
+
+                try 
+	            {                        
+                    //MSG type
+                    if (await objRead.LoadAsync(sizeof(byte)) != sizeof(byte))
+                    {
+                        //Disconnected
+                    }
+
+                    byte intMsgType = objRead.ReadByte();
+                    uint intLength = await objRead.LoadAsync(Comm_Message.dictMessages[intMsgType]);
+
+                    if (intLength != Comm_Message.dictMessages[intMsgType])
+                    {
+                        //Disconnected
+                    }
+
+                    byte[] bData=new byte[intLength-1];
+                    objRead.ReadBytes(bData);
+
+	            }
+	            catch (Exception)
+	            {
+		
+		            throw;
+	            }
+                finally 
+                {
+                    objStream.Dispose();
+                    objRead.DetachStream();
+                    objRead.Dispose();
+                }
+
             }
         }
 
