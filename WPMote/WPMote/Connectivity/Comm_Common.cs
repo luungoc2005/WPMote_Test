@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
@@ -22,6 +23,11 @@ namespace WPMote.Connectivity
 
         Comm_Bluetooth objBluetooth;
         Comm_TCP objTCP;
+
+        Task tskMessages;
+        CancellationTokenSource objCancelSource;
+        CancellationToken objCancelToken;
+        double DEFAULT_TIMEOUT = 500;
 
         public enum CommMode
         {
@@ -59,6 +65,10 @@ namespace WPMote.Connectivity
         public void ConnectedHandler(StreamSocket objSocket)
         {
             objMainSocket = objSocket;
+
+            objCancelSource=new CancellationTokenSource();
+            objCancelToken=objCancelSource.Token;
+            tskMessages=Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);            
         }
 
         public void Close()
@@ -71,6 +81,11 @@ namespace WPMote.Connectivity
                 }
                 else
                 {
+                    objCancelSource.Cancel();
+
+                    //Cancel timeout
+                    tskMessages.Wait(TimeSpan.FromMilliseconds(DEFAULT_TIMEOUT));
+
                     objMainSocket.Dispose();
                     objMainSocket = null;
                 }
@@ -84,47 +99,71 @@ namespace WPMote.Connectivity
         {
             if (objMainSocket!=null)
             {
-                var objStream = new MemoryStream();
-                var objRead = new DataReader(objMainSocket.InputStream);
-
-                try 
-	            {                        
-                    //MSG type
-                    if (await objRead.LoadAsync(sizeof(byte)) != sizeof(byte))
-                    {
-                        //Disconnected
-                    }
-
-                    byte intMsgType = objRead.ReadByte();
-                    uint intLength = await objRead.LoadAsync(Comm_Message.dictMessages[intMsgType]);
-
-                    if (intLength != Comm_Message.dictMessages[intMsgType])
-                    {
-                        //Disconnected
-                    }
-
-                    byte[] bData=new byte[intLength-1];
-                    objRead.ReadBytes(bData);
-
-	            }
-	            catch (Exception)
-	            {
-		
-		            throw;
-	            }
-                finally 
+                while (true)
                 {
-                    objStream.Dispose();
-                    objRead.DetachStream();
-                    objRead.Dispose();
-                }
+                    objCancelToken.ThrowIfCancellationRequested();
 
+                    var objStream = new MemoryStream();
+                    var objRead = new DataReader(objMainSocket.InputStream);
+
+                    try
+                    {                        
+                        //MSG type
+                        if (await objRead.LoadAsync(sizeof(byte)) != sizeof(byte))
+                        {
+                            //Disconnected
+                        }
+
+                        byte intMsgType = objRead.ReadByte();
+                        uint intLength = await objRead.LoadAsync(Comm_Message.dictMessages[intMsgType]);
+
+                        if (intLength != Comm_Message.dictMessages[intMsgType])
+                        {
+                            //Disconnected
+                        }
+
+                        byte[] bData = new byte[intLength - 1];
+                        objRead.ReadBytes(bData);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        break;
+                    }
+                    catch
+                    {                        
+                        throw;
+                    }
+                    finally
+                    {
+                        objStream.Dispose();
+                        objRead.DetachStream();
+                        objRead.Dispose();
+                    }
+                }
             }
         }
 
-        public void SendBytes(byte[] buffer)
+        public async void SendBytes(byte[] buffer)
         {
+            if (objMainSocket != null)
+            {
+                var objWrite = new DataWriter(objMainSocket.OutputStream);
 
+                try
+                {
+                    objWrite.WriteBytes(buffer);
+                    await objWrite.FlushAsync();
+                }
+                catch
+                {                    
+                    throw;
+                }
+                finally
+                {
+                    objWrite.DetachStream();
+                    objWrite.Dispose();
+                }
+            }
         }
     }
 }
