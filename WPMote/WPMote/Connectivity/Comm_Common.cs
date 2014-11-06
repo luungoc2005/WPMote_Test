@@ -103,7 +103,6 @@ namespace WPMote.Connectivity
                 {
                     objCancelToken.ThrowIfCancellationRequested();
 
-                    var objStream = new MemoryStream();
                     var objRead = new DataReader(objMainSocket.InputStream);
 
                     try
@@ -135,7 +134,6 @@ namespace WPMote.Connectivity
                     }
                     finally
                     {
-                        objStream.Dispose();
                         objRead.DetachStream();
                         objRead.Dispose();
                     }

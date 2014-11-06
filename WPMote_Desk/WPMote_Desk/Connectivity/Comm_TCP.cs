@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Net.Sockets;
 using System.Net;
+using WPMote.Connectivity;
 
 namespace WPMote_Desk.Connectivity
 {
@@ -21,6 +22,7 @@ namespace WPMote_Desk.Connectivity
         private Action<NetworkStream> OnConnected;
 
         NetworkStream objStream;
+
 
         public int Port
         {
@@ -43,9 +45,18 @@ namespace WPMote_Desk.Connectivity
 
             tskListen = new Thread(() => ListenThread());
 
-            OnConnected = new Action<NetworkStream>((NetworkStream s) => Connected(s));
+            OnConnected = new Action<NetworkStream>((NetworkStream s) => OnConnectedEvent(s));
 
             tskListen.Start();
+        }
+
+        public void OnConnectedEvent(NetworkStream s)
+        {
+            //SETTINGS
+            objClient.ReceiveBufferSize = Comm_Message.BUFFER_SIZE;
+            objClient.SendBufferSize = Comm_Message.BUFFER_SIZE;
+
+            Connected(s);
         }
 
         public void ListenThread()

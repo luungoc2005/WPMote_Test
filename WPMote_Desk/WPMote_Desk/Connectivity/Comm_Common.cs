@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WPMote_Desk.Connectivity;
 using System.Net.Sockets;
+using System.IO;
+using WPMote.Connectivity;
 
 namespace WPMote_Desk.Connectivity
 {
@@ -16,8 +19,11 @@ namespace WPMote_Desk.Connectivity
 
         Comm_Bluetooth objBluetooth;
         Comm_TCP objTCP;
-
-
+        
+        Task tskMessages;
+        CancellationTokenSource objCancelSource;
+        CancellationToken objCancelToken;
+        double DEFAULT_TIMEOUT = 500;
 
         public enum CommMode
         {
@@ -87,6 +93,64 @@ namespace WPMote_Desk.Connectivity
             }
             catch 
             { 
+            }
+        }
+
+        public void ReceiveThread()
+        {
+            if (objMainStream != null)
+            {
+                while (true)
+                {
+                    objCancelToken.ThrowIfCancellationRequested();
+
+                    var objRead = new BinaryReader(objMainStream);
+
+                    try
+                    {
+                        //MSG type
+
+                        byte intMsgType = objRead.ReadByte();
+                        var objStream = new MemoryStream();
+                        
+                        byte[] bData = new byte[Comm_Message.BUFFER_SIZE - 2];
+                        bData = objRead.ReadBytes(Comm_Message.BUFFER_SIZE - 2);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        break;
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        objRead.Dispose();
+                    }
+                }
+            }
+        }
+
+        public void SendBytes(byte[] buffer)
+        {
+            if (objMainStream != null)
+            {
+                var objWrite = new BinaryWriter(objMainStream);
+
+                try
+                {
+                    objWrite.Write(buffer);
+                    objWrite.Flush();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    objWrite.Dispose();
+                }
             }
         }
     }

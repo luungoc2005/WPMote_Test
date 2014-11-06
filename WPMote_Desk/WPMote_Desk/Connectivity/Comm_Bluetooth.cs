@@ -74,6 +74,8 @@ namespace WPMote_Desk.Connectivity
             objClient = objServer.AcceptBluetoothClient();
             StopListening();
 
+            //SETTINGS
+
             objStream = objClient.GetStream();
 
             Connected(objStream);

@@ -50,6 +50,8 @@
   <ItemGroup>
     <Compile Include="Connectivity\Comm_Bluetooth.cs" />
     <Compile Include="Connectivity\Comm_Common.cs" />
+    <Compile Include="Connectivity\Messages\Comm_Message.cs" />
+    <Compile Include="Connectivity\Messages\Comm_Msg_Acclr.cs" />
     <Compile Include="Connectivity\Comm_TCP.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
