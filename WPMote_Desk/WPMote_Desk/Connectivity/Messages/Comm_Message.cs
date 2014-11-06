@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace WPMote.Connectivity
+namespace WPMote.Connectivity.Messages
 {
     //TODO: predetermined length for each message type
 
-    abstract class Comm_Message: IDisposable
+    abstract class Comm_Message : IDisposable
     {
         public byte intID;
         public int intLength;
@@ -21,7 +21,7 @@ namespace WPMote.Connectivity
         { 
             {100,sizeof(UInt16)}
         };
-        
+
         public readonly int Length
         {
             get
@@ -39,14 +39,14 @@ namespace WPMote.Connectivity
         }
 
         //Constructor
-        abstract Comm_Message(byte iID,byte[] data) 
+        public Comm_Message(byte iID, byte[] data)
         {
             intID = iID;
             intLength = data.Length;
-            
+
             objStream = new MemoryStream();
 
-            using (var objWrite=new BinaryWriter(objStream))
+            using (var objWrite = new BinaryWriter(objStream))
             {
                 objWrite.Write(data, 0, data.Length);
                 objWrite.Flush();
@@ -57,10 +57,10 @@ namespace WPMote.Connectivity
         {
             byte[] bData;
 
-            using (var objRead=new BinaryReader(objStream))
+            using (var objRead = new BinaryReader(objStream))
             {
-                objStream.Seek(0,SeekOrigin.Begin);
-                bData=objRead.ReadBytes((int)objStream.Length);
+                objStream.Seek(0, SeekOrigin.Begin);
+                bData = objRead.ReadBytes((int)objStream.Length);
             }
 
             return bData;

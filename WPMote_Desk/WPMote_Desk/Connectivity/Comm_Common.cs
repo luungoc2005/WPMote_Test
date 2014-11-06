@@ -8,6 +8,7 @@ using WPMote_Desk.Connectivity;
 using System.Net.Sockets;
 using System.IO;
 using WPMote.Connectivity.Messages;
+using System.Diagnostics;
 
 namespace WPMote_Desk.Connectivity
 {
@@ -75,6 +76,12 @@ namespace WPMote_Desk.Connectivity
         public void ConnectedHandler(NetworkStream objStream)
         {
             objMainStream = objStream;
+
+            objCancelSource = new CancellationTokenSource();
+            objCancelToken = objCancelSource.Token;
+            tskMessages = Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);
+
+            Debug.Print("Connected");
         }
 
         public void Close()
@@ -88,7 +95,13 @@ namespace WPMote_Desk.Connectivity
                 }
                 else
                 {
+                    objCancelSource.Cancel();
+
+                    //Cancel timeout
+                    tskMessages.Wait(TimeSpan.FromMilliseconds(DEFAULT_TIMEOUT));
+
                     objMainStream.Close();
+                    objMainStream.Dispose();
                 }
             }
             catch 

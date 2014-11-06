@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Net.Sockets;
 using System.Net;
-using WPMote.Connectivity;
+using WPMote.Connectivity.Messages;
 
 namespace WPMote_Desk.Connectivity
 {
