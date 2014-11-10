@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using WPMote.Connectivity.Messages;
+using System.ComponentModel;
 
 namespace WPMote.Connectivity
 {
@@ -31,6 +32,8 @@ namespace WPMote.Connectivity
         CancellationTokenSource objCancelSource;
         CancellationToken objCancelToken;
         double DEFAULT_TIMEOUT = 500;
+
+        DataWriter objWrite;
 
         public enum CommMode
         {
@@ -57,6 +60,7 @@ namespace WPMote.Connectivity
                     break;
                 case CommMode.TCP:
                     objTCP = new Comm_TCP();
+                    objTCP.Connected += ConnectedHandler;
                     objTCP.Connect(strHost, intTCPPort);
 
                     break;
@@ -72,7 +76,9 @@ namespace WPMote.Connectivity
 
             objCancelSource=new CancellationTokenSource();
             objCancelToken=objCancelSource.Token;
-            tskMessages=Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);            
+            tskMessages=Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);
+            
+            objWrite = new DataWriter(objMainSocket.OutputStream);
         }
 
         public void Close()
@@ -86,6 +92,7 @@ namespace WPMote.Connectivity
                 else
                 {
                     objCancelSource.Cancel();
+                    objWrite.Dispose();
 
                     //Cancel timeout
                     tskMessages.Wait(TimeSpan.FromMilliseconds(DEFAULT_TIMEOUT));
@@ -103,11 +110,11 @@ namespace WPMote.Connectivity
         {
             if (objMainSocket!=null)
             {
+                var objRead = new DataReader(objMainSocket.InputStream);
+
                 while (true)
                 {
                     objCancelToken.ThrowIfCancellationRequested();
-
-                    var objRead = new DataReader(objMainSocket.InputStream);
 
                     try
                     {                        
@@ -136,12 +143,9 @@ namespace WPMote.Connectivity
                     {                        
                         throw;
                     }
-                    finally
-                    {
-                        objRead.DetachStream();
-                        objRead.Dispose();
-                    }
                 }
+
+                objRead.Dispose();
             }
         }
 
@@ -149,21 +153,14 @@ namespace WPMote.Connectivity
         {
             if (objMainSocket != null)
             {
-                var objWrite = new DataWriter(objMainSocket.OutputStream);
-
                 try
                 {
                     objWrite.WriteBytes(buffer);
                     await objWrite.FlushAsync();
                 }
                 catch
-                {                    
-                    throw;
-                }
-                finally
                 {
-                    objWrite.DetachStream();
-                    objWrite.Dispose();
+                    throw;
                 }
             }
         }

@@ -44,7 +44,7 @@ namespace WPMote_Desk.Connectivity
         }
 
         // Awaiting devices
-        public void StartListening()
+        public void StartListen()
         {
             try
             {
@@ -57,7 +57,7 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
-        public void StopListening()
+        public void StopListen()
         {
             try
             {
@@ -72,7 +72,7 @@ namespace WPMote_Desk.Connectivity
         public void AcceptDevice()
         {
             objClient = objServer.AcceptBluetoothClient();
-            StopListening();
+            StopListen();
 
             //SETTINGS
 
@@ -100,7 +100,7 @@ namespace WPMote_Desk.Connectivity
         
         public void Close()
         {
-            StopListening();
+            StopListen();
 
             if (objClient!=null)
             {
