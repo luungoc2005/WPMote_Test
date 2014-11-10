@@ -44,7 +44,7 @@ namespace WPMote_Desk.Connectivity
 
                     if (avail==Comm_Bluetooth.BluetoothAvailability.NotAvailable)
                     {
-                        
+                        //TODO: Notify user
                     }
                     else
                     {
