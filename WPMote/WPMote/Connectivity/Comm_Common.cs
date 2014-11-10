@@ -151,12 +151,13 @@ namespace WPMote.Connectivity
 
         public async void SendBytes(byte[] buffer)
         {
-            if (objMainSocket != null)
+            if ((objMainSocket != null) & (objWrite != null))
             {
+                objWrite.WriteBytes(buffer);
+
                 try
                 {
-                    objWrite.WriteBytes(buffer);
-                    await objWrite.FlushAsync();
+                    await objWrite.StoreAsync();
                 }
                 catch
                 {
