@@ -67,7 +67,7 @@ namespace WPMote.Connectivity
 
             await objSocket.ConnectAsync(objClient.ConnectionHostName, objClient.ConnectionServiceName);
 
-            Connected(objSocket);
+            if (Connected!=null) Connected(objSocket);
         }
 
         public void Close()

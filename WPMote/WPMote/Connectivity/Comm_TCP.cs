@@ -33,7 +33,7 @@ namespace WPMote.Connectivity
             {
                 objClient = new StreamSocket();
                 await objClient.ConnectAsync(new HostName(strHost), intPort.ToString());
-                Connected(objClient);
+                if (Connected!=null) Connected(objClient);
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace WPMote.Connectivity
                     throw;
                 }
                 
-                objClient.Dispose();
+                if (objClient != null) objClient.Dispose();
             }
         }
 

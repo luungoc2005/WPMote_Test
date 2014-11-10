@@ -53,11 +53,8 @@ namespace WPMote_Desk.Connectivity
 
         public void StartListen()
         {
-            IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-            objServer = new TcpListener(localAddr, intPort);
-
-            objServer.Start();
-
+            objServer = new TcpListener(IPAddress.Parse("127.0.0.1"), intPort);
+            
             tskListen = new Thread(() => ListenThread());
 
             OnConnected = new Action<NetworkStream>((NetworkStream s) => OnConnectedEvent(s));
@@ -65,23 +62,28 @@ namespace WPMote_Desk.Connectivity
             tskListen.Start();
         }
 
-        public void OnConnectedEvent(NetworkStream s)
+        protected void OnConnectedEvent(NetworkStream s)
         {
             //SETTINGS
             objClient.ReceiveBufferSize = Comm_Message.BUFFER_SIZE;
             objClient.SendBufferSize = Comm_Message.BUFFER_SIZE;
 
-            Connected(s);
+            if (Connected!=null) Connected(s);
         }
 
         public void ListenThread()
         {
-            objClient = objServer.AcceptTcpClient();
-            objServer.Stop();
+            objServer.Start();
 
-            objStream = objClient.GetStream();
+            while (true)
+            {
+                objClient = objServer.AcceptTcpClient();
 
-            OnConnected.Invoke(objStream);
+                objStream = objClient.GetStream();
+
+                OnConnected.Invoke(objStream);
+            }
+
         }
 
         public void StopListen()
