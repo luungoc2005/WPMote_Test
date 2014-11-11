@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Text;
 
 namespace WPMote.Connectivity.Messages
 {
-    public class MsgCommon : IDisposable
+    public class MsgCommon
     {
         //Process of adding a message: Add size to dict->Event->Struct->Modify constructor
 
@@ -26,7 +25,7 @@ namespace WPMote.Connectivity.Messages
 
         #region "Message Structs"
 
-        internal static struct Msg_Test
+        internal class Msg_Test
         {
             public byte ID = 100;
             //Constructors
@@ -35,7 +34,7 @@ namespace WPMote.Connectivity.Messages
             public Msg_Test() { }
 
             //To byte array
-            public readonly byte[] ToByteArray
+            public byte[] ToByteArray
             {
                 get
                 {
@@ -63,7 +62,7 @@ namespace WPMote.Connectivity.Messages
             }
         }
 
-        internal static struct Msg_ClientInfo
+        internal class Msg_ClientInfo
         {
             public byte ID = 101;
             public string IPAddress;
@@ -105,7 +104,7 @@ namespace WPMote.Connectivity.Messages
             }
 
             //To byte array
-            public readonly byte[] ToByteArray
+            public byte[] ToByteArray
             {
                 get
                 {

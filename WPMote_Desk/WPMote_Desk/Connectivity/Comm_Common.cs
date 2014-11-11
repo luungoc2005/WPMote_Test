@@ -7,7 +7,7 @@ using System.ComponentModel;
 using WPMote_Desk.Connectivity;
 using System.Net.Sockets;
 using System.IO;
-using WPMote.Connectivity.Messages;
+using WPMote_Desk.Connectivity.Messages;
 using System.Diagnostics;
 
 namespace WPMote_Desk.Connectivity

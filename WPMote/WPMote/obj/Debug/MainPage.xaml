@@ -12,8 +12,9 @@
         <ListView HorizontalAlignment="Left" Height="429" Margin="10,10,0,0" VerticalAlignment="Top" Width="380" BorderThickness="1" BorderBrush="{ThemeResource ListBoxBackgroundThemeBrush}"/>
         <Button x:ConnectionId='1' x:Name="btn1" Content="Connect" HorizontalAlignment="Left" Margin="10,434,0,0" VerticalAlignment="Top"                     />
         <Button x:ConnectionId='2' x:Name="btn2" Content="Close" HorizontalAlignment="Left" Margin="140,434,0,0" VerticalAlignment="Top"                       />
-        <TextBox x:Name="txt1" HorizontalAlignment="Left" Margin="10,500,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="380"/>
+        <TextBox x:Name="txt1" HorizontalAlignment="Left" Margin="10,500,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="380"/>
         <Button x:ConnectionId='3' x:Name="btn3" Content="Send" HorizontalAlignment="Left" Margin="281,434,0,0" VerticalAlignment="Top"                       />
+        <TextBlock x:Name="txt2" HorizontalAlignment="Left" Margin="10,555,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="31" Width="380"/>
 
     </Grid>
 </Page>

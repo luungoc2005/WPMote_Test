@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using WPMote.Connectivity;
+using WPMote.Connectivity.Messages;
+using Windows.Phone;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -61,7 +63,7 @@ namespace WPMote
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            objComm.SendBytes(new byte[] { 19 });
+            objComm.SendBytes(new MsgCommon.Msg_ClientInfo("127.0.0.1", "WP8 Device").ToByteArray);
         }
     }
 }

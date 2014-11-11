@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WPMote_Desk.Connectivity;
 using System.Diagnostics;
+using WPMote_Desk.Connectivity.Messages;
 
 namespace WPMote_Desk
 {
@@ -24,6 +25,12 @@ namespace WPMote_Desk
         private void button1_Click(object sender, EventArgs e)
         {
             objComm = new Comm_Common(Comm_Common.CommMode.TCP);
+            objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
+        }
+
+        private void OnClientInfoReceived(string IPAddress, string DeviceName)
+        {
+            Debug.Print("ClientInfo received: " + IPAddress + " (" + DeviceName + ")");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -36,12 +43,12 @@ namespace WPMote_Desk
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Debug.Print(Comm_TCP.LocalIPAddress());
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            objComm.SendBytes(new byte[] { 22 });
+            objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(),Environment.MachineName).ToByteArray);
         }
     }
 }

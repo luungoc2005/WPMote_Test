@@ -7,7 +7,7 @@ using WPMote.Connectivity.Messages;
 
 namespace WPMote.Connectivity.Messages
 {
-    class MsgEvents
+    public class MsgEvents
     {
         #region "Common variables"
 
@@ -38,7 +38,7 @@ namespace WPMote.Connectivity.Messages
 
                 case 101: //ClientInfo
                     var objMessage = new MsgCommon.Msg_ClientInfo(data);
-                    if (OnClientInfoReceived != null) OnClientInfoReceived(objMessage.IPAddress,objMessage.DeviceName)
+                    if (OnClientInfoReceived != null) OnClientInfoReceived(objMessage.IPAddress, objMessage.DeviceName);
                     break;
 
                 default:

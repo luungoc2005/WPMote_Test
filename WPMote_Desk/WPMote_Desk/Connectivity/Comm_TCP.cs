@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Net.Sockets;
 using System.Net;
-using WPMote.Connectivity.Messages;
+using WPMote_Desk.Connectivity.Messages;
 
 namespace WPMote_Desk.Connectivity
 {
@@ -16,7 +16,6 @@ namespace WPMote_Desk.Connectivity
         TcpListener objServer;
         TcpClient objClient;
         int intPort = 8046;
-        bool bListening = false;
         private Thread tskListen;
 
         public event Connectivity.Comm_Common.ConnectedEvent Connected;
