@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using WPMote.Connectivity;
 using WPMote.Connectivity.Messages;
 using Windows.Phone;
+using Microsoft.Devices.Sensors;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -26,6 +27,7 @@ namespace WPMote
     public sealed partial class MainPage : Page
     {
         Comm_Common objComm;
+        Motion objMotion;
 
         public MainPage()
         {
@@ -48,6 +50,18 @@ namespace WPMote
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
+
+            objMotion=new Motion();
+            objMotion.TimeBetweenUpdates=TimeSpan.FromMilliseconds(100);
+            objMotion.CurrentValueChanged += new EventHandler<SensorReadingEventArgs<MotionReading>>(motion_CurrentValueChanged);
+            objMotion.Start();
+        }
+
+        private async void motion_CurrentValueChanged(object sender, SensorReadingEventArgs<MotionReading> e)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            { txt3.Text = e.SensorReading.Attitude.Yaw + " " + e.SensorReading.Attitude.Pitch +
+                " " + e.SensorReading.Attitude.Roll; });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

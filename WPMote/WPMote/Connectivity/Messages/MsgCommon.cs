@@ -10,7 +10,7 @@ namespace WPMote.Connectivity.Messages
     public class MsgCommon
     {
         //Process of adding a message: Add size to dict->Event->Struct->Modify constructor
-
+        
         #region "Common variables"
 
         internal const int BUFFER_SIZE = 256;

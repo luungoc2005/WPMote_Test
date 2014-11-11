@@ -1,5 +1,6 @@
 <XamlCompilerSaveState>
   <ReferenceAssemblyList>
-    <LocalAssembly PathName="c:\users\nguyen\documents\github\wpmote\wpmote\wpmote\obj\debug\intermediatexaml\wpmote.exe" HashGuid="37f088c3-47fc-9d24-1d03-34f7b89cff48" />
+    <LocalAssembly PathName="c:\users\nguyen\documents\github\wpmote\wpmote\wpmote\obj\debug\intermediatexaml\wpmote.exe" HashGuid="3e8bff91-4d1b-1478-59b2-baf315cf6148" />
+    <ReferenceAssembly PathName="c:\program files (x86)\reference assemblies\microsoft\framework\windowsphone\v8.1\microsoft.devices.sensors.dll" HashGuid="b4ebfa3b-3550-4c68-2268-e9e659812a18" />
   </ReferenceAssemblyList>
 </XamlCompilerSaveState>

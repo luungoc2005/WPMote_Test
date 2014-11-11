@@ -19,6 +19,15 @@
     <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\bin\Debug\WPMote.exe">
       <PackagePath>WPMote.exe</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\WindowsPhone\v8.1\Microsoft.Devices.Sensors.dll">
+      <PackagePath>Microsoft.Devices.Sensors.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\WindowsPhone\v8.1\Microsoft.Xna.Framework.dll">
+      <PackagePath>Microsoft.Xna.Framework.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\WindowsPhone\v8.1\System.dll">
+      <PackagePath>System.dll</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Logo.scale-240.png">
       <PackagePath>Assets\Logo.scale-240.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>

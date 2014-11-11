@@ -26,5 +26,6 @@
   <Capabilities>
     <Capability Name="internetClientServer" />
     <DeviceCapability Name="proximity" />
+	<DeviceCapability Name="ID_CAP_SENSORS" />
   </Capabilities>
 </Package>
