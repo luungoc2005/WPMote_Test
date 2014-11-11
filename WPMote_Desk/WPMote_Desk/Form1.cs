@@ -50,5 +50,21 @@ namespace WPMote_Desk
         {
             objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(),Environment.MachineName).ToByteArray);
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            label1.Text = Win32.MousePointer.Position.ToString() + "\r\n" + Win32.MousePointer.LeftButtonDown.ToString();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Win32.MousePointer.Position = new Point(0, 0);
+        }
+
+        private void button5_MouseMove(object sender, MouseEventArgs e)
+        {
+            Win32.MousePointer.LeftButtonDown = true;
+        }
+
     }
 }
