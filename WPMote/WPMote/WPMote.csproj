@@ -89,8 +89,6 @@
     <Compile Include="Connectivity\Comm_Common.cs" />
     <Compile Include="Connectivity\Comm_TCP.cs" />
     <Compile Include="Connectivity\Messages\Comm_Message.cs" />
-    <Compile Include="Connectivity\Messages\Comm_MsgMaster.cs" />
-    <Compile Include="Connectivity\Messages\Comm_Msg_Test.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

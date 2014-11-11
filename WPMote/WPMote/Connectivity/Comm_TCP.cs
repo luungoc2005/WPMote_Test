@@ -10,11 +10,17 @@ namespace WPMote.Connectivity
 {
     class Comm_TCP
     {
+        #region "Common variables"
+
         int intPort = 8019;
         StreamSocket objClient;
 
         public event Connectivity.Comm_Common.ConnectedEvent Connected;
 
+        #endregion
+
+        #region "Class properties"
+        
         public int Port
         {
             get
@@ -27,13 +33,17 @@ namespace WPMote.Connectivity
             }
         }
 
+        #endregion
+
+        #region "Public methods"
+        
         public async void Connect(string strHost, int intPort)
         {
             try
             {
                 objClient = new StreamSocket();
                 await objClient.ConnectAsync(new HostName(strHost), intPort.ToString());
-                if (Connected!=null) Connected(objClient);
+                if (Connected != null) Connected(objClient);
             }
             catch (Exception ex)
             {
@@ -41,10 +51,17 @@ namespace WPMote.Connectivity
                 {
                     throw;
                 }
-                
+
                 if (objClient != null) objClient.Dispose();
             }
         }
 
+
+        #endregion
+
+        #region "Private methods"
+
+        #endregion
+        
     }
 }

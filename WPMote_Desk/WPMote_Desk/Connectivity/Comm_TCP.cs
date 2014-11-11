@@ -11,9 +11,11 @@ namespace WPMote_Desk.Connectivity
 {
     public class Comm_TCP
     {
+        #region "Common variables"
+
         TcpListener objServer;
         TcpClient objClient;
-        int intPort=8046;
+        int intPort = 8046;
         bool bListening = false;
         private Thread tskListen;
 
@@ -23,6 +25,9 @@ namespace WPMote_Desk.Connectivity
 
         NetworkStream objStream;
 
+        #endregion
+
+        #region "Shared methods"
         //http://stackoverflow.com/questions/6803073/get-local-ip-address-c-sharp
         public static string LocalIPAddress()
         {
@@ -39,6 +44,10 @@ namespace WPMote_Desk.Connectivity
             return localIP;
         }
 
+        #endregion
+
+        #region "Class properties"
+
         public int Port
         {
             get
@@ -51,16 +60,30 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
+        #endregion
+
+        #region "Public methods"
+
         public void StartListen()
         {
             objServer = new TcpListener(IPAddress.Parse("127.0.0.1"), intPort);
-            
+
             tskListen = new Thread(() => ListenThread());
 
             OnConnected = new Action<NetworkStream>((NetworkStream s) => OnConnectedEvent(s));
 
             tskListen.Start();
         }
+
+        public void StopListen()
+        {
+            tskListen.Abort();
+            objServer.Stop();
+        }
+
+        #endregion
+
+        #region "Private methods"
 
         protected void OnConnectedEvent(NetworkStream s)
         {
@@ -70,10 +93,10 @@ namespace WPMote_Desk.Connectivity
             objClient.ReceiveBufferSize = Comm_Message.BUFFER_SIZE;
             objClient.SendBufferSize = Comm_Message.BUFFER_SIZE;
 
-            if (Connected!=null) Connected(s);
+            if (Connected != null) Connected(s);
         }
 
-        public void ListenThread()
+        private void ListenThread()
         {
             objServer.Start();
 
@@ -85,15 +108,9 @@ namespace WPMote_Desk.Connectivity
 
                 OnConnected.Invoke(objStream);
             }
-
         }
 
-        public void StopListen()
-        {
-            tskListen.Abort();
-            objServer.Stop();
-        }
-
+        #endregion
 
     }
 }

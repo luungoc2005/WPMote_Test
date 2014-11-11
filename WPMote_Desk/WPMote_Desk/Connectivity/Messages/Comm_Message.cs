@@ -11,6 +11,8 @@ namespace WPMote.Connectivity.Messages
 
     abstract class Comm_Message : IDisposable
     {
+        #region "Common variables"
+
         public byte intID;
         MemoryStream objStream;
 
@@ -20,8 +22,11 @@ namespace WPMote.Connectivity.Messages
         { 
             {100,sizeof(UInt16)}
         };
+
+        #endregion
+
+        #region "Class constructors"
         
-        //Constructor
         public Comm_Message(byte iID, byte[] data)
         {
             intID = iID;
@@ -35,10 +40,12 @@ namespace WPMote.Connectivity.Messages
             }
         }
 
-        public Comm_Message()
-        {
+        //Empty constructor
+        public Comm_Message() { }
 
-        }
+        #endregion
+
+        #region "Public methods"
 
         public byte[] ToByteArray()
         {
@@ -52,11 +59,16 @@ namespace WPMote.Connectivity.Messages
 
             return bData;
         }
-
-
+        
         public void Dispose()
         {
             objStream.Dispose();
         }
+
+        #endregion
+
+        #region "Private methods"
+        #endregion
+
     }
 }

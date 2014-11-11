@@ -11,6 +11,8 @@ namespace WPMote.Connectivity.Messages
 
     abstract class Comm_Message : IDisposable
     {
+        #region "Common variables"
+
         public byte intID;
         MemoryStream objStream;
 
@@ -18,10 +20,14 @@ namespace WPMote.Connectivity.Messages
 
         internal static Dictionary<byte, UInt16> dictMessages = new Dictionary<byte, UInt16> 
         { 
-            {100,sizeof(UInt16)}
+            {100,sizeof(UInt16)}, //TEST CMD
+            {100,4*sizeof(byte)+sizeof(UInt16)+128} //ClientInfo: IP & HostName, HostName 128 chars max
         };
 
-        //Constructor
+        #endregion
+
+        #region "Class constructors"
+                
         public Comm_Message(byte iID, byte[] data)
         {
             intID = iID;
@@ -35,10 +41,12 @@ namespace WPMote.Connectivity.Messages
             }
         }
 
-        public Comm_Message()
-        {
+        //Empty constructor
+        public Comm_Message() { }
 
-        }
+        #endregion
+
+        #region "Public methods"
 
         public byte[] ToByteArray()
         {
@@ -53,10 +61,12 @@ namespace WPMote.Connectivity.Messages
             return bData;
         }
 
-
         public void Dispose()
         {
             objStream.Dispose();
         }
+
+        #endregion
+        
     }
 }

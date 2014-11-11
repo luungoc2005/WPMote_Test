@@ -14,6 +14,8 @@ namespace WPMote_Desk.Connectivity
 {
     public class Comm_Common
     {
+        #region "Common variables"
+
         public delegate void ConnectedEvent(NetworkStream objRetStream);
 
         private CommMode objMode;
@@ -21,7 +23,7 @@ namespace WPMote_Desk.Connectivity
 
         Comm_Bluetooth objBluetooth;
         Comm_TCP objTCP;
-        
+
         BackgroundWorker bwMessages;
         double DEFAULT_TIMEOUT = 500;
 
@@ -31,7 +33,15 @@ namespace WPMote_Desk.Connectivity
             TCP,
         }
 
+        #endregion
+
+        #region "Class properties"
+
         public bool IsConnected() { return (objMainStream == null); }
+
+        #endregion
+
+        #region "Class constructor"
 
         public Comm_Common(CommMode mode, int intTCPPort = 8019)
         {
@@ -42,13 +52,13 @@ namespace WPMote_Desk.Connectivity
                 case CommMode.Bluetooth:
                     Comm_Bluetooth.BluetoothAvailability avail = Comm_Bluetooth.IsBluetoothAvailable();
 
-                    if (avail==Comm_Bluetooth.BluetoothAvailability.NotAvailable)
+                    if (avail == Comm_Bluetooth.BluetoothAvailability.NotAvailable)
                     {
                         //TODO: Notify user
                     }
                     else
                     {
-                        objBluetooth=new Comm_Bluetooth();
+                        objBluetooth = new Comm_Bluetooth();
                         if (avail == Comm_Bluetooth.BluetoothAvailability.TurnedOff) objBluetooth.EnableBluetooth();
                         objBluetooth.Connected += ConnectedHandler;
 
@@ -71,16 +81,9 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
-        public void ConnectedHandler(NetworkStream objStream)
-        {
-            objMainStream = objStream;
+        #endregion
 
-            bwMessages = new BackgroundWorker();
-            bwMessages.DoWork += new DoWorkEventHandler(ReceiveThread);
-            bwMessages.RunWorkerAsync();
-
-            Debug.Print("Connected");
-        }
+        #region "Public methods"
 
         public void Close()
         {
@@ -99,9 +102,46 @@ namespace WPMote_Desk.Connectivity
                     objMainStream.Dispose();
                 }
             }
-            catch 
-            { 
+            catch
+            {
             }
+        }
+
+        public void SendBytes(byte[] buffer)
+        {
+            if (objMainStream != null)
+            {
+                var objWrite = new BinaryWriter(objMainStream);
+
+                try
+                {
+                    objWrite.Write(buffer);
+                    objWrite.Flush();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    objWrite.Dispose();
+                }
+            }
+        }
+
+        #endregion
+
+        #region "Private methods"
+
+        private void ConnectedHandler(NetworkStream objStream)
+        {
+            objMainStream = objStream;
+
+            bwMessages = new BackgroundWorker();
+            bwMessages.DoWork += new DoWorkEventHandler(ReceiveThread);
+            bwMessages.RunWorkerAsync();
+
+            Debug.Print("Connected");
         }
 
         private async void ReceiveThread(object sender, DoWorkEventArgs e)
@@ -134,26 +174,7 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
-        public void SendBytes(byte[] buffer)
-        {
-            if (objMainStream != null)
-            {
-                var objWrite = new BinaryWriter(objMainStream);
-
-                try
-                {
-                    objWrite.Write(buffer);
-                    objWrite.Flush();
-                }
-                catch
-                {
-                    throw;
-                }
-                finally
-                {
-                    objWrite.Dispose();
-                }
-            }
-        }
+        #endregion
+        
     }
 }

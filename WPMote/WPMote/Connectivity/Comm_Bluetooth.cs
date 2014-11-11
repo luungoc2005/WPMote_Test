@@ -13,12 +13,18 @@ namespace WPMote.Connectivity
 {
     class Comm_Bluetooth
     {
+        #region "Common variables"
+
         private static readonly Guid gService = Guid.Parse("34B1CF4D-1069-4AD6-89B6-E161D79BE4D8");
         public List<DeviceInformation> lstDevices;
         RfcommDeviceService objClient;
         StreamSocket objSocket;
 
         public event Connectivity.Comm_Common.ConnectedEvent Connected;
+
+        #endregion
+
+        #region "Public methods"
 
         //Selecting devices
         public async void UpdatePeers()
@@ -54,7 +60,7 @@ namespace WPMote.Connectivity
         {
             objClient = await RfcommDeviceService.FromIdAsync(objDevice.Id);
 
-            if (objClient==null)
+            if (objClient == null)
             {
                 // Notify: Unable to connect
                 return;
@@ -67,12 +73,19 @@ namespace WPMote.Connectivity
 
             await objSocket.ConnectAsync(objClient.ConnectionHostName, objClient.ConnectionServiceName);
 
-            if (Connected!=null) Connected(objSocket);
+            if (Connected != null) Connected(objSocket);
         }
 
         public void Close()
         {
-
+            //TODO
         }
+
+        #endregion
+
+        #region "Private methods"
+
+        #endregion
+
     }
 }

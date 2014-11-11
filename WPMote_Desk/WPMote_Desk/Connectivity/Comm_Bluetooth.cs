@@ -13,6 +13,8 @@ namespace WPMote_Desk.Connectivity
 {
     public class Comm_Bluetooth
     {
+        #region "Common variables"
+
         BluetoothListener objServer;
         BluetoothClient objClient;
         private static readonly Guid gService = new Guid("04528CB9-6CB3-4713-85A0-9C47D8E283CB");
@@ -27,6 +29,10 @@ namespace WPMote_Desk.Connectivity
             TurnedOff,
             Available
         }
+        
+        #endregion
+
+        #region "Shared methods"
 
         public static BluetoothAvailability IsBluetoothAvailable()
         {
@@ -43,16 +49,24 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
+        #endregion
+
+        #region "Class properties"
+
+        #endregion
+
+        #region "Public methods"
+
         // Awaiting devices
         public void StartListen()
         {
             try
             {
-                if (objServer==null) objServer = new BluetoothListener(gService);
+                if (objServer == null) objServer = new BluetoothListener(gService);
                 objServer.Start();
             }
             catch
-            {                
+            {
                 throw;
             }
         }
@@ -78,34 +92,40 @@ namespace WPMote_Desk.Connectivity
 
             objStream = objClient.GetStream();
 
-            if (Connected!=null) Connected(objStream);
+            if (Connected != null) Connected(objStream);
         }
-        
+
         public void EnableBluetooth()
         {
             var objRadio = BluetoothRadio.PrimaryRadio;
 
-            if (objRadio==null)
+            if (objRadio == null)
             {
-                
+
             }
             else
             {
-                if (objRadio.Mode==RadioMode.PowerOff)
+                if (objRadio.Mode == RadioMode.PowerOff)
                 {
                     BluetoothRadio.PrimaryRadio.Mode = RadioMode.Connectable;
                 }
             }
         }
-        
+
         public void Close()
         {
             StopListen();
 
-            if (objClient!=null)
+            if (objClient != null)
             {
                 objClient.Close();
             }
         }
+
+        #endregion
+
+        #region "Private methods"
+        #endregion
+        
     }
 }
