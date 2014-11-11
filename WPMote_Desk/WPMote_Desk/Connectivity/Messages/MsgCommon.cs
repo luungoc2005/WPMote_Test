@@ -18,7 +18,7 @@ namespace WPMote.Connectivity.Messages
         internal static Dictionary<byte, UInt16> dictMessages = new Dictionary<byte, UInt16> 
         { 
             {100,sizeof(Int16)}, //TEST CMD
-            {101,4*sizeof(byte)+sizeof(Int16)+128} //ClientInfo: IP & HostName, MachineName 128 chars max
+            {101,4*sizeof(byte)+sizeof(Int16)+128} //ClientInfo: IP & DeviceName, DeviceName 128 chars max
         };
 
         #endregion
@@ -27,12 +27,11 @@ namespace WPMote.Connectivity.Messages
 
         internal static struct Msg_ClientInfo
         {
-            byte ID = 101;
-            string IPAddress;
-            string MachineName;
-
+            public string IPAddress;
+            public string DeviceName;
+            
             //Constructors
-            void Msg_ClientInfo(byte[] bData)
+            public Msg_ClientInfo(byte[] bData)
             {
                 var objStream = new MemoryStream(bData);
                 var objRead = new BinaryReader(objStream);
@@ -47,7 +46,7 @@ namespace WPMote.Connectivity.Messages
                     Int16 strLength = objRead.ReadInt16();
                     string strData = Encoding.Unicode.GetString(objRead.ReadBytes(128), 0, strLength);
 
-                    MachineName = strData;
+                    DeviceName = strData;
                 }
                 catch
                 {
@@ -60,14 +59,14 @@ namespace WPMote.Connectivity.Messages
                 }
             }
 
-            void Msg_ClientInfo(string strIP, string strName)
+            public Msg_ClientInfo(string strIP, string strName)
             {
                 IPAddress = strIP;
-                MachineName = strName;
+                DeviceName = strName;
             }
 
             //To byte array
-            readonly byte[] ToByteArray
+            public readonly byte[] ToByteArray
             {
                 get
                 {
@@ -86,8 +85,8 @@ namespace WPMote.Connectivity.Messages
                             objWrite.Write(Convert.ToByte(temp));
                         }
 
-                        objWrite.Write((Int16)Math.Min(MachineName.Length, 128));
-                        objWrite.Write(Encoding.Unicode.GetBytes(MachineName));
+                        objWrite.Write((Int16)Math.Min(DeviceName.Length, 128));
+                        objWrite.Write(Encoding.Unicode.GetBytes(DeviceName));
                         objWrite.Flush();
                     }
                     catch
