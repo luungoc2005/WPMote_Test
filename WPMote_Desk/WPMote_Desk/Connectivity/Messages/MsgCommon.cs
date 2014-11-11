@@ -25,6 +25,43 @@ namespace WPMote.Connectivity.Messages
         
         #region "Message Structs"
 
+        internal static struct Msg_Test
+        {
+            public byte ID = 100;
+            //Constructors
+            public Msg_Test(byte[] bData) { }
+
+            public Msg_Test() { }
+
+            //To byte array
+            public readonly byte[] ToByteArray
+            {
+                get
+                {
+                    var bData = new byte[dictMessages[ID]];
+                    var objStream = new MemoryStream(bData);
+                    var objWrite = new BinaryWriter(objStream);
+
+                    try
+                    {
+                        objWrite.Write(ID);
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        objWrite.Flush();
+                        objWrite.Dispose();
+                        objStream.Dispose();
+                    }
+
+                    return bData;
+                }
+            }
+        }
+
         internal static struct Msg_ClientInfo
         {
             public string IPAddress;

@@ -16,7 +16,7 @@ namespace WPMote.Connectivity.Messages
 
         internal const int BUFFER_SIZE = 256;
 
-        internal static Dictionary<byte, UInt16> dictMessages = new Dictionary<byte, UInt16> 
+        internal static Dictionary<byte, Int16> dictMessages = new Dictionary<byte, Int16> 
         { 
             {100,sizeof(Int16)}, //TEST CMD
             {101,4*sizeof(byte)+sizeof(Int16)+128} //ClientInfo: IP & DeviceName, DeviceName 128 chars max
@@ -26,8 +26,46 @@ namespace WPMote.Connectivity.Messages
 
         #region "Message Structs"
 
+        internal static struct Msg_Test
+        {
+            public byte ID = 100;
+            //Constructors
+            public Msg_Test(byte[] bData) { }
+
+            public Msg_Test() { }
+
+            //To byte array
+            public readonly byte[] ToByteArray
+            {
+                get
+                {
+                    var bData = new byte[dictMessages[ID]];
+                    var objStream = new MemoryStream(bData);
+                    var objWrite = new BinaryWriter(objStream);
+
+                    try
+                    {
+                        objWrite.Write(ID);
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        objWrite.Flush();
+                        objWrite.Dispose();
+                        objStream.Dispose();
+                    }
+
+                    return bData;
+                }
+            }
+        }
+
         internal static struct Msg_ClientInfo
         {
+            public byte ID = 101;
             public string IPAddress;
             public string DeviceName;
 
@@ -77,6 +115,8 @@ namespace WPMote.Connectivity.Messages
 
                     try
                     {
+                        objWrite.Write(ID);
+
                         //IP Address to byte()
                         string[] strIPTemp = IPAddress.Split('.');
 
@@ -88,7 +128,6 @@ namespace WPMote.Connectivity.Messages
 
                         objWrite.Write((Int16)Math.Min(DeviceName.Length, 128));
                         objWrite.Write(Encoding.Unicode.GetBytes(DeviceName));
-                        objWrite.Flush();
                     }
                     catch
                     {
@@ -96,6 +135,7 @@ namespace WPMote.Connectivity.Messages
                     }
                     finally
                     {
+                        objWrite.Flush();
                         objWrite.Dispose();
                         objStream.Dispose();
                     }

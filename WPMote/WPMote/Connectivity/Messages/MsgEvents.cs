@@ -12,13 +12,10 @@ namespace WPMote.Connectivity.Messages
         #region "Common variables"
 
         public delegate void DClientInfoReceived(string IPAddress, string DeviceName);
-        public delegate void DMessageReceived(int ID, byte[] data);
 
         #endregion
 
         #region "Events"
-
-        public event DMessageReceived OnMessageReceived;
 
         public event EventHandler OnTestReceived;
         public event DClientInfoReceived OnClientInfoReceived;
@@ -26,10 +23,7 @@ namespace WPMote.Connectivity.Messages
         #endregion
 
         #region "Class constructors"
-            public MsgEvents()
-            {
-                OnMessageReceived += ProcessMessage;
-            }
+
         #endregion
 
         #region "Public methods"
