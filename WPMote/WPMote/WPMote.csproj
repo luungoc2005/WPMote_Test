@@ -88,7 +88,7 @@
     <Compile Include="Connectivity\Comm_Bluetooth.cs" />
     <Compile Include="Connectivity\Comm_Common.cs" />
     <Compile Include="Connectivity\Comm_TCP.cs" />
-    <Compile Include="Connectivity\Messages\Comm_Message.cs" />
+    <Compile Include="Connectivity\Messages\MsgCommon.cs" />
     <Compile Include="Connectivity\Messages\MsgEvents.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

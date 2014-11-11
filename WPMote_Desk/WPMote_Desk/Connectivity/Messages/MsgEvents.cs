@@ -11,7 +11,7 @@ namespace WPMote.Connectivity.Messages
     {
         #region "Common variables"
 
-        public delegate void DClientInfoReceived(Comm_Message.Msg_ClientInfo data);
+        public delegate void DClientInfoReceived(MsgCommon.Msg_ClientInfo data);
 
         #endregion
 

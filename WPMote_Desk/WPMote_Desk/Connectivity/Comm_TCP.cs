@@ -90,8 +90,8 @@ namespace WPMote_Desk.Connectivity
             //StopListen(); //TODO: Verify this line
 
             //SETTINGS
-            objClient.ReceiveBufferSize = Comm_Message.BUFFER_SIZE;
-            objClient.SendBufferSize = Comm_Message.BUFFER_SIZE;
+            objClient.ReceiveBufferSize = MsgCommon.BUFFER_SIZE;
+            objClient.SendBufferSize = MsgCommon.BUFFER_SIZE;
 
             if (Connected != null) Connected(s);
         }

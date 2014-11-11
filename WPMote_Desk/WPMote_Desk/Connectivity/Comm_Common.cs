@@ -163,7 +163,7 @@ namespace WPMote_Desk.Connectivity
                         {
                             Debug.Print("Msg received {0}", intMsgType);
 
-                            uint intLength = Comm_Message.dictMessages[(byte)intMsgType];
+                            uint intLength = MsgCommon.dictMessages[(byte)intMsgType];
 
                             if (intLength>0)
                             {
