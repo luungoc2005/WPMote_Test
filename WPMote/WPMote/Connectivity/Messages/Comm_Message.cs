@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Windows.Networking;
 using System.Text;
 
 namespace WPMote.Connectivity.Messages
 {
-    //TODO: predetermined length for each message type
-
-    abstract class Comm_Message : IDisposable
+    public class Comm_Message : IDisposable
     {
+        //Process of adding a message: Add size to dict->Event->Struct->Modify constructor
+
         #region "Common variables"
 
         public byte intID;
@@ -26,17 +25,13 @@ namespace WPMote.Connectivity.Messages
             {101,4*sizeof(byte)+sizeof(Int16)+128} //ClientInfo: IP & HostName, MachineName 128 chars max
         };
 
-        #endregion
-
-        #region "Events"
-
-
+        MsgEvents events;
 
         #endregion
 
         #region "Message Structs"
 
-        struct Msg_ClientInfo
+        internal static struct Msg_ClientInfo
         {
             byte ID = 101;
             string IPAddress;
@@ -120,9 +115,10 @@ namespace WPMote.Connectivity.Messages
 
         #region "Class constructors"
 
-        public Comm_Message(byte iID, byte[] data)
+        public Comm_Message(MsgEvents objEvent, byte iID, byte[] data)
         {
             intID = iID;
+            events = objEvent;
 
             objStream = new MemoryStream();
 

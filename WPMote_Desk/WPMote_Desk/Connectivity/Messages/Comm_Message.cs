@@ -7,9 +7,9 @@ using System.IO;
 
 namespace WPMote.Connectivity.Messages
 {
-    //TODO: predetermined length for each message type
+    //Process of adding a message: Add size to dict->Event->Struct->Modify constructor
 
-    abstract class Comm_Message : IDisposable
+    public class Comm_Message : IDisposable
     {
         #region "Common variables"
 
@@ -26,15 +26,9 @@ namespace WPMote.Connectivity.Messages
 
         #endregion
         
-        #region "Events"
-
-
-
-        #endregion
-
         #region "Message Structs"
 
-        struct Msg_ClientInfo
+        internal static struct Msg_ClientInfo
         {
             byte ID = 101;
             string IPAddress;
