@@ -15,7 +15,7 @@ namespace WPMote.Connectivity.Messages
 
         internal const int BUFFER_SIZE = 256;
 
-        internal static Dictionary<byte, UInt16> dictMessages = new Dictionary<byte, UInt16> 
+        internal static Dictionary<byte, Int16> dictMessages = new Dictionary<byte, Int16> 
         { 
             {100,sizeof(Int16)}, //TEST CMD
             {101,4*sizeof(byte)+sizeof(Int16)+128} //ClientInfo: IP & DeviceName, DeviceName 128 chars max

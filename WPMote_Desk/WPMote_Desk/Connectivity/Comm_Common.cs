@@ -16,9 +16,6 @@ namespace WPMote_Desk.Connectivity
     {
         #region "Common variables"
 
-        public delegate void ConnectedEvent(NetworkStream objRetStream);
-        public event EventHandler OnConnected;
-
         public MsgEvents Events = new MsgEvents();
 
         private CommMode objMode;
@@ -37,6 +34,16 @@ namespace WPMote_Desk.Connectivity
         }
 
         #endregion
+        
+        #region "Events"
+
+        public delegate void ConnectedEvent(NetworkStream objRetStream);
+        public delegate void MessageReceived(int ID, byte[] data);
+
+        public event EventHandler OnConnected;
+        public event MessageReceived OnMessageReceived;
+
+        #endregion
 
         #region "Class properties"
 
@@ -44,11 +51,13 @@ namespace WPMote_Desk.Connectivity
 
         #endregion
 
-        #region "Class constructor"
+        #region "Class constructors"
 
         public Comm_Common(CommMode mode, int intTCPPort = 8019)
         {
             objMode = mode;
+
+            OnMessageReceived += Events.ProcessMessage;
 
             switch (mode)
             {
@@ -163,15 +172,17 @@ namespace WPMote_Desk.Connectivity
                         {
                             Debug.Print("Msg received {0}", intMsgType);
 
-                            uint intLength = MsgCommon.dictMessages[(byte)intMsgType];
+                            int intLength = MsgCommon.dictMessages[(byte)intMsgType];
+                            
+                            byte[] bData = new byte[Math.Max(intLength - 1,0)];
 
                             if (intLength>0)
                             {
-                                byte[] bData = new byte[intLength-1];
                                 await objMainStream.ReadAsync(bData, 0, (int)intLength);
+
                             }
-
-
+                            
+                            OnMessageReceived.Invoke(intMsgType, bData);
                         }
                     }
                     catch (OperationCanceledException)

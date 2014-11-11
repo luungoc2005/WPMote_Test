@@ -17,12 +17,6 @@ namespace WPMote.Connectivity
     {
         #region "Common variables"
 
-        public delegate void ConnectedEvent(StreamSocket objRetSocket);
-        public delegate void MessageReceived(MsgCommon objMessage);
-
-        public event MessageReceived OnMessageReceived;
-        public event EventHandler OnConnected;
-
         public MsgEvents Events = new MsgEvents();
 
         private CommMode objMode;
@@ -46,6 +40,16 @@ namespace WPMote.Connectivity
 
         #endregion
 
+        #region "Events"
+
+        public delegate void ConnectedEvent(StreamSocket objRetSocket);
+        public delegate void MessageReceived(int ID, byte[] data);
+
+        public event EventHandler OnConnected;
+        public event MessageReceived OnMessageReceived;
+
+        #endregion
+
         #region "Class properties"
 
         public bool IsConnected() { return (objMainSocket == null); }
@@ -57,6 +61,8 @@ namespace WPMote.Connectivity
         public Comm_Common(CommMode mode, string strHost = "127.0.0.1", int intTCPPort = 8019)
         {
             objMode = mode;
+
+            OnMessageReceived += Events.ProcessMessage;
 
             switch (mode)
             {
@@ -162,15 +168,18 @@ namespace WPMote.Connectivity
 
                         byte intMsgType = objRead.ReadByte();
 
-                        uint intLength = MsgCommon.dictMessages[intMsgType];
+                        int intLength = MsgCommon.dictMessages[intMsgType];
+                        
+                        byte[] bData = new byte[Math.Max(intLength - 1,0)];
 
                         if (intLength > 0)
                         {
-                            await objRead.LoadAsync(intLength);
+                            await objRead.LoadAsync((uint)intLength);
 
-                            byte[] bData = new byte[intLength - 1];
                             objRead.ReadBytes(bData);
                         }
+
+                        OnMessageReceived.Invoke(intMsgType, bData);
                     }
                     catch (OperationCanceledException)
                     {
@@ -186,7 +195,7 @@ namespace WPMote.Connectivity
             }
         }
 
-        #endregion
-        
+        #endregion        
+
     }
 }
