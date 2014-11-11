@@ -125,13 +125,10 @@ namespace WPMote.Connectivity
                         }
 
                         byte intMsgType = objRead.ReadByte();
-                        uint intLength = await objRead.LoadAsync(Comm_Message.dictMessages[intMsgType]);
-
-                        if (intLength != Comm_Message.dictMessages[intMsgType])
-                        {
-                            //Disconnected
-                        }
-
+                        
+                        uint intLength = Comm_Message.dictMessages[intMsgType];
+                        await objRead.LoadAsync(intLength);
+                        
                         byte[] bData = new byte[intLength - 1];
                         objRead.ReadBytes(bData);
                     }

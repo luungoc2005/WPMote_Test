@@ -38,5 +38,10 @@ namespace WPMote_Desk
         {
             Debug.Print(Comm_TCP.LocalIPAddress());
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            objComm.SendBytes(new byte[] { 22 });
+        }
     }
 }

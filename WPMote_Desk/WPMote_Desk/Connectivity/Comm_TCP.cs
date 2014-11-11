@@ -64,7 +64,7 @@ namespace WPMote_Desk.Connectivity
 
         protected void OnConnectedEvent(NetworkStream s)
         {
-            StopListen(); //TODO: Verify this line
+            //StopListen(); //TODO: Verify this line
 
             //SETTINGS
             objClient.ReceiveBufferSize = Comm_Message.BUFFER_SIZE;
