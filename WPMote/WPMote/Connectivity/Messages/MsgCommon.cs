@@ -8,7 +8,7 @@ using System.Text;
 
 namespace WPMote.Connectivity.Messages
 {
-    public class Comm_Message : IDisposable
+    public class MsgCommon : IDisposable
     {
         //Process of adding a message: Add size to dict->Event->Struct->Modify constructor
 
@@ -115,7 +115,7 @@ namespace WPMote.Connectivity.Messages
 
         #region "Class constructors"
 
-        public Comm_Message(MsgEvents objEvent, byte iID, byte[] data)
+        public MsgCommon(MsgEvents objEvent, byte iID, byte[] data)
         {
             intID = iID;
             events = objEvent;
@@ -130,7 +130,7 @@ namespace WPMote.Connectivity.Messages
         }
 
         //Empty constructor
-        public Comm_Message() { }
+        public MsgCommon() { }
 
         #endregion
 

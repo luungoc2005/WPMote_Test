@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WPMote.Connectivity.Messages;
 
-namespace WPMote_Desk.Connectivity.Messages
+namespace WPMote.Connectivity.Messages
 {
     class MsgEvents
     {
@@ -20,6 +20,5 @@ namespace WPMote_Desk.Connectivity.Messages
         public event DClientInfoReceived OnClientInfoReceived;
 
         #endregion
-
     }
 }

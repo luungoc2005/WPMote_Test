@@ -18,9 +18,12 @@ namespace WPMote.Connectivity
         #region "Common variables"
 
         public delegate void ConnectedEvent(StreamSocket objRetSocket);
-        public delegate void MessageReceived(Comm_Message objMessage);
+        public delegate void MessageReceived(MsgCommon objMessage);
 
         public event MessageReceived OnMessageReceived;
+        public event EventHandler OnConnected;
+
+        public MsgEvents Events = new MsgEvents();
 
         private CommMode objMode;
         StreamSocket objMainSocket;
@@ -135,6 +138,8 @@ namespace WPMote.Connectivity
             tskMessages = Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);
 
             objWrite = new DataWriter(objMainSocket.OutputStream);
+
+            if (OnConnected != null) OnConnected(this, new EventArgs());
         }
 
         private async void ReceiveThread()
@@ -157,11 +162,15 @@ namespace WPMote.Connectivity
 
                         byte intMsgType = objRead.ReadByte();
 
-                        uint intLength = Comm_Message.dictMessages[intMsgType];
-                        await objRead.LoadAsync(intLength);
+                        uint intLength = MsgCommon.dictMessages[intMsgType];
 
-                        byte[] bData = new byte[intLength - 1];
-                        objRead.ReadBytes(bData);
+                        if (intLength > 0)
+                        {
+                            await objRead.LoadAsync(intLength);
+
+                            byte[] bData = new byte[intLength - 1];
+                            objRead.ReadBytes(bData);
+                        }
                     }
                     catch (OperationCanceledException)
                     {

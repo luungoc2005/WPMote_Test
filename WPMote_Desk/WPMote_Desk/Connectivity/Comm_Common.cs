@@ -17,6 +17,9 @@ namespace WPMote_Desk.Connectivity
         #region "Common variables"
 
         public delegate void ConnectedEvent(NetworkStream objRetStream);
+        public event EventHandler OnConnected;
+
+        public MsgEvents Events = new MsgEvents();
 
         private CommMode objMode;
         NetworkStream objMainStream;
@@ -142,6 +145,8 @@ namespace WPMote_Desk.Connectivity
             bwMessages.RunWorkerAsync();
 
             Debug.Print("Connected");
+
+            if (OnConnected != null) OnConnected(this, new EventArgs());
         }
 
         private async void ReceiveThread(object sender, DoWorkEventArgs e)
@@ -156,10 +161,17 @@ namespace WPMote_Desk.Connectivity
                         int intMsgType = objMainStream.ReadByte();
                         if (intMsgType > -1)
                         {
-                            Debug.Print("Byte received {0}", intMsgType);
+                            Debug.Print("Msg received {0}", intMsgType);
 
-                            byte[] bData = new byte[Comm_Message.BUFFER_SIZE - 2];
-                            await objMainStream.ReadAsync(bData, 0, Comm_Message.BUFFER_SIZE - 2);
+                            uint intLength = Comm_Message.dictMessages[(byte)intMsgType];
+
+                            if (intLength>0)
+                            {
+                                byte[] bData = new byte[intLength-1];
+                                await objMainStream.ReadAsync(bData, 0, (int)intLength);
+                            }
+
+
                         }
                     }
                     catch (OperationCanceledException)

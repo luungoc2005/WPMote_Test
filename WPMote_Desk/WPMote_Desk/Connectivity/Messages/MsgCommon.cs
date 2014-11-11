@@ -9,7 +9,7 @@ namespace WPMote.Connectivity.Messages
 {
     //Process of adding a message: Add size to dict->Event->Struct->Modify constructor
 
-    public class Comm_Message : IDisposable
+    public class MsgCommon : IDisposable
     {
         #region "Common variables"
 
@@ -112,7 +112,7 @@ namespace WPMote.Connectivity.Messages
 
         #region "Class constructors"
         
-        public Comm_Message(byte iID, byte[] data)
+        public MsgCommon(byte iID, byte[] data)
         {
             intID = iID;
 
@@ -126,7 +126,7 @@ namespace WPMote.Connectivity.Messages
         }
 
         //Empty constructor
-        public Comm_Message() { }
+        public MsgCommon() { }
 
         #endregion
 
