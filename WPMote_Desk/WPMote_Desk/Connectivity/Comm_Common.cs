@@ -33,6 +33,8 @@ namespace WPMote_Desk.Connectivity
             TCP,
         }
 
+        BinaryWriter objWrite;
+
         #endregion
         
         #region "Events"
@@ -110,6 +112,8 @@ namespace WPMote_Desk.Connectivity
                 {
                     bwMessages.CancelAsync();
 
+                    objWrite.Dispose();
+
                     objMainStream.Close();
                     objMainStream.Dispose();
                 }
@@ -123,8 +127,6 @@ namespace WPMote_Desk.Connectivity
         {
             if (objMainStream != null)
             {
-                var objWrite = new BinaryWriter(objMainStream);
-
                 try
                 {
                     objWrite.Write(buffer);
@@ -133,10 +135,6 @@ namespace WPMote_Desk.Connectivity
                 catch
                 {
                     throw;
-                }
-                finally
-                {
-                    objWrite.Dispose();
                 }
             }
         }
@@ -152,6 +150,8 @@ namespace WPMote_Desk.Connectivity
             bwMessages = new BackgroundWorker();
             bwMessages.DoWork += new DoWorkEventHandler(ReceiveThread);
             bwMessages.RunWorkerAsync();
+
+            objWrite = new BinaryWriter(objMainStream);
 
             Debug.Print("Connected");
 

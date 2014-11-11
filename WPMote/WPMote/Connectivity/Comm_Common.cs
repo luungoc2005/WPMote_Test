@@ -155,7 +155,6 @@ namespace WPMote.Connectivity
         {
             if (objMainSocket != null)
             {
-
                 while (true)
                 {
                     objCancelToken.ThrowIfCancellationRequested();

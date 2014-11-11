@@ -530,4 +530,3 @@ namespace WPMote.WPMote_XamlTypeInfo
 
 
 
-

@@ -125,8 +125,9 @@ namespace WPMote.Connectivity.Messages
                             objWrite.Write(Convert.ToByte(temp));
                         }
 
-                        objWrite.Write((Int16)Math.Min(DeviceName.Length, 128));
+                        objWrite.Write((Int16)Math.Min(Encoding.Unicode.GetByteCount(DeviceName.ToCharArray(), 0, DeviceName.Length), 128));
                         objWrite.Write(Encoding.Unicode.GetBytes(DeviceName));
+                        objWrite.Flush();
                     }
                     catch
                     {
@@ -134,7 +135,6 @@ namespace WPMote.Connectivity.Messages
                     }
                     finally
                     {
-                        objWrite.Flush();
                         objWrite.Dispose();
                         objStream.Dispose();
                     }
