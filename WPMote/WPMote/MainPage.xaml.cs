@@ -54,6 +54,13 @@ namespace WPMote
         {
 
             objComm = new Comm_Common(Comm_Common.CommMode.TCP, txt1.Text);
+            objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
+        }
+
+        private async void OnClientInfoReceived(string IPAddress, string DeviceName)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                { txt2.Text = "ClientInfo received: " + IPAddress + " (" + DeviceName + ")"; });
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

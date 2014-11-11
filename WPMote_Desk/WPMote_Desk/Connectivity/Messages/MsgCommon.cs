@@ -114,6 +114,8 @@ namespace WPMote_Desk.Connectivity.Messages
 
                     try
                     {
+                        objWrite.Write(ID);
+
                         //IP Address to byte()
                         string[] strIPTemp = IPAddress.Split('.');
 
@@ -123,7 +125,7 @@ namespace WPMote_Desk.Connectivity.Messages
                             objWrite.Write(Convert.ToByte(temp));
                         }
 
-                        objWrite.Write((Int16)Math.Min(DeviceName.Length, 128));
+                        objWrite.Write((Int16)Math.Min(Encoding.Unicode.GetByteCount(DeviceName.ToCharArray(),0,DeviceName.Length), 128));
                         objWrite.Write(Encoding.Unicode.GetBytes(DeviceName));
                         objWrite.Flush();
                     }

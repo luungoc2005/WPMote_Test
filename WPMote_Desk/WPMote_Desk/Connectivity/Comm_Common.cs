@@ -174,12 +174,11 @@ namespace WPMote_Desk.Connectivity
 
                             int intLength = MsgCommon.dictMessages[(byte)intMsgType];
                             
-                            byte[] bData = new byte[Math.Max(intLength - 1,0)];
+                            byte[] bData = new byte[Math.Max(intLength-1,0)];
 
                             if (intLength>0)
                             {
-                                await objMainStream.ReadAsync(bData, 0, (int)intLength);
-
+                                await objMainStream.ReadAsync(bData, 0, intLength-1);
                             }
                             
                             OnMessageReceived.Invoke(intMsgType, bData);

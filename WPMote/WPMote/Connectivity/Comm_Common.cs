@@ -31,6 +31,7 @@ namespace WPMote.Connectivity
         double DEFAULT_TIMEOUT = 500;
 
         DataWriter objWrite;
+        DataReader objRead;
 
         public enum CommMode
         {
@@ -101,6 +102,7 @@ namespace WPMote.Connectivity
                 {
                     objCancelSource.Cancel();
                     objWrite.Dispose();
+                    objRead.Dispose();
 
                     //Cancel timeout
                     tskMessages.Wait(TimeSpan.FromMilliseconds(DEFAULT_TIMEOUT));
@@ -144,6 +146,7 @@ namespace WPMote.Connectivity
             tskMessages = Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);
 
             objWrite = new DataWriter(objMainSocket.OutputStream);
+            objRead = new DataReader(objMainSocket.InputStream);
 
             if (OnConnected != null) OnConnected(this, new EventArgs());
         }
@@ -152,7 +155,6 @@ namespace WPMote.Connectivity
         {
             if (objMainSocket != null)
             {
-                var objRead = new DataReader(objMainSocket.InputStream);
 
                 while (true)
                 {
@@ -170,7 +172,7 @@ namespace WPMote.Connectivity
 
                         int intLength = MsgCommon.dictMessages[intMsgType];
                         
-                        byte[] bData = new byte[Math.Max(intLength - 1,0)];
+                        byte[] bData = new byte[Math.Max(intLength-1,0)];
 
                         if (intLength > 0)
                         {
@@ -190,8 +192,6 @@ namespace WPMote.Connectivity
                         throw;
                     }
                 }
-
-                objRead.Dispose();
             }
         }
 
