@@ -27,10 +27,20 @@ namespace WPMote
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
 
-            objMotion = new Motion();
-            objMotion.TimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
-            objMotion.CurrentValueChanged += new EventHandler<SensorReadingEventArgs<MotionReading>>(motion_CurrentValueChanged);
-            objMotion.Start();
+            if (Motion.IsSupported)
+            {
+                objMotion = new Motion();
+                objMotion.TimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
+                objMotion.CurrentValueChanged += new EventHandler<SensorReadingEventArgs<MotionReading>>(motion_CurrentValueChanged);
+                objMotion.Start();
+            }
+            else
+            {
+                Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    txt3.Text = "Motion not supported";
+                }));
+            }
         }
 
         private void motion_CurrentValueChanged(object sender, SensorReadingEventArgs<MotionReading> e)
@@ -52,7 +62,7 @@ namespace WPMote
         private void OnClientInfoReceived(string IPAddress, string DeviceName)
         {
             Dispatcher.BeginInvoke((Action)(() =>
-            { txt2.Text = "ClientInfo received: " + IPAddress + " (" + DeviceName + ")"; }));
+            { txt2.Text = DateTime.Now.Ticks + " ClientInfo received: " + IPAddress + " (" + DeviceName + ")"; }));
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

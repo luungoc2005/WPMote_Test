@@ -167,7 +167,7 @@ namespace WPMote.Connectivity
                             //Disconnected
                         }
 
-                        byte intMsgType = objRead.ReadByte();
+                        byte intMsgType = objRead.ReadByte();                        
 
                         int intLength = MsgCommon.dictMessages[intMsgType];
                         

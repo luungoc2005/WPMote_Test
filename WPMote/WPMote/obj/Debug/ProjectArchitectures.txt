@@ -1,1 +1,1 @@
-C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\WPMote.csproj;neutral
+C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\WPMote.csproj;neutral

@@ -7,66 +7,66 @@
     <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
     <PackageIdentityName>de7f7c4e-a5df-4987-9c8b-db4b99585573</PackageIdentityName>
-    <IntermediateOutputPath>C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\obj\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\obj\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Bin\Debug\AppxManifest.xml">
+    <AppXManifest Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Bin\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Bin\Debug\WPMote.dll">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Bin\Debug\WPMote.dll">
       <PackagePath>WPMote.dll</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\AlignmentGrid.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\AlignmentGrid.png">
       <PackagePath>Assets\AlignmentGrid.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\ApplicationIcon.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\ApplicationIcon.png">
       <PackagePath>Assets\ApplicationIcon.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\BadgeLogo.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\BadgeLogo.png">
       <PackagePath>Assets\BadgeLogo.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Logo.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Logo.png">
       <PackagePath>Assets\Logo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\SplashScreen.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\SplashScreen.png">
       <PackagePath>Assets\SplashScreen.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\SquareTile150x150.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\SquareTile150x150.png">
       <PackagePath>Assets\SquareTile150x150.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\SquareTile71x71.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\SquareTile71x71.png">
       <PackagePath>Assets\SquareTile71x71.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\StoreLogo.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\StoreLogo.png">
       <PackagePath>Assets\StoreLogo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\WideLogo.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\WideLogo.png">
       <PackagePath>Assets\WideLogo.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\FlipCycleTileLarge.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Tiles\FlipCycleTileLarge.png">
       <PackagePath>Assets\Tiles\FlipCycleTileLarge.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\FlipCycleTileMedium.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Tiles\FlipCycleTileMedium.png">
       <PackagePath>Assets\Tiles\FlipCycleTileMedium.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\FlipCycleTileSmall.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Tiles\FlipCycleTileSmall.png">
       <PackagePath>Assets\Tiles\FlipCycleTileSmall.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\IconicTileMediumLarge.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Tiles\IconicTileMediumLarge.png">
       <PackagePath>Assets\Tiles\IconicTileMediumLarge.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\IconicTileSmall.png">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Tiles\IconicTileSmall.png">
       <PackagePath>Assets\Tiles\IconicTileSmall.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Bin\Debug\resources.pri">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Bin\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
     </AppxPackagedFile>
   </ItemGroup>

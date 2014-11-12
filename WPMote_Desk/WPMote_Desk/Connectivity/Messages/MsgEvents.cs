@@ -12,6 +12,7 @@ namespace WPMote_Desk.Connectivity.Messages
         #region "Common variables"
 
         public delegate void DClientInfoReceived(string IPAddress, string DeviceName);
+        public delegate void DAccelerometerDataReceived(float X, float Y, float Z, Int32 flags);
 
         #endregion
 
@@ -19,6 +20,7 @@ namespace WPMote_Desk.Connectivity.Messages
 
         public event EventHandler OnTestReceived;
         public event DClientInfoReceived OnClientInfoReceived;
+        public event DAccelerometerDataReceived OnAccelerometerDataReceived;
 
         #endregion
         
@@ -33,8 +35,13 @@ namespace WPMote_Desk.Connectivity.Messages
                     break;
 
                 case 101: //ClientInfo
-                    var objMessage = new MsgCommon.Msg_ClientInfo(data);
-                    if (OnClientInfoReceived != null) OnClientInfoReceived(objMessage.IPAddress, objMessage.DeviceName);
+                    var objMsg101 = new MsgCommon.Msg_ClientInfo(data);
+                    if (OnClientInfoReceived != null) OnClientInfoReceived(objMsg101.IPAddress, objMsg101.DeviceName);
+                    break;
+
+                case 150: //AccelerometerData
+                    var objMsg150 = new MsgCommon.Msg_AccelerometerData(data);
+                    if (OnClientInfoReceived != null) OnAccelerometerDataReceived(objMsg150.X, objMsg150.Y, objMsg150.Z,objMsg150.flags);
                     break;
 
                 default:
