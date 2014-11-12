@@ -49,6 +49,7 @@ namespace WPMote_Desk
         private void button3_Click(object sender, EventArgs e)
         {
             objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(),Environment.MachineName).ToByteArray);
+            Debug.Print("Send clicked");
         }
 
         private void timer1_Tick(object sender, EventArgs e)

@@ -3,65 +3,70 @@
   <PropertyGroup>
     <Machine>THESLOTH</Machine>
     <WindowsUser>Nguyen</WindowsUser>
-    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+    <TargetPlatformIdentifier>Windows Phone</TargetPlatformIdentifier>
     <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
-    <PackageIdentityName>4ec71da1-3848-4066-8d3b-04fc0b7782f1</PackageIdentityName>
-    <IntermediateOutputPath>C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\obj\Debug\</IntermediateOutputPath>
+    <PackageIdentityName>de7f7c4e-a5df-4987-9c8b-db4b99585573</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\obj\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\bin\Debug\AppxManifest.xml">
+    <AppXManifest Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Bin\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\bin\Debug\WPMote.exe">
-      <PackagePath>WPMote.exe</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Bin\Debug\WPMote.dll">
+      <PackagePath>WPMote.dll</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\WindowsPhone\v8.1\Microsoft.Devices.Sensors.dll">
-      <PackagePath>Microsoft.Devices.Sensors.dll</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\AlignmentGrid.png">
+      <PackagePath>Assets\AlignmentGrid.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\WindowsPhone\v8.1\Microsoft.Xna.Framework.dll">
-      <PackagePath>Microsoft.Xna.Framework.dll</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\ApplicationIcon.png">
+      <PackagePath>Assets\ApplicationIcon.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\WindowsPhone\v8.1\System.dll">
-      <PackagePath>System.dll</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\BadgeLogo.png">
+      <PackagePath>Assets\BadgeLogo.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Logo.scale-240.png">
-      <PackagePath>Assets\Logo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Logo.png">
+      <PackagePath>Assets\Logo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\SmallLogo.scale-240.png">
-      <PackagePath>Assets\SmallLogo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\SplashScreen.png">
+      <PackagePath>Assets\SplashScreen.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\SplashScreen.scale-240.png">
-      <PackagePath>Assets\SplashScreen.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\SquareTile150x150.png">
+      <PackagePath>Assets\SquareTile150x150.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\Square71x71Logo.scale-240.png">
-      <PackagePath>Assets\Square71x71Logo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\SquareTile71x71.png">
+      <PackagePath>Assets\SquareTile71x71.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\StoreLogo.scale-240.png">
-      <PackagePath>Assets\StoreLogo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\StoreLogo.png">
+      <PackagePath>Assets\StoreLogo.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\Assets\WideLogo.scale-240.png">
-      <PackagePath>Assets\WideLogo.scale-240.png</PackagePath>
-      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\WideLogo.png">
+      <PackagePath>Assets\WideLogo.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\bin\Debug\App.xbf">
-      <PackagePath>App.xbf</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\FlipCycleTileLarge.png">
+      <PackagePath>Assets\Tiles\FlipCycleTileLarge.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\bin\Debug\MainPage.xbf">
-      <PackagePath>MainPage.xbf</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\FlipCycleTileMedium.png">
+      <PackagePath>Assets\Tiles\FlipCycleTileMedium.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\bin\Debug\WPMote.xr.xml">
-      <PackagePath>WPMote.xr.xml</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\FlipCycleTileSmall.png">
+      <PackagePath>Assets\Tiles\FlipCycleTileSmall.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote\WPMote\bin\Debug\resources.pri">
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\IconicTileMediumLarge.png">
+      <PackagePath>Assets\Tiles\IconicTileMediumLarge.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Assets\Tiles\IconicTileSmall.png">
+      <PackagePath>Assets\Tiles\IconicTileSmall.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Nguyen\Documents\Visual Studio 2013\Projects\WPMote\WPMote\Bin\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
     </AppxPackagedFile>
   </ItemGroup>

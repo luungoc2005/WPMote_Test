@@ -141,13 +141,13 @@ namespace WPMote.Connectivity
         {
             objMainSocket = objSocket;
 
-            objCancelSource = new CancellationTokenSource();
-            objCancelToken = objCancelSource.Token;
-            tskMessages = Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);
-
             objWrite = new DataWriter(objMainSocket.OutputStream);
             objRead = new DataReader(objMainSocket.InputStream);
 
+            objCancelSource = new CancellationTokenSource();
+            objCancelToken = objCancelSource.Token;
+            tskMessages = Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);
+            
             if (OnConnected != null) OnConnected(this, new EventArgs());
         }
 

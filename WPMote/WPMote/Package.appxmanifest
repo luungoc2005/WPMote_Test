@@ -1,31 +1,66 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="4ec71da1-3848-4066-8d3b-04fc0b7782f1" Publisher="CN=Nguyen" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="4ec71da1-3848-4066-8d3b-04fc0b7782f1" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+         xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
+         xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
+
+  <Identity Name="9c7873b9-6d4b-4efb-a99a-488be14f494a"
+            Publisher="CN=Nguyen"
+            Version="1.0.0.0" />
+
+  <mp:PhoneIdentity PhoneProductId="de7f7c4e-a5df-4987-9c8b-db4b99585573"
+                    PhonePublisherId="f57a27bc-5adc-428d-893d-00919b10b6a9"/>
+
   <Properties>
     <DisplayName>WPMote</DisplayName>
     <PublisherDisplayName>Nguyen</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
+
   <Prerequisites>
     <OSMinVersion>6.3.1</OSMinVersion>
     <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
   </Prerequisites>
+
   <Resources>
-    <Resource Language="x-generate" />
+    <Resource Language="x-generate"/>
   </Resources>
+
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="WPMote.App">
-      <m3:VisualElements DisplayName="WPMote" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="WPMote" ForegroundText="light" BackgroundColor="transparent">
-        <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
-        </m3:DefaultTile>
+    <Application Id="App"
+                 Executable="AGHost.exe"
+                 EntryPoint="MainPage.xaml">
+      <m3:VisualElements
+          DisplayName="WPMote"
+          Square150x150Logo="Assets\SquareTile150x150.png"
+          Square44x44Logo="Assets\Logo.png"
+          Description="WPMote"
+          ForegroundText="light"
+          BackgroundColor="#464646">
+        <m3:DefaultTile Square71x71Logo="Assets\SquareTile71x71.png"/>
         <m3:SplashScreen Image="Assets\SplashScreen.png" />
       </m3:VisualElements>
+
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" EntryPoint="AgHost.BackgroundTask">
+          <BackgroundTasks>
+          <Task Type="systemEvent" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+
     </Application>
   </Applications>
   <Capabilities>
-    <Capability Name="internetClientServer" />
-    <DeviceCapability Name="proximity" />
-	<DeviceCapability Name="ID_CAP_SENSORS" />
   </Capabilities>
+
+  <Extensions>
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>AgHostSvcs.dll</Path>
+        <ActivatableClass ActivatableClassId="AgHost.BackgroundTask" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
+  </Extensions>
+
 </Package>
