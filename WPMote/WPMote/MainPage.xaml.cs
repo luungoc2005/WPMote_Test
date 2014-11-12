@@ -57,11 +57,14 @@ namespace WPMote
 	        {
                 if (ChkChecked)
                 {
-                    objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
-                        e.SensorReading.Acceleration.X,
-                        e.SensorReading.Acceleration.Y,
-                        e.SensorReading.Acceleration.Z,
-                        0).ToByteArray);
+                    //objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
+                    //    e.SensorReading.Acceleration.X,
+                    //    e.SensorReading.Acceleration.Y,
+                    //    e.SensorReading.Acceleration.Z,
+                    //    0).ToByteArray);
+                    objComm.SendBytes(new MsgCommon.CompressedAccelData(
+                        Convert.ToInt16(e.SensorReading.Acceleration.X*1000),
+                        Convert.ToInt16(e.SensorReading.Acceleration.Y*1000)).ToByteArray);
                 }		 
 	        }
         }

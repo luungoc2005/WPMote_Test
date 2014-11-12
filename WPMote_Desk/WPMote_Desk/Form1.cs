@@ -29,9 +29,26 @@ namespace WPMote_Desk
             objComm = new Comm_Common(Comm_Common.CommMode.TCP);
             objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
+            objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
 
-            objFrm2 = new Form2();
-            objFrm2.Show();
+            //objFrm2 = new Form2();
+            //objFrm2.Show();
+        }
+
+        Point lastpos;
+
+        void Events_OnCompressedAccelDataReceived(short X, short Y)
+        {
+            Point pos = MouseProcessor.AccelToCoord((float)X / 1000, (float)Y / 1000);
+            Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
+
+            lastpos = pos;
+            //this.BeginInvoke((Action)(() =>
+            //{
+            //    Point pos = MouseProcessor.AccelToCoord((float)X /1000, (float)Y /1000);
+            //    objFrm2.Left = pos.X;
+            //    objFrm2.Top = pos.Y;
+            //}));
         }
 
         void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
@@ -42,8 +59,6 @@ namespace WPMote_Desk
                 objFrm2.Left = pos.X;
                 objFrm2.Top = pos.Y;
             }));
-
-
         }
 
         private void OnClientInfoReceived(string IPAddress, string DeviceName)

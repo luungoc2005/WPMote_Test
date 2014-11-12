@@ -19,7 +19,8 @@ namespace WPMote.Connectivity.Messages
         { 
             {100,sizeof(Int16)}, //TEST CMD
             {101,4*sizeof(byte)+sizeof(Int16)+128}, //ClientInfo: IP & DeviceName, DeviceName 128 chars max
-            {150,3*sizeof(float)+sizeof(Int32)+1} //AccelerometerData: XYZ + (int)flags
+            {150,3*sizeof(float)+sizeof(Int32)+1}, //AccelerometerData: XYZ + (int)flags
+            {151,2*sizeof(Int16)+1} //CompressedAccelData: XY
         };
 
         #endregion
@@ -203,6 +204,73 @@ namespace WPMote.Connectivity.Messages
                         objWrite.Write(Y);
                         objWrite.Write(Z);
                         objWrite.Write(flags);
+                        objWrite.Flush();
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        objWrite.Dispose();
+                        objStream.Dispose();
+                    }
+
+                    return bData;
+                }
+            }
+        }
+
+        internal class CompressedAccelData
+        {
+            public byte ID = 151;
+            public Int16 X;
+            public Int16 Y;
+
+            //Constructors
+            public CompressedAccelData(byte[] bData)
+            {
+                var objStream = new MemoryStream(bData);
+                var objRead = new BinaryReader(objStream);
+
+                try
+                {
+
+                    X = objRead.ReadInt16();
+                    Y = objRead.ReadInt16();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    objRead.Dispose();
+                    objStream.Dispose();
+                }
+            }
+
+            public CompressedAccelData(Int16 dX, Int16 dY)
+            {
+                X = dX;
+                Y = dY;
+            }
+
+            //To byte array
+            public byte[] ToByteArray
+            {
+                get
+                {
+                    var bData = new byte[dictMessages[ID]];
+                    var objStream = new MemoryStream(bData);
+                    var objWrite = new BinaryWriter(objStream);
+
+                    try
+                    {
+                        objWrite.Write(ID);
+
+                        objWrite.Write(X);
+                        objWrite.Write(Y);
                         objWrite.Flush();
                     }
                     catch

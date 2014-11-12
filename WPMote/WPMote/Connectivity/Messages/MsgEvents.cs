@@ -13,6 +13,7 @@ namespace WPMote.Connectivity.Messages
 
         public delegate void DClientInfoReceived(string IPAddress, string DeviceName);
         public delegate void DAccelerometerDataReceived(float X, float Y, float Z, Int32 flags);
+        public delegate void DCompressedAccelDataReceived(Int16 X, Int16 Y);
 
         #endregion
 
@@ -21,6 +22,7 @@ namespace WPMote.Connectivity.Messages
         public event EventHandler OnTestReceived;
         public event DClientInfoReceived OnClientInfoReceived;
         public event DAccelerometerDataReceived OnAccelerometerDataReceived;
+        public event DCompressedAccelDataReceived OnCompressedAccelDataReceived;
 
         #endregion
 
@@ -29,7 +31,7 @@ namespace WPMote.Connectivity.Messages
         #endregion
 
         #region "Public methods"
-        
+
         public void ProcessMessage(int ID, byte[] data)
         {
             switch (ID)
@@ -46,6 +48,11 @@ namespace WPMote.Connectivity.Messages
                 case 150: //AccelerometerData
                     var objMsg150 = new MsgCommon.Msg_AccelerometerData(data);
                     if (OnClientInfoReceived != null) OnAccelerometerDataReceived(objMsg150.X, objMsg150.Y, objMsg150.Z, objMsg150.flags);
+                    break;
+
+                case 151: //CompressedAccelDataReceived
+                    var objMsg151 = new MsgCommon.CompressedAccelData(data);
+                    if (OnClientInfoReceived != null) OnCompressedAccelDataReceived(objMsg151.X, objMsg151.Y);
                     break;
 
                 default:
