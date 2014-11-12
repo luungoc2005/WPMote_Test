@@ -17,8 +17,12 @@ namespace WPMote_Desk.Processor
         public static Point AccelToCoord(float X, float Y)
         {
             double rX, rY;
-            rX = SystemInformation.WorkingArea.Width * (X + 0.5);
-            rY = SystemInformation.WorkingArea.Height * (Y + 0.5);
+            rX = Math.Max(0,Math.Min(Screen.PrimaryScreen.Bounds.Width,
+                Screen.PrimaryScreen.Bounds.Width * (Math.Round(X, 3) + 0.5)));
+            //rY = Math.Max(0,Math.Min(SystemInformation.WorkingArea.Height,
+            //    SystemInformation.WorkingArea.Height * (Y + 0.5)));
+            rY = Math.Max(0, Math.Min(Screen.PrimaryScreen.Bounds.Height,
+                Screen.PrimaryScreen.Bounds.Height * (Math.Round(Y, 3) + 0.5)));
             return new Point((int)Math.Round(rX), (int)Math.Round(rY));
         }
     }

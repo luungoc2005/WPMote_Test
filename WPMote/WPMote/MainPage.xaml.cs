@@ -29,20 +29,20 @@ namespace WPMote
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
 
-            if (Motion.IsSupported)
-            {
-                objMotion = new Motion();
-                objMotion.TimeBetweenUpdates = TimeSpan.FromMilliseconds(50);
-                objMotion.CurrentValueChanged += motion_CurrentValueChanged;
-                objMotion.Start();
-            }
-            else
-            {
+            //if (Motion.IsSupported)
+            //{
+            //    objMotion = new Motion();
+            //    objMotion.TimeBetweenUpdates = TimeSpan.FromMilliseconds(50);
+            //    objMotion.CurrentValueChanged += motion_CurrentValueChanged;
+            //    objMotion.Start();
+            //}
+            //else
+            //{
                 objAccel = new Accelerometer();
-                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(50);
+                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
                 objAccel.CurrentValueChanged += objAccel_CurrentValueChanged;
                 objAccel.Start();
-            }
+            //}
         }
 
         void objAccel_CurrentValueChanged(object sender, SensorReadingEventArgs<AccelerometerReading> e)

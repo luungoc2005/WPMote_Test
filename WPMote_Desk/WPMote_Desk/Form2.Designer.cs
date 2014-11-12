@@ -34,11 +34,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(139, 67);
+            this.ClientSize = new System.Drawing.Size(98, 26);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form2";
+            this.ShowIcon = false;
             this.Text = "PosTest";
             this.TopMost = true;
             this.ResumeLayout(false);

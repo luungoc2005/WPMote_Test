@@ -34,13 +34,37 @@ namespace WPMote_Desk.Connectivity
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (IPAddress ip in host.AddressList)
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                if (IsLocalIpAddress(ip.ToString()))
                 {
-                    localIP = ip.ToString();
-                    break;
+                    localIP += "\r\n" + ip.ToString();
+                    //break;
                 }
             }
             return localIP;
+        }
+
+        public static bool IsLocalIpAddress(string host)
+        {
+            try
+            { // get host IP addresses
+                IPAddress[] hostIPs = Dns.GetHostAddresses(host);
+                // get local IP addresses
+                IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+
+                // test if any host IP equals to any local IP or to localhost
+                foreach (IPAddress hostIP in hostIPs)
+                {
+                    // is localhost
+                    if (IPAddress.IsLoopback(hostIP)) return true;
+                    // is local address
+                    foreach (IPAddress localIP in localIPs)
+                    {
+                        if (hostIP.Equals(localIP)) return true;
+                    }
+                }
+            }
+            catch { }
+            return false;
         }
 
         #endregion
@@ -65,7 +89,7 @@ namespace WPMote_Desk.Connectivity
 
         public void StartListen()
         {
-            objServer = new TcpListener(IPAddress.Parse("127.0.0.1"), intPort);
+            objServer = new TcpListener(IPAddress.Any, intPort);
 
             tskListen = new Thread(() => ListenThread());
 
