@@ -19,7 +19,7 @@ namespace WPMote.Connectivity.Messages
         { 
             {100,sizeof(Int16)}, //TEST CMD
             {101,4*sizeof(byte)+sizeof(Int16)+128}, //ClientInfo: IP & DeviceName, DeviceName 128 chars max
-            {150,3*sizeof(float)+sizeof(Int32)} //AccelerometerData: XYZ + (int)flags
+            {150,3*sizeof(float)+sizeof(Int32)+1} //AccelerometerData: XYZ + (int)flags
         };
 
         #endregion

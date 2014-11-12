@@ -53,7 +53,8 @@
             <TextBox x:Name="txt1" HorizontalAlignment="Left" Margin="10,104,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="380"/>
             <Button x:Name="btn3" Content="Send" HorizontalAlignment="Left" Margin="281,38,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
             <TextBlock x:Name="txt2" HorizontalAlignment="Left" Margin="25,202,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="100" Width="380"/>
-            <TextBox x:Name="txt3" HorizontalAlignment="Left" Margin="10,339,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="380"/>
+            <TextBox x:Name="txt3" HorizontalAlignment="Left" Margin="10,339,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="420" Height="217"/>
+            <CheckBox x:Name="chk1" Content="Send accelerometer data" HorizontalAlignment="Left" Margin="25,255,0,0" VerticalAlignment="Top" Width="380"/>
 
         </Grid>
 

@@ -18,6 +18,8 @@ namespace WPMote
     {
         Comm_Common objComm;
         Motion objMotion;
+        Accelerometer objAccel;
+        bool ChkChecked;
 
         // Constructor
         public MainPage()
@@ -30,25 +32,46 @@ namespace WPMote
             if (Motion.IsSupported)
             {
                 objMotion = new Motion();
-                objMotion.TimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
-                objMotion.CurrentValueChanged += new EventHandler<SensorReadingEventArgs<MotionReading>>(motion_CurrentValueChanged);
+                objMotion.TimeBetweenUpdates = TimeSpan.FromMilliseconds(50);
+                objMotion.CurrentValueChanged += motion_CurrentValueChanged;
                 objMotion.Start();
             }
             else
             {
-                Dispatcher.BeginInvoke((Action)(() =>
-                {
-                    txt3.Text = "Motion not supported";
-                }));
+                objAccel = new Accelerometer();
+                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(50);
+                objAccel.CurrentValueChanged += objAccel_CurrentValueChanged;
+                objAccel.Start();
             }
         }
 
+        void objAccel_CurrentValueChanged(object sender, SensorReadingEventArgs<AccelerometerReading> e)
+        {
+            Dispatcher.BeginInvoke((Action)(() =>
+            {
+                txt3.Text = "X:" + e.SensorReading.Acceleration.X + "\r\nY:" + e.SensorReading.Acceleration.Y +
+                   "\r\nZ:" + e.SensorReading.Acceleration.Z;
+                ChkChecked=(bool)chk1.IsChecked;
+            }));
+            lock (this)
+	        {
+                if (ChkChecked)
+                {
+                    objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
+                        e.SensorReading.Acceleration.X,
+                        e.SensorReading.Acceleration.Y,
+                        e.SensorReading.Acceleration.Z,
+                        0).ToByteArray);
+                }		 
+	        }
+        }
+        
         private void motion_CurrentValueChanged(object sender, SensorReadingEventArgs<MotionReading> e)
         {
             Dispatcher.BeginInvoke((Action)(() =>
             {
-                txt3.Text = e.SensorReading.Attitude.Yaw + " " + e.SensorReading.Attitude.Pitch +
-                  " " + e.SensorReading.Attitude.Roll;
+                txt3.Text = "Pitch:" + e.SensorReading.Attitude.Pitch + "\r\nYaw:" + e.SensorReading.Attitude.Yaw +
+                   "\r\nRoll:" + e.SensorReading.Attitude.Roll;
             }));
         }
 

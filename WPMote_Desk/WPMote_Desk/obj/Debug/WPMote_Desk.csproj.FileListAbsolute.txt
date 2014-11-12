@@ -20,3 +20,4 @@ C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote_Desk\WPMote_Desk\bin\Debug\WPMote
 C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote_Desk\WPMote_Desk\bin\Debug\WPMote_Desk.pdb
 C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote_Desk\WPMote_Desk\bin\Debug\InTheHand.Net.Personal.dll
 C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote_Desk\WPMote_Desk\bin\Debug\InTheHand.Net.Personal.xml
+C:\Users\Nguyen\Documents\GitHub\WPMote\WPMote_Desk\WPMote_Desk\obj\Debug\WPMote_Desk.Form2.resources

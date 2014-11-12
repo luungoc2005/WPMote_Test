@@ -10,12 +10,14 @@ using System.Windows.Forms;
 using WPMote_Desk.Connectivity;
 using System.Diagnostics;
 using WPMote_Desk.Connectivity.Messages;
+using WPMote_Desk.Processor;
 
 namespace WPMote_Desk
 {
     public partial class Form1 : Form
     {
         Comm_Common objComm;
+        Form2 objFrm2;
 
         public Form1()
         {
@@ -26,6 +28,22 @@ namespace WPMote_Desk
         {
             objComm = new Comm_Common(Comm_Common.CommMode.TCP);
             objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
+            objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
+
+            objFrm2 = new Form2();
+            objFrm2.Show();
+        }
+
+        void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
+        {
+            this.BeginInvoke((Action)(() =>
+            {
+                Point pos = MouseProcessor.AccelToCoord(X, Y);
+                objFrm2.Left = pos.X;
+                objFrm2.Top = pos.Y;
+            }));
+
+
         }
 
         private void OnClientInfoReceived(string IPAddress, string DeviceName)
