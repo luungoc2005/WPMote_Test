@@ -39,7 +39,7 @@ namespace WPMote
             //else
             //{
                 objAccel = new Accelerometer();
-                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
+                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(200);
                 objAccel.CurrentValueChanged += objAccel_CurrentValueChanged;
                 objAccel.Start();
 

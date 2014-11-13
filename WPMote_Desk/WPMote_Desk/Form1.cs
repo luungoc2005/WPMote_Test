@@ -63,12 +63,19 @@ namespace WPMote_Desk
 
             Point pos = objProc.AccelToCoordFiltered((float)X / 10000, (float)Y / 10000, 0);
 
-            //this.BeginInvoke((Action)(() =>
-            //{
-            //    var rPos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
-            //    objFrm2.Left = pos.X;
-            //    objFrm2.Top = pos.Y;
-            //}));
+            targetpos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+
+            lastpos = pos;
+
+            this.BeginInvoke((Action)(() =>
+            {
+                //var rPos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+                //objFrm2.Left = pos.X;
+                //objFrm2.Top = pos.Y;
+
+                tmrSmooth.Enabled = true;
+            }));
+
             if (lngPrevious == 0)
             {
                 lngPrevious = DateTime.Now.Ticks;
@@ -99,6 +106,7 @@ namespace WPMote_Desk
         }
 
         Point lastpos;
+        Point targetpos;
 
         void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
         {
@@ -157,7 +165,11 @@ namespace WPMote_Desk
 
         private void tmrSmooth_Tick(object sender, EventArgs e)
         {
-
+            int intSmoothFactor = (int)lngAvgPing / tmrSmooth.Interval;
+            if (intSmoothFactor > 0)
+            {
+                Win32.MousePointer.Move(new Point(targetpos.X / intSmoothFactor, targetpos.Y / intSmoothFactor));
+            }
         }
 
     }

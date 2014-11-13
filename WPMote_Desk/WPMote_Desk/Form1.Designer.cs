@@ -105,6 +105,7 @@
             // 
             // tmrSmooth
             // 
+            this.tmrSmooth.Interval = 10;
             this.tmrSmooth.Tick += new System.EventHandler(this.tmrSmooth_Tick);
             // 
             // Form1
