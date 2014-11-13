@@ -10,9 +10,9 @@ namespace WPMote_Desk.Processor
 {
     class MouseProcessor
     {
-        private const int SamplesCount = 25;
+        private const int SamplesCount = 30;
 
-        private const double LowPassFilterCoef = 0.1; // With a 50Hz sampling rate, this is gives a 1Hz cut-off
+        private const double LowPassFilterCoef = 0.2; // With a 50Hz sampling rate, this is gives a 1Hz cut-off
 
         private const double NoiseMaxAmplitude = 0.05; // up to 0.05g deviation from filtered value is considered noise
 

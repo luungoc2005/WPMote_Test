@@ -17,7 +17,7 @@ namespace WPMote_Desk
     public partial class Form1 : Form
     {
         Comm_Common objComm;
-        Form2 objFrm2;
+        // Form2 objFrm2;
         MouseProcessor objProc;
 
         public Form1()
@@ -30,44 +30,49 @@ namespace WPMote_Desk
             objComm = new Comm_Common(Comm_Common.CommMode.TCP);
             objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
-            //objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
+            objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
 
-            objFrm2 = new Form2();
-            objFrm2.Show();
+            //objFrm2 = new Form2();
+            //objFrm2.Show();
 
             objProc = new MouseProcessor();
         }
 
         //Point lastpos;
 
-        //void Events_OnCompressedAccelDataReceived(short X, short Y)
-        //{
-        //    Point pos = MouseProcessor.AccelToCoord((float)X / 1000, (float)Y / 1000);
-        //    //Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
+        void Events_OnCompressedAccelDataReceived(short X, short Y)
+        {
+            //Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
 
-        //    this.BeginInvoke((Action)(() =>
-        //    {
-        //        var rPos=new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
-        //        objFrm2.Left = pos.X;
-        //        objFrm2.Top = pos.Y;
-        //    }));
+            Point pos = objProc.AccelToCoordFiltered((float)X / 1000, (float)Y / 1000, 0);
 
-        //    lastpos = pos;
-        //}
+            //this.BeginInvoke((Action)(() =>
+            //{
+            //    var rPos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+            //    objFrm2.Left = pos.X;
+            //    objFrm2.Top = pos.Y;
+            //}));
+
+            Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+            lastpos = pos;
+        }
 
         Point lastpos;
 
         void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
         {
-            this.BeginInvoke((Action)(() =>
-            {
-                Point pos = objProc.AccelToCoordFiltered(X, Y, Z);
-                objFrm2.Left = pos.X;
-                objFrm2.Top = pos.Y;
+            Point pos = objProc.AccelToCoordFiltered(X, Y, Z);
 
-                //Point pos = objProc.AccelToCoordFiltered(X, Y, Z);
-                //Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
-            }));
+            //this.BeginInvoke((Action)(() =>
+            //{
+            //    //Point pos = objProc.AccelToCoordFiltered(X, Y, Z);
+            //    //objFrm2.Left = pos.X;
+            //    //objFrm2.Top = pos.Y;
+            //}));
+
+            Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+
+            lastpos = pos;
         }
 
         void OnClientInfoReceived(string IPAddress, string DeviceName)
