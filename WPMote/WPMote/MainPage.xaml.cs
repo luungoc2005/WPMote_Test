@@ -73,8 +73,8 @@ namespace WPMote
                     //    e.SensorReading.Acceleration.Z,
                     //    0).ToByteArray);
                     objComm.SendBytes(new MsgCommon.CompressedAccelData(
-                        Convert.ToInt16(e.SensorReading.Acceleration.X * 1000),
-                        Convert.ToInt16(e.SensorReading.Acceleration.Y * 1000)).ToByteArray);
+                        Convert.ToInt16(e.SensorReading.Acceleration.X * 10000),
+                        Convert.ToInt16(e.SensorReading.Acceleration.Y * 10000)).ToByteArray);
                 }		 
 	        }
         }

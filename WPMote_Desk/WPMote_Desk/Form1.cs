@@ -61,7 +61,7 @@ namespace WPMote_Desk
         {
             //Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
 
-            Point pos = objProc.AccelToCoordFiltered((float)X / 1000, (float)Y / 1000, 0);
+            Point pos = objProc.AccelToCoordFiltered((float)X / 10000, (float)Y / 10000, 0);
 
             //this.BeginInvoke((Action)(() =>
             //{
