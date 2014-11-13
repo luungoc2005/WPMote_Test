@@ -88,23 +88,15 @@ namespace WPMote_Desk.Processor
                     _initialized = true;
                 }
 
-                // low-pass filter
                 lowPassFilteredAcceleration = new Simple3DVector(LowPassFilter(rawAcceleration.X, _previousLowPassOutput.X), LowPassFilter(rawAcceleration.Y, _previousLowPassOutput.Y), LowPassFilter(rawAcceleration.Z, _previousLowPassOutput.Z));
                 _previousLowPassOutput = lowPassFilteredAcceleration;
 
-                // optimal filter
                 optimalFilteredAcceleration = new Simple3DVector(FastLowAmplitudeNoiseFilter(rawAcceleration.X, _previousOptimalFilterOutput.X), FastLowAmplitudeNoiseFilter(rawAcceleration.Y, _previousOptimalFilterOutput.Y), FastLowAmplitudeNoiseFilter(rawAcceleration.Z, _previousOptimalFilterOutput.Z));
                 _previousOptimalFilterOutput = optimalFilteredAcceleration;
 
-                // Increment circular buffer insertion index
                 _sampleIndex += 1;
-                // if at max SampleCount then wrap samples back to the beginning position in the list
-                if (_sampleIndex >= SamplesCount)
-                {
-                    _sampleIndex = 0;
-                }
+                if (_sampleIndex >= SamplesCount) _sampleIndex = 0;
 
-                // Add new and remove old at _sampleIndex
                 Simple3DVector newVect = optimalFilteredAcceleration;
                 _sampleSum += newVect;
                 _sampleSum -= _sampleBuffer[_sampleIndex];

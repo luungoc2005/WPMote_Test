@@ -170,7 +170,7 @@ namespace WPMote_Desk.Connectivity
                         int intMsgType = objMainStream.ReadByte();
                         if (intMsgType > -1)
                         {
-                            Debug.Print("Msg received {0}", intMsgType);
+                            //Debug.Print("Msg received {0}", intMsgType);
 
                             int intLength = MsgCommon.dictMessages[(byte)intMsgType];
                             

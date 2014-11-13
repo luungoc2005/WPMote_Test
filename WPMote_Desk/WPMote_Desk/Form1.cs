@@ -45,7 +45,17 @@ namespace WPMote_Desk
             Win32.MousePointer.LeftButtonDown = LClick;
         }
 
-        //Point lastpos;
+
+        long lngPrevious;
+        long lngPing;
+        long lngAvgPing;
+        
+        const int intSamples = 30;
+        long[] arrSamples = new long[intSamples - 1];
+        int intCount = 0;
+        long lngSum = 0;
+
+        bool _init = false;
 
         void Events_OnCompressedAccelDataReceived(short X, short Y)
         {
@@ -59,9 +69,33 @@ namespace WPMote_Desk
             //    objFrm2.Left = pos.X;
             //    objFrm2.Top = pos.Y;
             //}));
+            if (lngPrevious == 0)
+            {
+                lngPrevious = DateTime.Now.Ticks;
+            }
+            else
+            {
+                Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+                lastpos = pos;
+                lngPing = (DateTime.Now.Ticks - lngPrevious) / TimeSpan.TicksPerMillisecond;
 
-            Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
-            lastpos = pos;
+                lngPrevious = DateTime.Now.Ticks;
+
+                lngSum += lngPing;
+                lngSum -= arrSamples[intCount];
+                arrSamples[intCount] = lngPing;
+
+                intCount += 1;
+                if (intCount >= arrSamples.Length)
+                {
+                    if (_init == false) _init = true;
+                    intCount = 0;
+                }
+
+                lngAvgPing = (_init) ? (lngSum / intSamples) : (lngSum / intCount);
+
+                Debug.Print("Ping {0} ms", lngAvgPing);
+            }
         }
 
         Point lastpos;
@@ -119,6 +153,11 @@ namespace WPMote_Desk
         private void button5_MouseMove(object sender, MouseEventArgs e)
         {
             Win32.MousePointer.LeftButtonDown = true;
+        }
+
+        private void tmrSmooth_Tick(object sender, EventArgs e)
+        {
+
         }
 
     }
