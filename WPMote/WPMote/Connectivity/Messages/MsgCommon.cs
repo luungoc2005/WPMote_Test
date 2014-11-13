@@ -14,13 +14,13 @@ namespace WPMote.Connectivity.Messages
         #region "Common variables"
 
         internal const int BUFFER_SIZE = 256;
-        
+
         internal static Dictionary<byte, Int16> dictMessages = new Dictionary<byte, Int16> 
         { 
-            {100,sizeof(Int16)}, //TEST CMD
-            {101,4*sizeof(byte)+sizeof(Int16)+128}, //ClientInfo: IP & DeviceName, DeviceName 128 chars max
+            {100,sizeof(Int16)+1}, //TEST CMD
+            {101,4*sizeof(byte)+sizeof(Int16)+129}, //ClientInfo: IP & DeviceName, DeviceName 128 chars max
             {150,3*sizeof(float)+sizeof(Int32)+1}, //AccelerometerData: XYZ + (int)flags
-            {151,2*sizeof(Int16)+1},//CompressedAccelData: XY
+            {151,2*sizeof(Int16)+1}, //CompressedAccelData: XY
             {152,2*sizeof(bool)+1} //ClickReceived: RClick & LClick
         };
 
