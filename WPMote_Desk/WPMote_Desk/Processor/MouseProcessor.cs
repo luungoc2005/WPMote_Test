@@ -12,9 +12,9 @@ namespace WPMote_Desk.Processor
     {
         private const int SamplesCount = 30;
 
-        private const double LowPassFilterCoef = 0.2; // With a 50Hz sampling rate, this is gives a 1Hz cut-off
+        private const double LowPassFilterCoef = 0.3; // With a 50Hz sampling rate, this is gives a 15Hz cut-off
 
-        private const double NoiseMaxAmplitude = 0.05; // up to 0.05g deviation from filtered value is considered noise
+        private const double NoiseMaxAmplitude = 0.1; // up to 0.1g deviation from filtered value is considered noise
 
         private Simple3DVector[] _sampleBuffer = new Simple3DVector[SamplesCount];
 
@@ -119,7 +119,8 @@ namespace WPMote_Desk.Processor
                 //rY = Math.Max(0,Math.Min(SystemInformation.WorkingArea.Height,
                 //    SystemInformation.WorkingArea.Height * (Y + 0.5)));
                 rY = Math.Max(0, Math.Min(Screen.PrimaryScreen.Bounds.Height,
-                    Screen.PrimaryScreen.Bounds.Height * (Math.Round(optimalFilteredAcceleration.Y, 3) + 0.5)));
+                    Screen.PrimaryScreen.Bounds.Height * (Screen.PrimaryScreen.Bounds.Width/Screen.PrimaryScreen.Bounds.Height)
+                    * (Math.Round(optimalFilteredAcceleration.Y, 3) + 0.5)));
                 return new Point((int)Math.Round(rX), (int)Math.Round(rY));
             }
 

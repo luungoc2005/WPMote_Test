@@ -31,11 +31,18 @@ namespace WPMote_Desk
             objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
             objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
+            objComm.Events.OnClickReceived += Events_OnClickReceived;
 
             //objFrm2 = new Form2();
             //objFrm2.Show();
 
             objProc = new MouseProcessor();
+        }
+
+        void Events_OnClickReceived(bool RClick, bool LClick)
+        {
+            Win32.MousePointer.RightButtonDown = RClick;
+            Win32.MousePointer.LeftButtonDown = LClick;
         }
 
         //Point lastpos;
