@@ -75,12 +75,14 @@ namespace WPMote.Connectivity
                     //TODO: Bluetooth - interface handling
 
                     break;
+
                 case CommMode.TCP:
                     objTCP = new Comm_TCP();
                     objTCP.Connected += ConnectedHandler;
                     objTCP.Connect(strHost, intTCPPort);
 
                     break;
+
                 default:
                     break;
             }

@@ -82,6 +82,7 @@ namespace WPMote_Desk.Connectivity
                     }
 
                     break;
+
                 case CommMode.TCP:
                     objTCP = new Comm_TCP();
                     objTCP.Port = intTCPPort;
@@ -90,6 +91,7 @@ namespace WPMote_Desk.Connectivity
                     objTCP.StartListen();
 
                     break;
+
                 default:
                     break;
             }
