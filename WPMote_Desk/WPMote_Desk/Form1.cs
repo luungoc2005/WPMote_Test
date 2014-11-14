@@ -112,16 +112,46 @@ namespace WPMote_Desk
         {
             Point pos = objProc.AccelToCoordFiltered(X, Y, Z);
 
-            //this.BeginInvoke((Action)(() =>
-            //{
-            //    //Point pos = objProc.AccelToCoordFiltered(X, Y, Z);
-            //    //objFrm2.Left = pos.X;
-            //    //objFrm2.Top = pos.Y;
-            //}));
-
-            Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+            targetpos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
 
             lastpos = pos;
+
+            this.BeginInvoke((Action)(() =>
+            {
+                //var rPos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+                //objFrm2.Left = pos.X;
+                //objFrm2.Top = pos.Y;
+
+                tmrSmooth.Enabled = true;
+            }));
+
+            if (lngPrevious == 0)
+            {
+                lngPrevious = DateTime.Now.Ticks;
+            }
+            else
+            {
+                Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+                lastpos = pos;
+                lngPing = (DateTime.Now.Ticks - lngPrevious) / TimeSpan.TicksPerMillisecond;
+
+                lngPrevious = DateTime.Now.Ticks;
+
+                lngSum += lngPing;
+                lngSum -= arrSamples[intCount];
+                arrSamples[intCount] = lngPing;
+
+                intCount += 1;
+                if (intCount >= arrSamples.Length)
+                {
+                    if (_init == false) _init = true;
+                    intCount = 0;
+                }
+
+                lngAvgPing = (_init) ? (lngSum / intSamples) : (lngSum / intCount);
+
+                Debug.Print("Ping {0} ms", lngAvgPing);
+            }
         }
 
         void OnClientInfoReceived(string IPAddress, string DeviceName)

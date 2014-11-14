@@ -17,7 +17,7 @@ namespace WPMote
     public partial class MainPage : PhoneApplicationPage
     {
         Comm_Common objComm;
-        Motion objMotion;
+        //Motion objMotion;
         Accelerometer objAccel;
         bool ChkChecked;
 
@@ -39,7 +39,7 @@ namespace WPMote
             //else
             //{
                 objAccel = new Accelerometer();
-                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(200);
+                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
                 objAccel.CurrentValueChanged += objAccel_CurrentValueChanged;
                 objAccel.Start();
 
