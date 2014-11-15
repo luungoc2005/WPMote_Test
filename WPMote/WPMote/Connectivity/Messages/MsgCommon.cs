@@ -20,7 +20,7 @@ namespace WPMote.Connectivity.Messages
             {100,sizeof(Int16)+1}, //TEST CMD
             {101,4*sizeof(byte)+sizeof(Int16)+129}, //ClientInfo: IP & DeviceName, DeviceName 128 chars max
             {150,3*sizeof(float)+sizeof(Int32)+1}, //AccelerometerData: XYZ + (int)flags
-            {151,2*sizeof(Int16)+1}, //CompressedAccelData: XY
+            {151,3*sizeof(Int16)+1}, //CompressedAccelData: XYZ
             {152,2*sizeof(bool)+1} //ClickReceived: RClick & LClick
         };
 
@@ -227,6 +227,7 @@ namespace WPMote.Connectivity.Messages
             public byte ID = 151;
             public Int16 X;
             public Int16 Y;
+            public Int16 Z;
 
             //Constructors
             public CompressedAccelData(byte[] bData)
@@ -239,6 +240,7 @@ namespace WPMote.Connectivity.Messages
 
                     X = objRead.ReadInt16();
                     Y = objRead.ReadInt16();
+                    Z = objRead.ReadInt16();
                 }
                 catch
                 {
@@ -251,10 +253,11 @@ namespace WPMote.Connectivity.Messages
                 }
             }
 
-            public CompressedAccelData(Int16 dX, Int16 dY)
+            public CompressedAccelData(Int16 dX, Int16 dY, Int16 dZ)
             {
                 X = dX;
                 Y = dY;
+                Z = dZ;
             }
 
             //To byte array
@@ -272,6 +275,7 @@ namespace WPMote.Connectivity.Messages
 
                         objWrite.Write(X);
                         objWrite.Write(Y);
+                        objWrite.Write(Z);
                         objWrite.Flush();
                     }
                     catch
@@ -288,7 +292,7 @@ namespace WPMote.Connectivity.Messages
                 }
             }
         }
-
+        
         internal class ClickReceived
         {
             public byte ID = 152;

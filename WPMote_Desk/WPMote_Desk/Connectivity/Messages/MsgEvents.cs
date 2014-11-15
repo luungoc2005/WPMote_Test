@@ -13,7 +13,7 @@ namespace WPMote_Desk.Connectivity.Messages
 
         public delegate void DClientInfoReceived(string IPAddress, string DeviceName);
         public delegate void DAccelerometerDataReceived(float X, float Y, float Z, Int32 flags);
-        public delegate void DCompressedAccelDataReceived(Int16 X, Int16 Y);
+        public delegate void DCompressedAccelDataReceived(Int16 X, Int16 Y, Int16 Z);
         public delegate void DClickReceived(bool RClick, bool LClick);
 
         #endregion
@@ -50,7 +50,7 @@ namespace WPMote_Desk.Connectivity.Messages
 
                 case 151: //CompressedAccelDataReceived
                     var objMsg151 = new MsgCommon.CompressedAccelData(data);
-                    if (OnCompressedAccelDataReceived != null) OnCompressedAccelDataReceived(objMsg151.X, objMsg151.Y);
+                    if (OnCompressedAccelDataReceived != null) OnCompressedAccelDataReceived(objMsg151.X, objMsg151.Y, objMsg151.Z);
                     break;
 
                 case 152: //OnClickReceived
