@@ -17,7 +17,8 @@ namespace WPMote_Desk
     public partial class Form1 : Form
     {
         Comm_Common objComm;
-        Form2 objFrm2;
+        // Form2 objFrm2;
+        MouseProcessor objProc;
 
         public Form1()
         {
@@ -29,24 +30,131 @@ namespace WPMote_Desk
             objComm = new Comm_Common(Comm_Common.CommMode.TCP);
             objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
+            objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
+            objComm.Events.OnClickReceived += Events_OnClickReceived;
 
-            objFrm2 = new Form2();
-            objFrm2.Show();
+            //objFrm2 = new Form2();
+            //objFrm2.Show();
+
+            objProc = new MouseProcessor();
         }
+
+        void Events_OnClickReceived(bool RClick, bool LClick)
+        {
+            Win32.MousePointer.RightButtonDown = RClick;
+            Win32.MousePointer.LeftButtonDown = LClick;
+        }
+
+
+        long lngPrevious;
+        long lngPing;
+        long lngAvgPing;
+        
+        const int intSamples = 30;
+        long[] arrSamples = new long[intSamples - 1];
+        int intCount = 0;
+        long lngSum = 0;
+
+        bool _init = false;
+
+        void Events_OnCompressedAccelDataReceived(short X, short Y)
+        {
+            //Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
+
+            Point pos = objProc.AccelToCoordFiltered((float)X / 10000, (float)Y / 10000, 0);
+
+            targetpos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+
+            lastpos = pos;
+
+            this.BeginInvoke((Action)(() =>
+            {
+                //var rPos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+                //objFrm2.Left = pos.X;
+                //objFrm2.Top = pos.Y;
+
+                tmrSmooth.Enabled = true;
+            }));
+
+            if (lngPrevious == 0)
+            {
+                lngPrevious = DateTime.Now.Ticks;
+            }
+            else
+            {
+                Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+                lastpos = pos;
+                lngPing = (DateTime.Now.Ticks - lngPrevious) / TimeSpan.TicksPerMillisecond;
+
+                lngPrevious = DateTime.Now.Ticks;
+
+                lngSum += lngPing;
+                lngSum -= arrSamples[intCount];
+                arrSamples[intCount] = lngPing;
+
+                intCount += 1;
+                if (intCount >= arrSamples.Length)
+                {
+                    if (_init == false) _init = true;
+                    intCount = 0;
+                }
+
+                lngAvgPing = (_init) ? (lngSum / intSamples) : (lngSum / intCount);
+
+                Debug.Print("Ping {0} ms", lngAvgPing);
+            }
+        }
+
+        Point lastpos;
+        Point targetpos;
 
         void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
         {
+            Point pos = objProc.AccelToCoordFiltered(X, Y, Z);
+
+            targetpos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+
+            lastpos = pos;
+
             this.BeginInvoke((Action)(() =>
             {
-                Point pos = MouseProcessor.AccelToCoord(X, Y);
-                objFrm2.Left = pos.X;
-                objFrm2.Top = pos.Y;
+                //var rPos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+                //objFrm2.Left = pos.X;
+                //objFrm2.Top = pos.Y;
+
+                tmrSmooth.Enabled = true;
             }));
 
+            if (lngPrevious == 0)
+            {
+                lngPrevious = DateTime.Now.Ticks;
+            }
+            else
+            {
+                Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+                lastpos = pos;
+                lngPing = (DateTime.Now.Ticks - lngPrevious) / TimeSpan.TicksPerMillisecond;
 
+                lngPrevious = DateTime.Now.Ticks;
+
+                lngSum += lngPing;
+                lngSum -= arrSamples[intCount];
+                arrSamples[intCount] = lngPing;
+
+                intCount += 1;
+                if (intCount >= arrSamples.Length)
+                {
+                    if (_init == false) _init = true;
+                    intCount = 0;
+                }
+
+                lngAvgPing = (_init) ? (lngSum / intSamples) : (lngSum / intCount);
+
+                Debug.Print("Ping {0} ms", lngAvgPing);
+            }
         }
 
-        private void OnClientInfoReceived(string IPAddress, string DeviceName)
+        void OnClientInfoReceived(string IPAddress, string DeviceName)
         {
             Debug.Print("ClientInfo received: " + IPAddress + " (" + DeviceName + ")");
         }
@@ -83,6 +191,15 @@ namespace WPMote_Desk
         private void button5_MouseMove(object sender, MouseEventArgs e)
         {
             Win32.MousePointer.LeftButtonDown = true;
+        }
+
+        private void tmrSmooth_Tick(object sender, EventArgs e)
+        {
+            int intSmoothFactor = (int)lngAvgPing / tmrSmooth.Interval;
+            if (intSmoothFactor > 0)
+            {
+                Win32.MousePointer.Move(new Point(targetpos.X / intSmoothFactor, targetpos.Y / intSmoothFactor));
+            }
         }
 
     }

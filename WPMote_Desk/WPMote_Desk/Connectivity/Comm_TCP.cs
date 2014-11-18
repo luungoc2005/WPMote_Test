@@ -127,6 +127,8 @@ namespace WPMote_Desk.Connectivity
             {
                 objClient = objServer.AcceptTcpClient();
 
+                objClient.NoDelay = true;
+
                 objStream = objClient.GetStream();
 
                 OnConnected.Invoke(objStream);

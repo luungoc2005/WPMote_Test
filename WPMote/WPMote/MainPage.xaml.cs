@@ -17,7 +17,7 @@ namespace WPMote
     public partial class MainPage : PhoneApplicationPage
     {
         Comm_Common objComm;
-        Motion objMotion;
+        //Motion objMotion;
         Accelerometer objAccel;
         bool ChkChecked;
 
@@ -42,9 +42,19 @@ namespace WPMote
                 objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
                 objAccel.CurrentValueChanged += objAccel_CurrentValueChanged;
                 objAccel.Start();
+
+                lBtn.AddHandler(UIElement.MouseLeftButtonDownEvent, 
+                    new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonDown), true);
+                lBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
+                    new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonUp), true);
+                rBtn.AddHandler(UIElement.MouseLeftButtonDownEvent,
+
+                    new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonDown), true);
+                rBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
+                    new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonUp), true);
             //}
         }
-
+        
         void objAccel_CurrentValueChanged(object sender, SensorReadingEventArgs<AccelerometerReading> e)
         {
             Dispatcher.BeginInvoke((Action)(() =>
@@ -57,11 +67,15 @@ namespace WPMote
 	        {
                 if (ChkChecked)
                 {
-                    objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
-                        e.SensorReading.Acceleration.X,
-                        e.SensorReading.Acceleration.Y,
-                        e.SensorReading.Acceleration.Z,
-                        0).ToByteArray);
+                    //objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
+                    //    e.SensorReading.Acceleration.X,
+                    //    e.SensorReading.Acceleration.Y,
+                    //    e.SensorReading.Acceleration.Z,
+                    //    0).ToByteArray);
+                    objComm.SendBytes(new MsgCommon.CompressedAccelData(
+                        Convert.ToInt16(e.SensorReading.Acceleration.X * 10000),
+                        Convert.ToInt16(e.SensorReading.Acceleration.Y * 10000),
+                        Convert.ToInt16(e.SensorReading.Acceleration.Z * 10000)).ToByteArray);
                 }		 
 	        }
         }
@@ -98,6 +112,26 @@ namespace WPMote
             objComm.SendBytes(new MsgCommon.Msg_ClientInfo("127.0.0.1",Microsoft.Phone.Info.DeviceStatus.DeviceName).ToByteArray);
         }
 
+        private void lBtn_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
+        }
+
+        private void lBtn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
+        }
+
+        private void rBtn_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
+        }
+
+        private void rBtn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
+        }
+        
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()
         //{

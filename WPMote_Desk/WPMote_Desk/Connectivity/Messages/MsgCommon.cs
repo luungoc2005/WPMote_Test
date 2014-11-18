@@ -17,9 +17,11 @@ namespace WPMote_Desk.Connectivity.Messages
 
         internal static Dictionary<byte, Int16> dictMessages = new Dictionary<byte, Int16> 
         { 
-            {100,sizeof(Int16)}, //TEST CMD
-            {101,4*sizeof(byte)+sizeof(Int16)+128}, //ClientInfo: IP & DeviceName, DeviceName 128 chars max
-            {150,3*sizeof(float)+sizeof(Int32)+1} //AccelerometerData: XYZ + (int)flags
+            {100,sizeof(Int16)+1}, //TEST CMD
+            {101,4*sizeof(byte)+sizeof(Int16)+129}, //ClientInfo: IP & DeviceName, DeviceName 128 chars max
+            {150,3*sizeof(float)+sizeof(Int32)+1}, //AccelerometerData: XYZ + (int)flags
+            {151,3*sizeof(Int16)+1}, //CompressedAccelData: XYZ
+            {152,2*sizeof(bool)+1} //ClickReceived: RClick & LClick
         };
 
         #endregion
@@ -203,6 +205,144 @@ namespace WPMote_Desk.Connectivity.Messages
                         objWrite.Write(Y);
                         objWrite.Write(Z);
                         objWrite.Write(flags);
+                        objWrite.Flush();
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        objWrite.Dispose();
+                        objStream.Dispose();
+                    }
+
+                    return bData;
+                }
+            }
+        }
+
+        internal class CompressedAccelData
+        {
+            public byte ID = 151;
+            public Int16 X;
+            public Int16 Y;
+            public Int16 Z;
+
+            //Constructors
+            public CompressedAccelData(byte[] bData)
+            {
+                var objStream = new MemoryStream(bData);
+                var objRead = new BinaryReader(objStream);
+
+                try
+                {
+
+                    X = objRead.ReadInt16();
+                    Y = objRead.ReadInt16();
+                    Z = objRead.ReadInt16();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    objRead.Dispose();
+                    objStream.Dispose();
+                }
+            }
+
+            public CompressedAccelData(Int16 dX, Int16 dY, Int16 dZ)
+            {
+                X = dX;
+                Y = dY;
+                Z = dZ;
+            }
+
+            //To byte array
+            public byte[] ToByteArray
+            {
+                get
+                {
+                    var bData = new byte[dictMessages[ID]];
+                    var objStream = new MemoryStream(bData);
+                    var objWrite = new BinaryWriter(objStream);
+
+                    try
+                    {
+                        objWrite.Write(ID);
+
+                        objWrite.Write(X);
+                        objWrite.Write(Y);
+                        objWrite.Write(Z);
+                        objWrite.Flush();
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        objWrite.Dispose();
+                        objStream.Dispose();
+                    }
+
+                    return bData;
+                }
+            }
+        }
+        
+        internal class ClickReceived
+        {
+            public byte ID = 152;
+            public bool RClick;
+            public bool LClick;
+
+            //Constructors
+            public ClickReceived(byte[] bData)
+            {
+                var objStream = new MemoryStream(bData);
+                var objRead = new BinaryReader(objStream);
+
+                try
+                {
+
+                    RClick=objRead.ReadBoolean();
+                    LClick=objRead.ReadBoolean();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    objRead.Dispose();
+                    objStream.Dispose();
+                }
+            }
+
+            public ClickReceived(bool dRClick, bool dLClick)
+            {
+                RClick=dRClick;
+                LClick=dLClick;
+            }
+
+            //To byte array
+            public byte[] ToByteArray
+            {
+                get
+                {
+                    var bData = new byte[dictMessages[ID]];
+                    var objStream = new MemoryStream(bData);
+                    var objWrite = new BinaryWriter(objStream);
+
+                    try
+                    {
+                        objWrite.Write(ID);
+
+                        objWrite.Write(RClick);
+                        objWrite.Write(LClick);
                         objWrite.Flush();
                     }
                     catch

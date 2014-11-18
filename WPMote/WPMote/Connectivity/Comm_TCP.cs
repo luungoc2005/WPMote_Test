@@ -43,7 +43,9 @@ namespace WPMote.Connectivity
             {
                 objClient = new StreamSocket();
                 await objClient.ConnectAsync(new HostName(strHost), intPort.ToString());
+
                 if (Connected != null) Connected(objClient);
+
             }
             catch (Exception ex)
             {
