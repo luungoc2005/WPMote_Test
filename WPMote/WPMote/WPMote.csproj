@@ -91,6 +91,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AccelerometerHelper\AccelerometerHelper.cs" />
+    <Compile Include="AccelerometerHelper\ApplicationSettingHelper.cs" />
+    <Compile Include="AccelerometerHelper\Simple3DVector.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -109,8 +112,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Sensors\AccelerometerHelper.cs" />
-    <Compile Include="Sensors\Simple3DVector.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
