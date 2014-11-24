@@ -109,6 +109,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Sensors\AccelerometerHelper.cs" />
+    <Compile Include="Sensors\Simple3DVector.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
