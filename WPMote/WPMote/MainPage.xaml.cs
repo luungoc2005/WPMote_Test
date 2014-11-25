@@ -21,6 +21,8 @@ namespace WPMote
         Accelerometer objAccel;
         bool ChkChecked;
 
+        const Int32 MsgInterval = 100;
+
         // Constructor
         public MainPage()
         {
@@ -39,7 +41,7 @@ namespace WPMote
             //else
             //{
                 objAccel = new Accelerometer();
-                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(100);
+                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(MsgInterval);
                 objAccel.CurrentValueChanged += objAccel_CurrentValueChanged;
                 objAccel.Start();
 

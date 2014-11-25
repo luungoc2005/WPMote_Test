@@ -20,6 +20,8 @@ namespace WPMote_Desk
         // Form2 objFrm2;
         MouseProcessor objProc;
 
+        const Int32 MsgInterval = 100;
+
         public Form1()
         {
             InitializeComponent();
@@ -63,7 +65,7 @@ namespace WPMote_Desk
 
             Point pos = MouseProcessor.AccelToCoord((float)X / 10000, (float)Y / 10000);
 
-            targetpos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
+            lstPosQueue.Add(pos);
 
             lastpos = pos;
 
@@ -106,14 +108,12 @@ namespace WPMote_Desk
         }
 
         Point lastpos;
-        Point targetpos;
+        List<Point> lstPosQueue = new List<Point>();
 
         void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
         {
             Point pos = MouseProcessor.AccelToCoord(X, Y);
-
-            targetpos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
-
+            
             lastpos = pos;
 
             this.BeginInvoke((Action)(() =>
@@ -195,10 +195,19 @@ namespace WPMote_Desk
 
         private void tmrSmooth_Tick(object sender, EventArgs e)
         {
-            int intSmoothFactor = (int)lngAvgPing / tmrSmooth.Interval;
-            if (intSmoothFactor > 0)
+            if (lstPosQueue.Count>0)
             {
-                Win32.MousePointer.Move(new Point(targetpos.X / intSmoothFactor, targetpos.Y / intSmoothFactor));
+                Point targetpos = lstPosQueue[0];
+                Point movevector = new Point(targetpos.X - Win32.MousePointer.Position.X, targetpos.Y - Win32.MousePointer.Position.Y);
+
+                lstPosQueue.RemoveAt(0);
+
+                int intSmoothFactor = MsgInterval / tmrSmooth.Interval;
+                if (intSmoothFactor > 0)
+                {
+                    Win32.MousePointer.Move(new Point(movevector.X / intSmoothFactor, movevector.Y / intSmoothFactor));
+                }
+
             }
         }
 
