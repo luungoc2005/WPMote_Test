@@ -57,6 +57,7 @@
             <CheckBox x:Name="chk1" Content="Send accelerometer data" HorizontalAlignment="Left" Margin="25,255,0,0" VerticalAlignment="Top" Width="380"/>
             <Button x:Name="rBtn" Content="RClick" HorizontalAlignment="Left" Margin="222,423,0,0" VerticalAlignment="Top" Height="179" Width="208" MouseLeftButtonDown="rBtn_MouseLeftButtonDown" MouseLeftButtonUp="rBtn_MouseLeftButtonUp"/>
             <Button x:Name="lBtn" Content="LClick" HorizontalAlignment="Left" Margin="25,423,0,0" VerticalAlignment="Top" Height="179" Width="207" MouseLeftButtonDown="lBtn_MouseLeftButtonDown" MouseLeftButtonUp="lBtn_MouseLeftButtonUp"/>
+            <Button Content="Calibrate" HorizontalAlignment="Left" Margin="222,183,0,0" VerticalAlignment="Top" Width="168" Click="Button_Click_3"/>
 
         </Grid>
 
