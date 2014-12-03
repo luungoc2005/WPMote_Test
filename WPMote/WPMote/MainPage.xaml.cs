@@ -10,7 +10,7 @@ using Microsoft.Phone.Shell;
 using WPMote.Resources;
 using WPMote.Connectivity;
 using WPMote.Connectivity.Messages;
-using Microsoft.Devices.Sensors;
+using Microsoft.Phone.Applications.Common;
 
 namespace WPMote
 {
@@ -18,7 +18,7 @@ namespace WPMote
     {
         Comm_Common objComm;
         //Motion objMotion;
-        Accelerometer objAccel;
+        AccelerometerHelper objAccel;
         bool ChkChecked;
 
         const Int32 MsgInterval = 100;
@@ -40,10 +40,9 @@ namespace WPMote
             //}
             //else
             //{
-                objAccel = new Accelerometer();
-                objAccel.TimeBetweenUpdates = TimeSpan.FromMilliseconds(MsgInterval);
-                objAccel.CurrentValueChanged += objAccel_CurrentValueChanged;
-                objAccel.Start();
+                objAccel = AccelerometerHelper.Instance;
+                objAccel.ReadingChanged += objAccel_ReadingChanged;
+                objAccel.Active = true;
 
                 lBtn.AddHandler(UIElement.MouseLeftButtonDownEvent, 
                     new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonDown), true);
@@ -56,39 +55,38 @@ namespace WPMote
                     new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonUp), true);
             //}
         }
-        
-        void objAccel_CurrentValueChanged(object sender, SensorReadingEventArgs<AccelerometerReading> e)
+
+        int icount;
+
+        void objAccel_ReadingChanged(object sender, AccelerometerHelperReadingEventArgs e)
         {
             Dispatcher.BeginInvoke((Action)(() =>
             {
-                txt3.Text = "X:" + e.SensorReading.Acceleration.X + "\r\nY:" + e.SensorReading.Acceleration.Y +
-                   "\r\nZ:" + e.SensorReading.Acceleration.Z;
-                ChkChecked=(bool)chk1.IsChecked;
+                txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
+                   "\r\nZ:" + e.OptimalyFilteredAcceleration.Z;
+                //txt3.Text = objAccel.CanCalibrate(true, true).ToString();
+                ChkChecked = (bool)chk1.IsChecked;
             }));
-            lock (this)
-	        {
-                if (ChkChecked)
+            icount += 1;
+            if (icount>=3)
+            {
+                lock (this)
                 {
-                    //objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
-                    //    e.SensorReading.Acceleration.X,
-                    //    e.SensorReading.Acceleration.Y,
-                    //    e.SensorReading.Acceleration.Z,
-                    //    0).ToByteArray);
-                    objComm.SendBytes(new MsgCommon.CompressedAccelData(
-                        Convert.ToInt16(e.SensorReading.Acceleration.X * 10000),
-                        Convert.ToInt16(e.SensorReading.Acceleration.Y * 10000),
-                        Convert.ToInt16(e.SensorReading.Acceleration.Z * 10000)).ToByteArray);
-                }		 
-	        }
-        }
-        
-        private void motion_CurrentValueChanged(object sender, SensorReadingEventArgs<MotionReading> e)
-        {
-            Dispatcher.BeginInvoke((Action)(() =>
-            {
-                txt3.Text = "Pitch:" + e.SensorReading.Attitude.Pitch + "\r\nYaw:" + e.SensorReading.Attitude.Yaw +
-                   "\r\nRoll:" + e.SensorReading.Attitude.Roll;
-            }));
+                    if (ChkChecked)
+                    {
+                        //objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
+                        //    e.SensorReading.Acceleration.X,
+                        //    e.SensorReading.Acceleration.Y,
+                        //    e.SensorReading.Acceleration.Z,
+                        //    0).ToByteArray);
+                        objComm.SendBytes(new MsgCommon.CompressedAccelData(
+                            Convert.ToInt16(e.OptimalyFilteredAcceleration.X * 10000),
+                            Convert.ToInt16(e.OptimalyFilteredAcceleration.Y * 10000),
+                            Convert.ToInt16(e.OptimalyFilteredAcceleration.Z * 10000)).ToByteArray);
+                    }
+                }
+                icount = 0;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -132,6 +130,11 @@ namespace WPMote
         private void rBtn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            objAccel.Calibrate(true, true);
         }
         
         // Sample code for building a localized ApplicationBar
