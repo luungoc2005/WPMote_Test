@@ -64,6 +64,7 @@ namespace WPMote_Desk
             //Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
 
             Point pos = MouseProcessor.AccelToCoord((float)X / 10000, (float)Y / 10000);
+            Debug.Print(((float)X / 10000).ToString() + "," + ((float)Y / 10000).ToString() + "," + ((float)Z / 10000).ToString());
 
             lstPosQueue.Add(pos);
 
@@ -103,7 +104,7 @@ namespace WPMote_Desk
 
                 lngAvgPing = (_init) ? (lngSum / intSamples) : (lngSum / intCount);
 
-                Debug.Print("Ping {0} ms", lngAvgPing);
+                //Debug.Print("Ping {0} ms", lngAvgPing);
             }
         }
 
@@ -207,10 +208,12 @@ namespace WPMote_Desk
                 {
                     Win32.MousePointer.Move(new Point(movevector.X / intSmoothFactor, movevector.Y / intSmoothFactor));
                 }
-
             }
         }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> Accelerometer_new
     }
 }
