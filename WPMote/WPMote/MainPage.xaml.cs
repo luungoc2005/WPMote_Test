@@ -42,10 +42,7 @@ namespace WPMote
             //{
                 objAccel = AccelerometerHelper.Instance;
                 objAccel.ReadingChanged += objAccel_ReadingChanged;
-<<<<<<< HEAD
-=======
                 objAccel.Active = true;
->>>>>>> Accelerometer_new
 
                 lBtn.AddHandler(UIElement.MouseLeftButtonDownEvent, 
                     new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonDown), true);
@@ -59,16 +56,12 @@ namespace WPMote
             //}
         }
 
-<<<<<<< HEAD
-=======
         int icount;
 
->>>>>>> Accelerometer_new
         void objAccel_ReadingChanged(object sender, AccelerometerHelperReadingEventArgs e)
         {
             Dispatcher.BeginInvoke((Action)(() =>
             {
-<<<<<<< HEAD
                 //txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
                 //   "\r\nZ:" + e.OptimalyFilteredAcceleration.Z;
                 txt3.Text = objAccel.CanCalibrate(true, true).ToString();
@@ -88,12 +81,11 @@ namespace WPMote
                         Convert.ToInt16(e.OptimalyFilteredAcceleration.Y * 10000),
                         Convert.ToInt16(e.OptimalyFilteredAcceleration.Z * 10000)).ToByteArray);
                 }
-=======
                 txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
                    "\r\nZ:" + e.OptimalyFilteredAcceleration.Z;
                 //txt3.Text = objAccel.CanCalibrate(true, true).ToString();
                 ChkChecked = (bool)chk1.IsChecked;
-            }));
+            }
             icount += 1;
             if (icount>=3)
             {
@@ -113,7 +105,6 @@ namespace WPMote
                     }
                 }
                 icount = 0;
->>>>>>> Accelerometer_new
             }
         }
 

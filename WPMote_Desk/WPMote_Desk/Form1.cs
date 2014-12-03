@@ -210,10 +210,5 @@ namespace WPMote_Desk
                 }
             }
         }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> Accelerometer_new
     }
 }
