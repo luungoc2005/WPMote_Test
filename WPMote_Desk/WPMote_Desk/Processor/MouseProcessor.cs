@@ -15,7 +15,7 @@ namespace WPMote_Desk.Processor
         //1,1: 0.5357 0 -0.8444
         //0,1: -0.4219 0 -0.9066
 
-        public static Point AccelToCoord(float X, float Y)
+        public static Point AccelToCoord(float X, float Y, float Z)
         {
             double rX, rY;
             rX = Math.Max(0, Math.Min(Screen.PrimaryScreen.Bounds.Width,
