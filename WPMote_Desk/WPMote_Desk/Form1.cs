@@ -63,7 +63,7 @@ namespace WPMote_Desk
         {
             //Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
 
-            Point pos = MouseProcessor.AccelToCoord((float)X / 10000, (float)Y / 10000);
+            Point pos = MouseProcessor.AccelToCoord((float)X / 10000, (float)Y / 10000, (float)Z/10000);
             Debug.Print(((float)X / 10000).ToString() + "," + ((float)Y / 10000).ToString() + "," + ((float)Z / 10000).ToString());
 
             lstPosQueue.Add(pos);
@@ -113,7 +113,7 @@ namespace WPMote_Desk
 
         void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
         {
-            Point pos = MouseProcessor.AccelToCoord(X, Y);
+            Point pos = MouseProcessor.AccelToCoord(X, Y, Z);
             
             lastpos = pos;
 
