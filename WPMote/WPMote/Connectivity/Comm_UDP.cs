@@ -27,6 +27,10 @@ namespace WPMote.Connectivity
         CancellationToken objCancelToken;
         double DEFAULT_TIMEOUT = 500;
 
+        public delegate void DataReceived(byte[] data);
+
+        public event DataReceived OnDataReceived;
+
         #endregion
 
         #region "Class constructor"
@@ -40,6 +44,20 @@ namespace WPMote.Connectivity
         #endregion
 
         #region "Public methods"
+
+        public void Start()
+        {
+            objCancelSource = new CancellationTokenSource();
+            objCancelToken = objCancelSource.Token;
+            tskMessages = Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);
+        }
+
+        public void Close()
+        {
+            objCancelSource.Cancel();
+            objSendSocket.Dispose();
+            objRecvSocket.Dispose();
+        }
 
         public void SendBytes(string serverName, byte[] buffer)
         {
@@ -77,8 +95,9 @@ namespace WPMote.Connectivity
                         {
                             if (e.SocketError == SocketError.Success)
                             {
-                                response = Encoding.UTF8.GetString(e.Buffer, e.Offset, e.BytesTransferred);
-                                response = response.Trim('\0');
+                                byte[] data = new byte[MAX_BUFFER_SIZE];
+                                Array.Copy(e.Buffer, e.Offset, data, 0, e.BytesTransferred);
+                                OnDataReceived(data);
                             }
                             else
                             {

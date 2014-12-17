@@ -100,6 +100,7 @@
     <Compile Include="Connectivity\Comm_Bluetooth.cs" />
     <Compile Include="Connectivity\Comm_Common.cs" />
     <Compile Include="Connectivity\Comm_TCP.cs" />
+    <Compile Include="Connectivity\Comm_UDP.cs" />
     <Compile Include="Connectivity\Messages\MsgCommon.cs" />
     <Compile Include="Connectivity\Messages\MsgEvents.cs" />
     <Compile Include="LocalizedStrings.cs" />
