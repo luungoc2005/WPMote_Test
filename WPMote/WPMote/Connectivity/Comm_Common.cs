@@ -24,6 +24,9 @@ namespace WPMote.Connectivity
 
         Comm_Bluetooth objBluetooth;
         Comm_TCP objTCP;
+        Comm_UDP objUDP;
+
+        string strTCPHost;
 
         Task tskMessages;
         CancellationTokenSource objCancelSource;
@@ -77,9 +80,15 @@ namespace WPMote.Connectivity
                     break;
 
                 case CommMode.TCP:
+                    strTCPHost = strHost;
+
                     objTCP = new Comm_TCP();
                     objTCP.Connected += ConnectedHandler;
                     objTCP.Connect(strHost, intTCPPort);
+
+                    objUDP = new Comm_UDP();
+                    objUDP.OnDataReceived += objUDP_OnDataReceived;
+                    objUDP.Start();
 
                     break;
 
@@ -118,8 +127,12 @@ namespace WPMote.Connectivity
             }
         }
 
-        public async void SendBytes(byte[] buffer)
+        public async void SendBytes(byte[] buffer, bool fastSend=false)
         {
+            if ((objMode==CommMode.TCP) && fastSend)
+            {
+                objUDP.SendBytes(strTCPHost, buffer);
+            }
             if ((objMainSocket != null) & (objWrite != null))
             {
                 objWrite.WriteBytes(buffer);
@@ -151,6 +164,18 @@ namespace WPMote.Connectivity
             tskMessages = Task.Factory.StartNew(() => ReceiveThread(), objCancelSource.Token);
             
             if (OnConnected != null) OnConnected(this, new EventArgs());
+        }
+        
+        void objUDP_OnDataReceived(byte[] data)
+        {
+            byte intMsgType = data[0];
+
+            int intLength = MsgCommon.dictMessages[intMsgType];
+
+            byte[] bData = new byte[Math.Max(intLength - 1, 0)];
+            Array.Copy(data, 1, bData, 0, intLength);
+
+            OnMessageReceived.Invoke(intMsgType, bData);
         }
 
         private async void ReceiveThread()
