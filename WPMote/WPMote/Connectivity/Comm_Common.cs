@@ -133,7 +133,7 @@ namespace WPMote.Connectivity
             {
                 objUDP.SendBytes(strTCPHost, buffer);
             }
-            if ((objMainSocket != null) & (objWrite != null))
+            else if ((objMainSocket != null) & (objWrite != null))
             {
                 objWrite.WriteBytes(buffer);
 
