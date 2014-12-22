@@ -64,9 +64,10 @@ namespace WPMote.Connectivity
             if (objSendSocket != null)
             {
                 SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
-                socketEventArg.RemoteEndPoint = new DnsEndPoint(serverName, DEFAULT_PORT);
+                socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(serverName), DEFAULT_PORT);
                 //socketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(delegate(object s, SocketAsyncEventArgs e)
                 //{
+                //    Debug.Print("Send completed");
                 //});
                 byte[] data = new byte[MAX_BUFFER_SIZE - 1];
                 Array.Copy(buffer, data, Math.Min(MAX_BUFFER_SIZE, buffer.Length));
@@ -83,34 +84,49 @@ namespace WPMote.Connectivity
         {
             if (objRecvSocket != null)
             {
+
+                EndPoint socketEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
+                objRecvSocket.Bind(socketEndPoint);
+
+                try
+                {
+                    SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
+                    socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
+                    socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
+                    socketEventArg.Completed += socketEventArg_Completed;
+
+                    objRecvSocket.ReceiveFromAsync(socketEventArg);
+                }
+                catch
+                {
+                    throw;
+                }
+
                 while (true)
                 {
-                    objCancelToken.ThrowIfCancellationRequested();
-                    try
-                    {
-                        SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
-                        socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
-                        socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
-                        socketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(delegate(object s, SocketAsyncEventArgs e)
-                        {
-                            if (e.SocketError == SocketError.Success)
-                            {
-                                byte[] data = new byte[MAX_BUFFER_SIZE];
-                                Array.Copy(e.Buffer, e.Offset, data, 0, e.BytesTransferred);
-                                OnDataReceived(data);
-                            }
-                            else
-                            {
-                                //response = e.SocketError.ToString();
-                            }
-                        });
-                        objRecvSocket.ReceiveFromAsync(socketEventArg);
-                    }
-                    catch
-                    {                        
-                        throw;
-                    }
+                    if (objCancelToken.IsCancellationRequested) return;
                 }
+            }
+        }
+
+        void socketEventArg_Completed(object sender, SocketAsyncEventArgs e)
+        {
+            if (e.SocketError == SocketError.Success)
+            {
+                byte[] data = new byte[MAX_BUFFER_SIZE];
+                Array.Copy(e.Buffer, e.Offset, data, 0, e.BytesTransferred);
+                OnDataReceived(data);
+
+                SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
+                socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
+                socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
+                socketEventArg.Completed += socketEventArg_Completed;
+
+                objRecvSocket.ReceiveFromAsync(socketEventArg);
+            }
+            else
+            {
+                //response = e.SocketError.ToString();
             }
         }
 
