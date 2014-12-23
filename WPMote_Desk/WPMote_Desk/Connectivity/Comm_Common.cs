@@ -23,6 +23,9 @@ namespace WPMote_Desk.Connectivity
 
         Comm_Bluetooth objBluetooth;
         Comm_TCP objTCP;
+        Comm_UDP objUDP;
+
+        string strTCPHost;
 
         BackgroundWorker bwMessages;
         double DEFAULT_TIMEOUT = 500;
@@ -87,6 +90,10 @@ namespace WPMote_Desk.Connectivity
                     objTCP = new Comm_TCP();
                     objTCP.Port = intTCPPort;
                     objTCP.Connected += ConnectedHandler;
+                    
+                    objUDP = new Comm_UDP();
+                    objUDP.OnDataReceived += objUDP_OnDataReceived;
+                    objUDP.Start();
 
                     objTCP.StartListen();
 
@@ -125,9 +132,13 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
-        public void SendBytes(byte[] buffer)
+        public void SendBytes(byte[] buffer, bool fastSend = false)
         {
-            if (objMainStream != null)
+            if ((objMode == CommMode.TCP) && fastSend)
+            {
+                objUDP.SendBytes(strTCPHost, buffer);
+            }
+            else if (objMainStream != null)
             {
                 try
                 {
@@ -144,6 +155,18 @@ namespace WPMote_Desk.Connectivity
         #endregion
 
         #region "Private methods"
+
+        void objUDP_OnDataReceived(byte[] data)
+        {
+            byte intMsgType = data[0];
+
+            int intLength = MsgCommon.dictMessages[intMsgType];
+
+            byte[] bData = new byte[Math.Max(intLength - 1, 0)];
+            Array.Copy(data, 1, bData, 0, intLength);
+
+            OnMessageReceived.Invoke(intMsgType, bData);
+        }
 
         private void ConnectedHandler(NetworkStream objStream)
         {
