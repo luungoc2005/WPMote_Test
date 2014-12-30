@@ -12,6 +12,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Devices.Sensors;
+using Sensorit.Base;
 
 
 namespace Microsoft.Phone.Applications.Common
@@ -434,10 +435,18 @@ namespace Microsoft.Phone.Applications.Common
         /// <param name="newInputValue">New input value (latest sample)</param>
         /// <param name="priorOutputValue">The previous output value (filtered, one sampling period ago)</param>
         /// <returns>The new output value</returns>
-        private static double LowPassFilter(double newInputValue, double priorOutputValue)
+        private double LowPassFilter(double newInputValue, double priorOutputValue)
         {
-            double newOutputValue = priorOutputValue + LowPassFilterCoef * (newInputValue - priorOutputValue);
-            return newOutputValue;
+            //double newOutputValue = priorOutputValue + LowPassFilterCoef * (newInputValue - priorOutputValue);
+            //return newOutputValue;
+            return OneEuroFilter(newInputValue);
+        }
+
+        OneEuroFilter oneEuroFilt=new OneEuroFilter(1, 0.01);
+
+        private double OneEuroFilter(double newInputValue)
+        {
+            return oneEuroFilt.Filter(newInputValue, 0.1);
         }
 
         /// <summary>

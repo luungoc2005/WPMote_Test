@@ -69,7 +69,6 @@ namespace WPMote
             }));
             lock (this)
             {
-
                 if (ChkChecked)
                 {
                     //objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
@@ -83,13 +82,12 @@ namespace WPMote
                         Convert.ToInt16(e.OptimalyFilteredAcceleration.Z * 10000)).ToByteArray, true);
                 }
 
-
                 //txt3.Text = objAccel.CanCalibrate(true, true).ToString();
                 //ChkChecked = (bool)chk1.IsChecked;
                 Dispatcher.BeginInvoke((Action)(() =>
                 { ChkChecked = (bool)chk1.IsChecked;
-                  txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
-"\r\nZ:" + e.OptimalyFilteredAcceleration.Z;                
+                txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
+"\r\nZ:" + e.OptimalyFilteredAcceleration.Z;
                 }));
             }
             icount += 1;

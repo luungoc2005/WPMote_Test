@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="AccelerometerHelper\AccelerometerHelper.cs" />
     <Compile Include="AccelerometerHelper\ApplicationSettingHelper.cs" />
+    <Compile Include="AccelerometerHelper\OneEuroFilter.cs" />
     <Compile Include="AccelerometerHelper\Simple3DVector.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
