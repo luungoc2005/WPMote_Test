@@ -69,6 +69,7 @@ namespace WPMote
             }));
             lock (this)
             {
+
                 if (ChkChecked)
                 {
                     //objComm.SendBytes(new MsgCommon.Msg_AccelerometerData(
@@ -79,12 +80,17 @@ namespace WPMote
                     objComm.SendBytes(new MsgCommon.CompressedAccelData(
                         Convert.ToInt16(e.OptimalyFilteredAcceleration.X * 10000),
                         Convert.ToInt16(e.OptimalyFilteredAcceleration.Y * 10000),
-                        Convert.ToInt16(e.OptimalyFilteredAcceleration.Z * 10000)).ToByteArray);
+                        Convert.ToInt16(e.OptimalyFilteredAcceleration.Z * 10000)).ToByteArray, true);
                 }
-                txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
-                   "\r\nZ:" + e.OptimalyFilteredAcceleration.Z;
+
+
                 //txt3.Text = objAccel.CanCalibrate(true, true).ToString();
-                ChkChecked = (bool)chk1.IsChecked;
+                //ChkChecked = (bool)chk1.IsChecked;
+                Dispatcher.BeginInvoke((Action)(() =>
+                { ChkChecked = (bool)chk1.IsChecked;
+                  txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
+"\r\nZ:" + e.OptimalyFilteredAcceleration.Z;                
+                }));
             }
             icount += 1;
             if (icount>=3)
@@ -98,10 +104,10 @@ namespace WPMote
                         //    e.SensorReading.Acceleration.Y,
                         //    e.SensorReading.Acceleration.Z,
                         //    0).ToByteArray);
-                        objComm.SendBytes(new MsgCommon.CompressedAccelData(
-                            Convert.ToInt16(e.OptimalyFilteredAcceleration.X * 10000),
-                            Convert.ToInt16(e.OptimalyFilteredAcceleration.Y * 10000),
-                            Convert.ToInt16(e.OptimalyFilteredAcceleration.Z * 10000)).ToByteArray);
+                        //objComm.SendBytes(new MsgCommon.CompressedAccelData(
+                        //    Convert.ToInt16(e.OptimalyFilteredAcceleration.X * 10000),
+                        //    Convert.ToInt16(e.OptimalyFilteredAcceleration.Y * 10000),
+                        //    Convert.ToInt16(e.OptimalyFilteredAcceleration.Z * 10000)).ToByteArray, true);
                     }
                 }
                 icount = 0;

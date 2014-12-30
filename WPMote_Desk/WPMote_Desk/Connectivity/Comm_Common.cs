@@ -162,7 +162,7 @@ namespace WPMote_Desk.Connectivity
 
             int intLength = MsgCommon.dictMessages[intMsgType];
 
-            byte[] bData = new byte[Math.Max(intLength - 1, 0)];
+            byte[] bData = new byte[Math.Max(intLength, 0)];
             Array.Copy(data, 1, bData, 0, intLength);
 
             OnMessageReceived.Invoke(intMsgType, bData);
