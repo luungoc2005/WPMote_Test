@@ -20,7 +20,8 @@ namespace WPMote_Desk
         // Form2 objFrm2;
         MouseProcessor objProc;
 
-        const Int32 MsgInterval = 100;
+        double currentVelocityX = 0;
+        double currentVelocityY = 0;
 
         public Form1()
         {
@@ -85,7 +86,9 @@ namespace WPMote_Desk
             }
             else
             {
-                Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+                //Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
+                currentVelocityX += X / 10000;
+                currentVelocityY += Y / 10000;
                 lastpos = pos;
                 lngPing = (DateTime.Now.Ticks - lngPrevious) / TimeSpan.TicksPerMillisecond;
 
@@ -198,16 +201,18 @@ namespace WPMote_Desk
         {
             if (lstPosQueue.Count>0)
             {
-                Point targetpos = lstPosQueue[0];
-                Point movevector = new Point(targetpos.X - Win32.MousePointer.Position.X, targetpos.Y - Win32.MousePointer.Position.Y);
+                //Point targetpos = lstPosQueue[0];
+                //Point movevector = new Point(targetpos.X - Win32.MousePointer.Position.X, targetpos.Y - Win32.MousePointer.Position.Y);
 
-                lstPosQueue.RemoveAt(0);
+                //lstPosQueue.RemoveAt(0);
 
-                int intSmoothFactor = MsgInterval / tmrSmooth.Interval;
-                if (intSmoothFactor > 0)
-                {
-                    Win32.MousePointer.Move(new Point(movevector.X / intSmoothFactor, movevector.Y / intSmoothFactor));
-                }
+                //int intSmoothFactor = MsgInterval / tmrSmooth.Interval;
+                //if (intSmoothFactor > 0)
+                //{
+                //    Win32.MousePointer.Move(new Point(movevector.X / intSmoothFactor, movevector.Y / intSmoothFactor));
+                //}
+                int multiplyFactor=9;
+                Win32.MousePointer.Move(new Point((int)(currentVelocityX * multiplyFactor), (int)(currentVelocityY * multiplyFactor)));
             }
         }
     }

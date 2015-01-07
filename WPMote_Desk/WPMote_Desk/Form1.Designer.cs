@@ -42,7 +42,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(16, 15);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 28);
             this.button1.TabIndex = 0;
@@ -53,7 +53,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(124, 15);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 28);
             this.button2.TabIndex = 1;
@@ -64,7 +64,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(232, 15);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 28);
             this.button3.TabIndex = 2;
@@ -90,7 +90,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(232, 47);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(100, 28);
             this.button4.TabIndex = 4;
@@ -101,7 +101,7 @@
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(232, 82);
-            this.button5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(100, 33);
             this.button5.TabIndex = 5;
@@ -111,7 +111,7 @@
             // 
             // tmrSmooth
             // 
-            this.tmrSmooth.Interval = 10;
+            this.tmrSmooth.Interval = 20;
             this.tmrSmooth.Tick += new System.EventHandler(this.tmrSmooth_Tick);
             // 
             // Form1
@@ -126,7 +126,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "WPMote";
