@@ -64,13 +64,8 @@ namespace WPMote_Desk
         {
             //Win32.MousePointer.Move(new Point(pos.X-lastpos.X,pos.Y-lastpos.Y));
 
-            Point pos = MouseProcessor.AccelToCoord((float)X / 10000, (float)Y / 10000, (float)Z/10000);
             Debug.Print(((float)X / 10000).ToString() + "," + ((float)Y / 10000).ToString() + "," + ((float)Z / 10000).ToString());
-
-            lstPosQueue.Add(pos);
-
-            lastpos = pos;
-
+            
             this.BeginInvoke((Action)(() =>
             {
                 //var rPos = new Point(pos.X - lastpos.X, pos.Y - lastpos.Y);
@@ -87,9 +82,9 @@ namespace WPMote_Desk
             else
             {
                 //Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
-                currentVelocityX += X / 10000;
-                currentVelocityY += Y / 10000;
-                lastpos = pos;
+                currentVelocityX += X / 10000 * (1 / 50);
+                currentVelocityY += Y / 10000 * (1 / 50);
+
                 lngPing = (DateTime.Now.Ticks - lngPrevious) / TimeSpan.TicksPerMillisecond;
 
                 lngPrevious = DateTime.Now.Ticks;
@@ -111,14 +106,10 @@ namespace WPMote_Desk
             }
         }
 
-        Point lastpos;
         List<Point> lstPosQueue = new List<Point>();
 
         void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
         {
-            Point pos = MouseProcessor.AccelToCoord(X, Y, Z);
-            
-            lastpos = pos;
 
             this.BeginInvoke((Action)(() =>
             {
@@ -135,8 +126,6 @@ namespace WPMote_Desk
             }
             else
             {
-                Win32.MousePointer.Move(new Point(pos.X - lastpos.X, pos.Y - lastpos.Y));
-                lastpos = pos;
                 lngPing = (DateTime.Now.Ticks - lngPrevious) / TimeSpan.TicksPerMillisecond;
 
                 lngPrevious = DateTime.Now.Ticks;
@@ -211,8 +200,10 @@ namespace WPMote_Desk
                 //{
                 //    Win32.MousePointer.Move(new Point(movevector.X / intSmoothFactor, movevector.Y / intSmoothFactor));
                 //}
-                int multiplyFactor=9;
+
+                int multiplyFactor = 12;
                 Win32.MousePointer.Move(new Point((int)(currentVelocityX * multiplyFactor), (int)(currentVelocityY * multiplyFactor)));
+                this.Text = "X:" + currentVelocityX + " Y:" + currentVelocityY;
             }
         }
     }
