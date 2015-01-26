@@ -108,5 +108,10 @@ namespace WPMote_Desk
                 "Z: " + objProc.currentVelocity.Z.ToString() + "\r\n" +
                 "lag: " + objProc.lngAvgPing.ToString(); ;
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Win32.MousePointer.Move(new Point(200, 200));
+        }
     }
 }

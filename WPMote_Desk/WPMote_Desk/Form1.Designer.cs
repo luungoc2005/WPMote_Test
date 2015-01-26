@@ -38,6 +38,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.tmrSmooth = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -125,11 +126,22 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "label2";
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(232, 122);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(100, 34);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "Move2";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(716, 142);
+            this.ClientSize = new System.Drawing.Size(716, 168);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -159,6 +171,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Timer tmrSmooth;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button6;
     }
 }
 

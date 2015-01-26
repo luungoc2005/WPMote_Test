@@ -27,7 +27,7 @@ namespace WPMote_Desk.Processor
         private int stableSamplesCount = 0;
         private Simple3DVector maximumStableOffset = new Simple3DVector(0.003, 0.003, 0.003);
 
-        private const int coordinateMulFactor = 9;
+        private const int coordinateMulFactor = 200;
         
         long lngPrevious;
         long lngPing;
@@ -63,7 +63,7 @@ namespace WPMote_Desk.Processor
         {
             if (readingsQueue.Count != 0)
             {
-                currentVelocity += readingsQueue[0]; // (1000 / lagTimer.Interval);
+                currentVelocity = readingsQueue[0]; // (1000 / lagTimer.Interval);
 
                 //return velocity to 0 after a certain stable period
                 Simple3DVector differenceVector = readingsQueue[0] - previousReading;
@@ -86,10 +86,7 @@ namespace WPMote_Desk.Processor
                 readingsQueue.RemoveAt(0);
 
                 //move mouse pointer
-                //Win32.MousePointer.Move(new Point((int)currentVelocity.X * coordinateMulFactor, (int)currentVelocity.Y * coordinateMulFactor));
-                Point pos = Win32.MousePointer.Position;
-                Win32.MousePointer.Position = new Point(((int)currentVelocity.X * coordinateMulFactor) + pos.X,
-                                                        ((int)currentVelocity.Y * coordinateMulFactor) + pos.Y);
+                Win32.MousePointer.Move(new Point((int)currentVelocity.X * coordinateMulFactor, (int)currentVelocity.Y * coordinateMulFactor));
             }
         }
         #endregion

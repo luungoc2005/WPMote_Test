@@ -24,8 +24,9 @@ namespace WPMote_Desk.Win32
             }
             set
             {
-                Win32API.mouse_event((Win32API.MOUSEEVENTF_ABSOLUTE | Win32API.MOUSEEVENTF_MOVE),
-                    value.X, value.Y, 0, 0);
+                //Win32API.mouse_event((Win32API.MOUSEEVENTF_ABSOLUTE | Win32API.MOUSEEVENTF_MOVE),
+                //    value.X, value.Y, 0, 0);
+                Cursor.Position = value;
             }
         }
 
@@ -92,10 +93,17 @@ namespace WPMote_Desk.Win32
         }
 
         //Set relative coordinates
-        public static void Move(Point MoveBy)
+        public static void APIMove(Point MoveBy)
         {
             Win32API.mouse_event(Win32API.MOUSEEVENTF_MOVE,
                 MoveBy.X, MoveBy.Y, 0, 0);
+        }
+
+        public static void Move(Point MoveBy)
+        {
+            Point pos=Win32.MousePointer.Position;
+            Win32.MousePointer.Position = new Point(pos.X + MoveBy.X,
+                                                    pos.Y + MoveBy.Y);
         }
     }
 }
