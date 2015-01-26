@@ -437,9 +437,9 @@ namespace Microsoft.Phone.Applications.Common
         /// <returns>The new output value</returns>
         private double LowPassFilter(double newInputValue, double priorOutputValue)
         {
-            //double newOutputValue = priorOutputValue + LowPassFilterCoef * (newInputValue - priorOutputValue);
-            //return newOutputValue;
-            return OneEuroFilter(newInputValue);
+            double newOutputValue = priorOutputValue + LowPassFilterCoef * (newInputValue - priorOutputValue);
+            return newOutputValue;
+            //return OneEuroFilter(newInputValue);
         }
 
         OneEuroFilter oneEuroFilt=new OneEuroFilter(1, 0.01);

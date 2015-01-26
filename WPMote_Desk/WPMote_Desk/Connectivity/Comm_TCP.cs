@@ -6,6 +6,7 @@ using System.Threading;
 using System.Net.Sockets;
 using System.Net;
 using WPMote_Desk.Connectivity.Messages;
+using System.Net.NetworkInformation;
 
 namespace WPMote_Desk.Connectivity
 {
@@ -30,43 +31,22 @@ namespace WPMote_Desk.Connectivity
         //http://stackoverflow.com/questions/6803073/get-local-ip-address-c-sharp
         public static string LocalIPAddress()
         {
-            string localIP = "";
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
+            string output = "";
+            foreach (NetworkInterface item in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (IsLocalIpAddress(ip.ToString()))
+                if (item.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && item.OperationalStatus == OperationalStatus.Up)
                 {
-                    localIP += "\r\n" + ip.ToString();
-                    //break;
-                }
-            }
-            return localIP;
-        }
-
-        public static bool IsLocalIpAddress(string host)
-        {
-            try
-            { // get host IP addresses
-                IPAddress[] hostIPs = Dns.GetHostAddresses(host);
-                // get local IP addresses
-                IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
-
-                // test if any host IP equals to any local IP or to localhost
-                foreach (IPAddress hostIP in hostIPs)
-                {
-                    // is localhost
-                    if (IPAddress.IsLoopback(hostIP)) return true;
-                    // is local address
-                    foreach (IPAddress localIP in localIPs)
+                    foreach (UnicastIPAddressInformation ip in item.GetIPProperties().UnicastAddresses)
                     {
-                        if (hostIP.Equals(localIP)) return true;
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            output = ip.Address.ToString();
+                        }
                     }
                 }
             }
-            catch { }
-            return false;
+            return output;
         }
-
         #endregion
 
         #region "Class properties"

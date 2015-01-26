@@ -67,6 +67,7 @@
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
     <Compile Include="Processor\MouseProcessor.cs" />
+    <Compile Include="Processor\Simple3DVector.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32\MousePointer.cs" />

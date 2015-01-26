@@ -15,9 +15,9 @@ namespace WPMote_Desk.Processor
 
         private static Object _syncRoot = new Object();
 
-        private List<Simple3DVector> readingsQueue = new List<Simple3DVector>();
+        public List<Simple3DVector> readingsQueue = new List<Simple3DVector>();
 
-        private Simple3DVector currentVelocity;
+        public Simple3DVector currentVelocity = new Simple3DVector();
 
         private Simple3DVector previousReading = new Simple3DVector();
 
@@ -25,9 +25,21 @@ namespace WPMote_Desk.Processor
 
         private int adjustmentInterval = 800;
         private int stableSamplesCount = 0;
-        private Simple3DVector maximumStableOffset = new Simple3DVector(0.007, 0.007, 0.007);
+        private Simple3DVector maximumStableOffset = new Simple3DVector(0.003, 0.003, 0.003);
 
         private const int coordinateMulFactor = 9;
+        
+        long lngPrevious;
+        long lngPing;
+        public long lngAvgPing;
+
+        const int intSamples = 30;
+        long[] arrSamples = new long[intSamples - 1];
+        int intCount = 0;
+        long lngSum = 0;
+
+        bool _init = false;
+
         #endregion
 
         #region "Class constructor"
@@ -44,17 +56,20 @@ namespace WPMote_Desk.Processor
         private void lagTimer_Tick(object sender, EventArgs e)
         {
             //Timer for lag compensation
-            ProcessNextReading();
+            //ProcessNextReading();
         }
 
         private void ProcessNextReading()
         {
             if (readingsQueue.Count != 0)
             {
-                currentVelocity += readingsQueue[0] / (1000 / lagTimer.Interval);
+                currentVelocity += readingsQueue[0]; // (1000 / lagTimer.Interval);
 
                 //return velocity to 0 after a certain stable period
-                if ((readingsQueue[0] - previousReading).Magnitude <= maximumStableOffset.Magnitude)
+                Simple3DVector differenceVector = readingsQueue[0] - previousReading;
+                if ((Math.Abs(differenceVector.X) <= Math.Abs(maximumStableOffset.X)) &&
+                    (Math.Abs(differenceVector.Y) <= Math.Abs(maximumStableOffset.Y)) &&
+                    (Math.Abs(differenceVector.Z) <= Math.Abs(maximumStableOffset.Z)))
                 {
                     stableSamplesCount += lagTimer.Interval;
                     if (stableSamplesCount >= adjustmentInterval)
@@ -71,7 +86,10 @@ namespace WPMote_Desk.Processor
                 readingsQueue.RemoveAt(0);
 
                 //move mouse pointer
-                Win32.MousePointer.Move(new Point((int)currentVelocity.X * coordinateMulFactor, (int)currentVelocity.Y * coordinateMulFactor));
+                //Win32.MousePointer.Move(new Point((int)currentVelocity.X * coordinateMulFactor, (int)currentVelocity.Y * coordinateMulFactor));
+                Point pos = Win32.MousePointer.Position;
+                Win32.MousePointer.Position = new Point(((int)currentVelocity.X * coordinateMulFactor) + pos.X,
+                                                        ((int)currentVelocity.Y * coordinateMulFactor) + pos.Y);
             }
         }
         #endregion
@@ -99,6 +117,39 @@ namespace WPMote_Desk.Processor
         public void AddReading(Simple3DVector sensorReading)
         {
             readingsQueue.Add(sensorReading);
+
+            if (lngPrevious == 0)
+            {
+                lngPrevious = DateTime.Now.Ticks;
+            }
+            else
+            {
+                lngPing = (DateTime.Now.Ticks - lngPrevious) / TimeSpan.TicksPerMillisecond;
+
+                lngPrevious = DateTime.Now.Ticks;
+
+                lngSum += lngPing;
+                lngSum -= arrSamples[intCount];
+                arrSamples[intCount] = lngPing;
+
+                intCount += 1;
+                if (intCount >= arrSamples.Length)
+                {
+                    if (_init == false) _init = true;
+                    intCount = 0;
+                }
+
+                lngAvgPing = (_init) ? (lngSum / intSamples) : (lngSum / intCount);
+
+                if (lngAvgPing > 0)
+                {
+                    lagTimer.Interval = (int)lngAvgPing;
+                    lagTimer.Enabled = true;
+                }
+                //Debug.Print("Ping {0} ms", lngAvgPing);
+            }
+
+            ProcessNextReading();  //no lag scenario
         }
 
         public void Start()
