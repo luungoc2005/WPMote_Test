@@ -25,9 +25,15 @@ namespace WPMote_Desk.Processor
 
         private int adjustmentInterval = 800;
         private int stableSamplesCount = 0;
-        private Simple3DVector maximumStableOffset = new Simple3DVector(0.003, 0.003, 0.003);
+        private Simple3DVector maximumStableOffset = new Simple3DVector(0.002, 0.002, 0.002);
 
-        private const int coordinateMulFactor = 200;
+        private double lastPitch = 0;
+        private double lastRoll = 0;
+
+        private const double pitchOffset = 15;
+        private const double rollOffset = 0;
+
+        private const double coordinateMulFactor = 0.7;
         
         long lngPrevious;
         long lngPing;
@@ -46,7 +52,7 @@ namespace WPMote_Desk.Processor
         public MouseProcessor()
         {
             //Lag timer initialization
-            lagTimer.Interval = 20;
+            lagTimer.Interval = 15;
             lagTimer.Tick += lagTimer_Tick;
         }
         
@@ -56,14 +62,21 @@ namespace WPMote_Desk.Processor
         private void lagTimer_Tick(object sender, EventArgs e)
         {
             //Timer for lag compensation
-            //ProcessNextReading();
+            ProcessNextReading();
         }
 
         private void ProcessNextReading()
         {
             if (readingsQueue.Count != 0)
             {
-                currentVelocity = readingsQueue[0]; // (1000 / lagTimer.Interval);
+                currentVelocity += readingsQueue[0]; // (1000 / lagTimer.Interval);
+
+                double pitch = (Math.Atan2(readingsQueue[0].Y, readingsQueue[0].Z) * 180.0) / Math.PI;
+                double roll = (Math.Atan2(readingsQueue[0].X, Math.Sqrt(readingsQueue[0].Y * readingsQueue[0].Y + readingsQueue[0].Z * readingsQueue[0].Z)) * 180.0) / Math.PI;
+                pitch = (pitch >= 0) ? (180 - pitch) : (-pitch - 180);
+
+                roll += rollOffset;
+                pitch += pitchOffset;
 
                 //return velocity to 0 after a certain stable period
                 Simple3DVector differenceVector = readingsQueue[0] - previousReading;
@@ -86,7 +99,12 @@ namespace WPMote_Desk.Processor
                 readingsQueue.RemoveAt(0);
 
                 //move mouse pointer
-                Win32.MousePointer.Move(new Point((int)currentVelocity.X * coordinateMulFactor, (int)currentVelocity.Y * coordinateMulFactor));
+                Win32.MousePointer.Move(new Point((int)((roll) * coordinateMulFactor), 
+                                                    (int)((pitch) * coordinateMulFactor * 
+                                                    (SystemInformation.PrimaryMonitorSize.Width/SystemInformation.PrimaryMonitorSize.Height))));
+
+                lastPitch = pitch;
+                lastRoll = roll;
             }
         }
         #endregion
@@ -140,13 +158,12 @@ namespace WPMote_Desk.Processor
 
                 if (lngAvgPing > 0)
                 {
-                    lagTimer.Interval = (int)lngAvgPing;
-                    lagTimer.Enabled = true;
+                    //lagTimer.Interval = (int)lngAvgPing;
                 }
                 //Debug.Print("Ping {0} ms", lngAvgPing);
             }
 
-            ProcessNextReading();  //no lag scenario
+            //ProcessNextReading();  //no lag scenario
         }
 
         public void Start()

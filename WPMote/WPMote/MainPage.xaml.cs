@@ -53,6 +53,9 @@ namespace WPMote
                     new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonDown), true);
                 rBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
                     new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonUp), true);
+
+                objComm = new Comm_Common(Comm_Common.CommMode.TCP);
+                objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             //}
         }
 
@@ -114,15 +117,24 @@ namespace WPMote
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            TCPConnect(txt1.Text);
+        }
 
-            objComm = new Comm_Common(Comm_Common.CommMode.TCP, txt1.Text);
-            objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
+        private void TCPConnect(string host)
+        {
+            objComm.Connect(host);
         }
 
         private void OnClientInfoReceived(string IPAddress, string DeviceName)
         {
             Dispatcher.BeginInvoke((Action)(() =>
             { txt2.Text = DateTime.Now.Ticks + " ClientInfo received: " + IPAddress + " (" + DeviceName + ")"; }));
+            if (MessageBox.Show("Client info received. Attempt connect?", "Connection request", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                Dispatcher.BeginInvoke((Action)(() =>
+                { txt1.Text = IPAddress; }));
+                TCPConnect(IPAddress);
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

@@ -27,7 +27,6 @@ namespace WPMote_Desk
 
         private void button1_Click(object sender, EventArgs e)
         {
-            objComm = new Comm_Common(Comm_Common.CommMode.TCP);
             objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
             objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
@@ -38,6 +37,8 @@ namespace WPMote_Desk
 
             objProc = MouseProcessor.Instance;
             objProc.Start();
+
+            objComm.Connect();
         }
 
         void Events_OnClickReceived(bool RClick, bool LClick)
@@ -75,12 +76,14 @@ namespace WPMote_Desk
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Debug.Print(Comm_TCP.LocalIPAddress());           
+            Debug.Print(Comm_TCP.LocalIPAddress());
+
+            objComm = new Comm_Common(Comm_Common.CommMode.TCP);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(),Environment.MachineName).ToByteArray);
+            objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(), Environment.MachineName).ToByteArray, true, true);
             Debug.Print("Send clicked");
         }
 

@@ -25,7 +25,8 @@ namespace WPMote_Desk.Connectivity
         Comm_TCP objTCP;
         Comm_UDP objUDP;
 
-        string strTCPHost;
+        string classTCPHost;
+        int classTCPPort;
 
         BackgroundWorker bwMessages;
         double DEFAULT_TIMEOUT = 500;
@@ -67,6 +68,37 @@ namespace WPMote_Desk.Connectivity
             switch (mode)
             {
                 case CommMode.Bluetooth:
+                    break;
+
+                case CommMode.TCP:
+                    classTCPHost = "127.0.0.1";
+                    classTCPPort = intTCPPort;
+
+                    objTCP = new Comm_TCP();
+                    objTCP.Port = intTCPPort;
+                    objTCP.Connected += ConnectedHandler;
+                    
+                    objUDP = new Comm_UDP();
+                    objUDP.OnDataReceived += objUDP_OnDataReceived;
+                    objUDP.Start();
+                    
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region "Public methods"
+
+        public void Connect()
+        {
+            switch (objMode)
+            {
+                case CommMode.Bluetooth:
+
                     Comm_Bluetooth.BluetoothAvailability avail = Comm_Bluetooth.IsBluetoothAvailable();
 
                     if (avail == Comm_Bluetooth.BluetoothAvailability.NotAvailable)
@@ -87,26 +119,13 @@ namespace WPMote_Desk.Connectivity
                     break;
 
                 case CommMode.TCP:
-                    objTCP = new Comm_TCP();
-                    objTCP.Port = intTCPPort;
-                    objTCP.Connected += ConnectedHandler;
-                    
-                    objUDP = new Comm_UDP();
-                    objUDP.OnDataReceived += objUDP_OnDataReceived;
-                    objUDP.Start();
-
                     objTCP.StartListen();
-
                     break;
 
                 default:
                     break;
             }
         }
-
-        #endregion
-
-        #region "Public methods"
 
         public void Close()
         {
@@ -132,11 +151,18 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
-        public void SendBytes(byte[] buffer, bool fastSend = false)
+        public void SendBytes(byte[] buffer, bool fastSend = false, bool broadcastSend = false)
         {
             if ((objMode == CommMode.TCP) && fastSend)
             {
-                objUDP.SendBytes(strTCPHost, buffer);
+                if (broadcastSend == false)
+                {
+                    objUDP.SendBytes(classTCPHost, buffer);
+                }
+                else
+                {
+                    objUDP.SendBytes(System.Net.IPAddress.Broadcast.ToString(), buffer);
+                }
             }
             else if (objMainStream != null)
             {
