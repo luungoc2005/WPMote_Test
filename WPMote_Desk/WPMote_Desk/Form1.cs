@@ -76,7 +76,8 @@ namespace WPMote_Desk
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Debug.Print(Comm_TCP.LocalIPAddress());
+            this.Text = "WPMote - Local IP: " + Comm_TCP.LocalIPAddress();
+            Debug.Print(System.Net.IPAddress.Broadcast.ToString());
 
             objComm = new Comm_Common(Comm_Common.CommMode.TCP);
         }

@@ -39,6 +39,9 @@ namespace WPMote_Desk.Connectivity
         {
             objSendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             objRecvSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+            objRecvSocket.EnableBroadcast = true;
+            objSendSocket.EnableBroadcast = true;
         }
 
         #endregion
@@ -72,6 +75,7 @@ namespace WPMote_Desk.Connectivity
                 byte[] data = new byte[MAX_BUFFER_SIZE - 1];
                 Array.Copy(buffer, data, Math.Min(MAX_BUFFER_SIZE, buffer.Length));
                 socketEventArg.SetBuffer(data, 0, data.Length);
+                
                 objSendSocket.SendToAsync(socketEventArg);
             }
         }
