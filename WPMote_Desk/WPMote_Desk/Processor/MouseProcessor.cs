@@ -23,7 +23,7 @@ namespace WPMote_Desk.Processor
 
         private Timer lagTimer = new Timer();
 
-        private int adjustmentInterval = 800;
+        private int adjustmentInterval = 500;
         private int stableSamplesCount = 0;
         private Simple3DVector maximumStableOffset = new Simple3DVector(0.002, 0.002, 0.002);
 
@@ -65,6 +65,8 @@ namespace WPMote_Desk.Processor
             ProcessNextReading();
         }
 
+        bool isMoving = false;
+
         private void ProcessNextReading()
         {
             if (readingsQueue.Count != 0)
@@ -88,6 +90,7 @@ namespace WPMote_Desk.Processor
                     if (stableSamplesCount >= adjustmentInterval)
                     {
                         currentVelocity = new Simple3DVector();
+                        isMoving = false;
                     }
                 }
                 else
@@ -98,10 +101,20 @@ namespace WPMote_Desk.Processor
 
                 readingsQueue.RemoveAt(0);
 
-                //move mouse pointer
-                Win32.MousePointer.Move(new Point((int)((roll) * coordinateMulFactor), 
-                                                    (int)((pitch) * coordinateMulFactor * 
-                                                    (SystemInformation.PrimaryMonitorSize.Width/SystemInformation.PrimaryMonitorSize.Height))));
+                //move mouse pointer                
+
+                if (Math.Abs(lastPitch - pitch) * coordinateMulFactor > 1 && 
+                    Math.Abs(lastRoll - roll) * coordinateMulFactor > 1) //thresholding small changes
+                {
+                    isMoving = true;
+                }
+
+                if (isMoving)
+                {
+                    Win32.MousePointer.Move(new Point((int)(roll * coordinateMulFactor),
+                                                        (int)(pitch * coordinateMulFactor *
+                                                        (SystemInformation.PrimaryMonitorSize.Width / SystemInformation.PrimaryMonitorSize.Height))));
+                }
 
                 lastPitch = pitch;
                 lastRoll = roll;

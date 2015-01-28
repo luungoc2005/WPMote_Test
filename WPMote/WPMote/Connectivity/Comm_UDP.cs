@@ -88,13 +88,15 @@ namespace WPMote.Connectivity
                 EndPoint socketEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
                 objRecvSocket.Bind(socketEndPoint);
 
+                SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
+                socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
+                socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
+                socketEventArg.Completed += socketEventArg_Completed;
+
+                //objRecvSocket.ConnectAsync(socketEventArg);
+
                 try
                 {
-                    SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
-                    socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
-                    socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
-                    socketEventArg.Completed += socketEventArg_Completed;
-
                     objRecvSocket.ReceiveFromAsync(socketEventArg);
                 }
                 catch
