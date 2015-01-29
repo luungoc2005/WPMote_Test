@@ -83,7 +83,33 @@ namespace WPMote_Desk
             objProc = MouseProcessor.Instance;
             objProc.Start();
 
+            objProc.OnDeviceTilt += objProc_OnDeviceTilt;
+
             objComm.Connect();
+        }
+
+        void objProc_OnDeviceTilt(MouseProcessor.TiltDirections direction, bool value)
+        {
+            if (checkBox1.Checked)
+            {
+                switch (direction)
+                {
+                    case MouseProcessor.TiltDirections.Forward:
+                        Win32.Win32API.keybd_event(0, 0xC8, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+                        break;
+                    case MouseProcessor.TiltDirections.Backward:
+                        Win32.Win32API.keybd_event(0, 0xD0, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+                        break;
+                    case MouseProcessor.TiltDirections.Left:
+                        Win32.Win32API.keybd_event(0, 0xCB, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+                        break;
+                    case MouseProcessor.TiltDirections.Right:
+                        Win32.Win32API.keybd_event(0, 0xCD, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+                        break;
+                    default:
+                        break;
+                }                
+            }
         }
 
         void Events_OnKeyBDReceived(byte KeyBD, bool KeyState)

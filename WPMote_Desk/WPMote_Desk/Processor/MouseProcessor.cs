@@ -57,7 +57,30 @@ namespace WPMote_Desk.Processor
         }
         
         #endregion
+
+        #region "Class Events"
+
+        const double tiltThreshold = 15;
         
+        public delegate void DTiltEvent(TiltDirections direction, bool value);
+
+        bool tiltForward = false;
+        bool tiltBackward = false;
+        bool tiltLeft = false;
+        bool tiltRight = false;
+
+        public enum TiltDirections
+        {
+            Forward,
+            Backward,
+            Left,
+            Right
+        }
+
+        public event DTiltEvent OnDeviceTilt;
+
+        #endregion
+
         #region "Private methods"
         private void lagTimer_Tick(object sender, EventArgs e)
         {
@@ -100,7 +123,7 @@ namespace WPMote_Desk.Processor
                 previousReading = readingsQueue[0];
 
                 readingsQueue.RemoveAt(0);
-
+                
                 //move mouse pointer                
 
                 if (Math.Abs(lastPitch - pitch) * coordinateMulFactor > 1 && 
@@ -118,6 +141,86 @@ namespace WPMote_Desk.Processor
 
                 lastPitch = pitch;
                 lastRoll = roll;
+
+                //tilt events
+                ProcessTiltEvents(roll, pitch);
+            }
+        }
+
+        private void ProcessTiltEvents(double roll, double pitch)
+        {
+            try
+            {
+                if (pitch < -tiltThreshold) //forward
+                {
+                    if (!tiltForward)
+                    {
+                        tiltForward = true;
+                        if (OnDeviceTilt!=null) OnDeviceTilt(TiltDirections.Forward, true);
+                    }
+                }
+                else
+                {
+                    if (tiltForward)
+                    {
+                        tiltForward = false;
+                        if (OnDeviceTilt != null) OnDeviceTilt(TiltDirections.Forward, false);
+                    }
+                }
+
+                if (pitch > tiltThreshold) //backward
+                {
+                    if (!tiltBackward)
+                    {
+                        tiltBackward = true;
+                        if (OnDeviceTilt != null) OnDeviceTilt(TiltDirections.Backward, true);
+                    }
+                }
+                else
+                {
+                    if (tiltBackward)
+                    {
+                        tiltBackward = false;
+                        if (OnDeviceTilt != null) OnDeviceTilt(TiltDirections.Backward, false);
+                    }
+                }
+
+                if (roll < -tiltThreshold) //left
+                {
+                    if (!tiltLeft)
+                    {
+                        tiltLeft = true;
+                        if (OnDeviceTilt != null) OnDeviceTilt(TiltDirections.Left, true);
+                    }
+                }
+                else
+                {
+                    if (tiltLeft)
+                    {
+                        tiltLeft = false;
+                        if (OnDeviceTilt != null) OnDeviceTilt(TiltDirections.Left, false);
+                    }
+                }
+
+                if (roll > tiltThreshold) //right
+                {
+                    if (!tiltRight)
+                    {
+                        tiltRight = true;
+                        if (OnDeviceTilt != null) OnDeviceTilt(TiltDirections.Right, true);
+                    }
+                }
+                else
+                {
+                    if (tiltRight)
+                    {
+                        tiltRight = false;
+                        if (OnDeviceTilt != null) OnDeviceTilt(TiltDirections.Right, false);
+                    }
+                }
+            }
+            catch
+            {
             }
         }
         #endregion
