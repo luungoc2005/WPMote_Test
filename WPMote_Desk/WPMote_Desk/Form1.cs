@@ -74,6 +74,7 @@ namespace WPMote_Desk
             objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
             objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
             objComm.Events.OnClickReceived += Events_OnClickReceived;
+            objComm.Events.OnKeyBDReceived += Events_OnKeyBDReceived;
             objComm.OnConnected += objComm_OnConnected;
 
             //objFrm2 = new Form2();
@@ -83,6 +84,11 @@ namespace WPMote_Desk
             objProc.Start();
 
             objComm.Connect();
+        }
+
+        void Events_OnKeyBDReceived(byte KeyBD, bool KeyState)
+        {
+            Win32.Win32API.keybd_event(0, KeyBD, Win32.Win32API.KEYEVENTF_SCANCODE | (KeyState ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
         }
 
         private void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)

@@ -126,6 +126,9 @@ namespace WPMote_Desk.Processor
         /// </summary>
         public static Simple3DVector operator +(Simple3DVector v1, Simple3DVector v2)
         {
+            if (v2 == null && v1 != null) return v1;
+            if (v1 == null && v2 != null) return v2;
+            if (v1 == null && v2 == null) return new Simple3DVector(0,0,0);
             return new Simple3DVector(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
         }
 
@@ -134,6 +137,9 @@ namespace WPMote_Desk.Processor
         /// </summary>
         public static Simple3DVector operator -(Simple3DVector v1, Simple3DVector v2)
         {
+            if (v2 == null && v1 != null) return v1;
+            if (v1 == null && v2 != null) return v2;
+            if (v1 == null && v2 == null) return new Simple3DVector(0, 0, 0);
             return new Simple3DVector(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
         }
 
@@ -142,6 +148,9 @@ namespace WPMote_Desk.Processor
         /// </summary>
         public static Simple3DVector operator *(Simple3DVector v1, Simple3DVector v2)
         {
+            if (v2 == null && v1 != null) return v1;
+            if (v1 == null && v2 != null) return v2;
+            if (v1 == null && v2 == null) return new Simple3DVector(0, 0, 0);
             return new Simple3DVector(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
         }
 

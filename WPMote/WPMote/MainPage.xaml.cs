@@ -49,14 +49,59 @@ namespace WPMote
                 lBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
                     new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonUp), true);
                 rBtn.AddHandler(UIElement.MouseLeftButtonDownEvent,
-
                     new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonDown), true);
                 rBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
                     new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonUp), true);
 
+                AddInputBtn(wBtn);
+                AddInputBtn(aBtn);
+                AddInputBtn(sBtn);
+                AddInputBtn(dBtn);
+                AddInputBtn(qBtn);
+                AddInputBtn(eBtn);
+                AddInputBtn(spaceBtn);
+
+                wBtn.Tag = 0x11;
+                aBtn.Tag = 0x1E;
+                dBtn.Tag = 0x20;
+                sBtn.Tag = 0x1F;
+                qBtn.Tag = 0x10;
+                eBtn.Tag = 0x12;
+                spaceBtn.Tag = 0x39;
+
                 objComm = new Comm_Common(Comm_Common.CommMode.TCP);
                 objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             //}
+        }
+
+        private void AddInputBtn(Button targetButton)
+        {
+            targetButton.AddHandler(UIElement.MouseLeftButtonUpEvent,
+                new System.Windows.Input.MouseButtonEventHandler(InputBtn_MouseLeftButtonDown), true);
+            targetButton.AddHandler(UIElement.MouseLeftButtonDownEvent,
+                new System.Windows.Input.MouseButtonEventHandler(InputBtn_MouseLeftButtonUp), true);
+        }
+
+        private void InputBtn_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            try
+            {
+                objComm.SendBytes(new MsgCommon.KeyBDReceived(Convert.ToByte(((Button)sender).Tag), ((Button)sender).IsPressed).ToByteArray);
+            }
+            catch
+            {
+            }
+        }
+
+        private void InputBtn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            try
+            {
+                objComm.SendBytes(new MsgCommon.KeyBDReceived(Convert.ToByte(((Button)sender).Tag), ((Button)sender).IsPressed).ToByteArray);
+            }
+            catch
+            {
+            }
         }
 
         int icount;

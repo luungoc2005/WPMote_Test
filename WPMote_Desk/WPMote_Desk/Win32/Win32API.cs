@@ -15,6 +15,12 @@ namespace WPMote_Desk.Win32
         public static extern Int16 GetAsyncKeyState(int vKey);
         [DllImport("user32.dll")]
         public static extern int GetCursorPos(ref POINTAPI lpPoint);
+        [DllImport("user32.dll")]
+        public static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
+
+        public const int KEYEVENTF_KEYUP = 0x2;
+        public const int KEYEVENTF_SCANCODE = 0x8;
+        public const int KEYEVENTF_EXTENDEDKEY = 0x1;
 
         public const int MOUSEEVENTF_ABSOLUTE = 0x8000;
         public const int MOUSEEVENTF_LEFTDOWN = 0x2;

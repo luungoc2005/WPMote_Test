@@ -21,7 +21,8 @@ namespace WPMote_Desk.Connectivity.Messages
             {101,4*sizeof(byte)+sizeof(Int16)+129}, //ClientInfo: IP & DeviceName, DeviceName 128 chars max
             {150,3*sizeof(float)+sizeof(Int32)+1}, //AccelerometerData: XYZ + (int)flags
             {151,3*sizeof(Int16)+1}, //CompressedAccelData: XYZ
-            {152,2*sizeof(bool)+1} //ClickReceived: RClick & LClick
+            {152,2*sizeof(bool)+1}, //ClickReceived: RClick & LClick
+            {153,2*sizeof(byte)+sizeof(bool)+1} //KeyBDReceived: Key & state
         };
 
         #endregion
@@ -343,6 +344,73 @@ namespace WPMote_Desk.Connectivity.Messages
 
                         objWrite.Write(RClick);
                         objWrite.Write(LClick);
+                        objWrite.Flush();
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        objWrite.Dispose();
+                        objStream.Dispose();
+                    }
+
+                    return bData;
+                }
+            }
+        }
+
+        internal class KeyBDReceived
+        {
+            public byte ID = 153;
+            public byte KeyBD;
+            public bool KeyState;
+
+            //Constructors
+            public KeyBDReceived(byte[] bData)
+            {
+                var objStream = new MemoryStream(bData);
+                var objRead = new BinaryReader(objStream);
+
+                try
+                {
+
+                    KeyBD = objRead.ReadByte();
+                    KeyState = objRead.ReadBoolean();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    objRead.Dispose();
+                    objStream.Dispose();
+                }
+            }
+
+            public KeyBDReceived(byte dKeyBD, bool dKeyState)
+            {
+                KeyBD = dKeyBD;
+                KeyState = dKeyState;
+            }
+
+            //To byte array
+            public byte[] ToByteArray
+            {
+                get
+                {
+                    var bData = new byte[dictMessages[ID]];
+                    var objStream = new MemoryStream(bData);
+                    var objWrite = new BinaryWriter(objStream);
+
+                    try
+                    {
+                        objWrite.Write(ID);
+
+                        objWrite.Write(KeyBD);
+                        objWrite.Write(KeyState);
                         objWrite.Flush();
                     }
                     catch

@@ -15,6 +15,7 @@ namespace WPMote_Desk.Connectivity.Messages
         public delegate void DAccelerometerDataReceived(float X, float Y, float Z, Int32 flags);
         public delegate void DCompressedAccelDataReceived(Int16 X, Int16 Y, Int16 Z);
         public delegate void DClickReceived(bool RClick, bool LClick);
+        public delegate void DKeyBDReceived(byte KeyBD, bool KeyState);
 
         #endregion
 
@@ -25,6 +26,7 @@ namespace WPMote_Desk.Connectivity.Messages
         public event DAccelerometerDataReceived OnAccelerometerDataReceived;
         public event DCompressedAccelDataReceived OnCompressedAccelDataReceived;
         public event DClickReceived OnClickReceived;
+        public event DKeyBDReceived OnKeyBDReceived;
 
         #endregion
         
@@ -56,6 +58,11 @@ namespace WPMote_Desk.Connectivity.Messages
                 case 152: //OnClickReceived
                     var objMsg152 = new MsgCommon.ClickReceived(data);
                     if (OnClickReceived != null) OnClickReceived(objMsg152.RClick,objMsg152.LClick);
+                    break;
+
+                case 153: //OnKeyBDReceived
+                    var objMsg153 = new MsgCommon.KeyBDReceived(data);
+                    if (OnKeyBDReceived != null) OnKeyBDReceived(objMsg153.KeyBD, objMsg153.KeyState);
                     break;
 
                 default:
