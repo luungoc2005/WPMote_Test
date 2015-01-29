@@ -65,6 +65,7 @@ namespace WPMote.Connectivity
             {
                 SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
                 socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(serverName), DEFAULT_PORT);
+
                 //socketEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(delegate(object s, SocketAsyncEventArgs e)
                 //{
                 //    Debug.Print("Send completed");
@@ -72,7 +73,9 @@ namespace WPMote.Connectivity
                 byte[] data = new byte[MAX_BUFFER_SIZE - 1];
                 Array.Copy(buffer, data, Math.Min(MAX_BUFFER_SIZE, buffer.Length));
                 socketEventArg.SetBuffer(data, 0, data.Length);
-                objSendSocket.SendToAsync(socketEventArg);
+
+                objSendSocket.ConnectAsync(socketEventArg);
+                //objSendSocket.SendToAsync(socketEventArg);
             }
         }
 
@@ -86,22 +89,23 @@ namespace WPMote.Connectivity
             {
 
                 EndPoint socketEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
+
                 objRecvSocket.Bind(socketEndPoint);
 
                 SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
-                socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
-                socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
+                socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Broadcast, DEFAULT_PORT);
                 socketEventArg.Completed += socketEventArg_Completed;
-
-                //objRecvSocket.ConnectAsync(socketEventArg);
+                socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
 
                 try
                 {
-                    objRecvSocket.ReceiveFromAsync(socketEventArg);
+                    //objRecvSocket.ConnectAsync(socketEventArg);
+
+                    objRecvSocket.ReceiveAsync(socketEventArg);
                 }
                 catch
                 {
-                    throw;
+                    //throw;
                 }
 
                 while (true)
@@ -120,11 +124,13 @@ namespace WPMote.Connectivity
                 OnDataReceived(data);
 
                 SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
-                socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
-                socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
+                socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Broadcast, DEFAULT_PORT);
                 socketEventArg.Completed += socketEventArg_Completed;
 
-                objRecvSocket.ReceiveFromAsync(socketEventArg);
+                //objRecvSocket.ConnectAsync(socketEventArg);
+
+                socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
+                objRecvSocket.ReceiveAsync(socketEventArg);
             }
             else
             {

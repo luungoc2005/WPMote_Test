@@ -16,7 +16,10 @@ namespace WPMote_Desk.Connectivity
 
         TcpListener objServer;
         TcpClient objClient;
+
+        string strHostName = "";
         int intPort = 8046;
+
         private Thread tskListen;
 
         public event Connectivity.Comm_Common.ConnectedEvent Connected;
@@ -63,6 +66,18 @@ namespace WPMote_Desk.Connectivity
             }
         }
 
+        public string hostName
+        {
+            get
+            {
+                return strHostName;
+            }
+            set
+            {
+                strHostName = value;
+            }
+        }
+
         #endregion
 
         #region "Public methods"
@@ -106,6 +121,8 @@ namespace WPMote_Desk.Connectivity
             while (true)
             {
                 objClient = objServer.AcceptTcpClient();
+
+                strHostName = ((IPEndPoint)objClient.Client.RemoteEndPoint).Address.ToString();
 
                 objClient.NoDelay = true;
 

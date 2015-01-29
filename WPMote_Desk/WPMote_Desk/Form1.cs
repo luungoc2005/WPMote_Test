@@ -25,20 +25,12 @@ namespace WPMote_Desk
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void objComm_OnConnected(object sender, EventArgs e)
         {
-            objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
-            objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
-            objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
-            objComm.Events.OnClickReceived += Events_OnClickReceived;
-
-            //objFrm2 = new Form2();
-            //objFrm2.Show();
-
-            objProc = MouseProcessor.Instance;
-            objProc.Start();
-
-            objComm.Connect();
+            this.BeginInvoke((Action)(() =>
+            {
+                this.Text = "WPMote [Connected] - Local IP: " + Comm_TCP.LocalIPAddress();
+            }));
         }
 
         void Events_OnClickReceived(bool RClick, bool LClick)
@@ -56,14 +48,11 @@ namespace WPMote_Desk
 
         List<Point> lstPosQueue = new List<Point>();
 
-        void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
-        {
-
-        }
-
         void OnClientInfoReceived(string IPAddress, string DeviceName)
         {
             Debug.Print("ClientInfo received: " + IPAddress + " (" + DeviceName + ")");
+            objComm.classTCPHost = IPAddress;
+            objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(), Environment.MachineName).ToByteArray, true);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -80,27 +69,30 @@ namespace WPMote_Desk
             Debug.Print(System.Net.IPAddress.Broadcast.ToString());
 
             objComm = new Comm_Common(Comm_Common.CommMode.TCP);
+
+            objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
+            objComm.Events.OnAccelerometerDataReceived += Events_OnAccelerometerDataReceived;
+            objComm.Events.OnCompressedAccelDataReceived += Events_OnCompressedAccelDataReceived;
+            objComm.Events.OnClickReceived += Events_OnClickReceived;
+            objComm.OnConnected += objComm_OnConnected;
+
+            //objFrm2 = new Form2();
+            //objFrm2.Show();
+
+            objProc = MouseProcessor.Instance;
+            objProc.Start();
+
+            objComm.Connect();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
         {
-            objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(), Environment.MachineName).ToByteArray, true, true);
-            Debug.Print("Send clicked");
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             label1.Text = Win32.MousePointer.Position.ToString() + "\r\n" + Win32.MousePointer.LeftButtonDown.ToString();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            Win32.MousePointer.Position = new Point(0, 0);
-        }
-
-        private void button5_MouseMove(object sender, MouseEventArgs e)
-        {
-            Win32.MousePointer.LeftButtonDown = true;
         }
 
         private void tmrSmooth_Tick(object sender, EventArgs e)
@@ -113,9 +105,5 @@ namespace WPMote_Desk
                 "lag: " + objProc.lngAvgPing.ToString(); ;
         }
 
-        private void button6_Click(object sender, EventArgs e)
-        {
-            Win32.MousePointer.Move(new Point(200, 200));
-        }
     }
 }

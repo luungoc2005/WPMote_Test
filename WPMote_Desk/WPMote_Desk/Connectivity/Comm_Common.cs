@@ -25,7 +25,7 @@ namespace WPMote_Desk.Connectivity
         Comm_TCP objTCP;
         Comm_UDP objUDP;
 
-        string classTCPHost;
+        public string classTCPHost;
         int classTCPPort;
 
         BackgroundWorker bwMessages;
@@ -203,6 +203,8 @@ namespace WPMote_Desk.Connectivity
             bwMessages.RunWorkerAsync();
 
             objWrite = new BinaryWriter(objMainStream);
+
+            classTCPHost = objTCP.hostName;
 
             Debug.Print("Connected");
 

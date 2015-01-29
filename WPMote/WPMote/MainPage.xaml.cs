@@ -127,14 +127,16 @@ namespace WPMote
 
         private void OnClientInfoReceived(string IPAddress, string DeviceName)
         {
+            if (DeviceName == Microsoft.Phone.Info.DeviceStatus.DeviceName) return;
             Dispatcher.BeginInvoke((Action)(() =>
-            { txt2.Text = DateTime.Now.Ticks + " ClientInfo received: " + IPAddress + " (" + DeviceName + ")"; }));
+            { txt2.Text = DateTime.Now.Ticks + " ClientInfo received: " + IPAddress + " (" + DeviceName + ")"; 
             if (MessageBox.Show("Client info received. Attempt connect?", "Connection request", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 Dispatcher.BeginInvoke((Action)(() =>
                 { txt1.Text = IPAddress; }));
                 TCPConnect(IPAddress);
             }
+            }));
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -144,7 +146,7 @@ namespace WPMote
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            objComm.SendBytes(new MsgCommon.Msg_ClientInfo("127.0.0.1",Microsoft.Phone.Info.DeviceStatus.DeviceName).ToByteArray);
+            objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(),Microsoft.Phone.Info.DeviceStatus.DeviceName).ToByteArray,true,true);
         }
 
         private void lBtn_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

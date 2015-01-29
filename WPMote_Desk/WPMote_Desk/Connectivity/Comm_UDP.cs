@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using System.Diagnostics;
 
 namespace WPMote_Desk.Connectivity
 {
@@ -40,8 +41,8 @@ namespace WPMote_Desk.Connectivity
             objSendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             objRecvSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-            objRecvSocket.EnableBroadcast = true;
-            objSendSocket.EnableBroadcast = true;
+            objRecvSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);
+            objSendSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);
         }
 
         #endregion
@@ -75,7 +76,7 @@ namespace WPMote_Desk.Connectivity
                 byte[] data = new byte[MAX_BUFFER_SIZE - 1];
                 Array.Copy(buffer, data, Math.Min(MAX_BUFFER_SIZE, buffer.Length));
                 socketEventArg.SetBuffer(data, 0, data.Length);
-                
+
                 objSendSocket.SendToAsync(socketEventArg);
             }
         }
@@ -92,14 +93,14 @@ namespace WPMote_Desk.Connectivity
                 EndPoint socketEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
                 objRecvSocket.Bind(socketEndPoint);
 
+                SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
+                socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
+                socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
+                socketEventArg.Completed += socketEventArg_Completed;
+
                 try
                 {
-                    SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
-                    socketEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
-                    socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
-                    socketEventArg.Completed += socketEventArg_Completed;
-
-                    objRecvSocket.ReceiveFromAsync(socketEventArg);
+                    objRecvSocket.ReceiveAsync(socketEventArg);
                 }
                 catch
                 {
@@ -117,8 +118,10 @@ namespace WPMote_Desk.Connectivity
         {
             if (e.SocketError == SocketError.Success)
             {
+                
                 byte[] data = new byte[MAX_BUFFER_SIZE];
                 Array.Copy(e.Buffer, e.Offset, data, 0, e.BytesTransferred);
+
                 OnDataReceived(data);
 
                 SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
@@ -126,7 +129,7 @@ namespace WPMote_Desk.Connectivity
                 socketEventArg.SetBuffer(new Byte[MAX_BUFFER_SIZE], 0, MAX_BUFFER_SIZE);
                 socketEventArg.Completed += socketEventArg_Completed;
 
-                objRecvSocket.ReceiveFromAsync(socketEventArg);
+                objRecvSocket.ReceiveAsync(socketEventArg);
             }
             else
             {

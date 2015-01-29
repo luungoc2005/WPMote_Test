@@ -48,11 +48,11 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
-            <Button x:Name="btn1" Content="Connect" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-            <Button x:Name="btn2" Content="Close" HorizontalAlignment="Left" Margin="140,38,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-            <TextBox x:Name="txt1" HorizontalAlignment="Left" Margin="10,104,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="380"/>
-            <Button x:Name="btn3" Content="Send" HorizontalAlignment="Left" Margin="281,38,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-            <TextBlock x:Name="txt2" HorizontalAlignment="Left" Margin="25,202,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="100" Width="380"/>
+            <Button x:Name="btn1" Content="Connect" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Click="Button_Click" Visibility="Collapsed"/>
+            <Button x:Name="btn2" Content="Close" HorizontalAlignment="Left" Margin="140,38,0,0" VerticalAlignment="Top" Click="Button_Click_1" Visibility="Collapsed"/>
+            <TextBox x:Name="txt1" HorizontalAlignment="Left" Margin="10,104,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="380" Visibility="Collapsed"/>
+            <Button x:Name="btn3" Content="Send" HorizontalAlignment="Left" Margin="25,38,0,0" VerticalAlignment="Top" Click="Button_Click_2" Width="358"/>
+            <TextBlock x:Name="txt2" HorizontalAlignment="Left" Margin="25,115,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="68" Width="380"/>
             <TextBox x:Name="txt3" HorizontalAlignment="Left" Margin="10,332,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="420" Height="86"/>
             <CheckBox x:Name="chk1" Content="Send accelerometer data" HorizontalAlignment="Left" Margin="25,255,0,0" VerticalAlignment="Top" Width="380"/>
             <Button x:Name="rBtn" Content="RClick" HorizontalAlignment="Left" Margin="222,423,0,0" VerticalAlignment="Top" Height="179" Width="208" MouseLeftButtonDown="rBtn_MouseLeftButtonDown" MouseLeftButtonUp="rBtn_MouseLeftButtonUp"/>
