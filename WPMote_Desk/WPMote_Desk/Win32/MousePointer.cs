@@ -24,8 +24,9 @@ namespace WPMote_Desk.Win32
             }
             set
             {
-                Win32API.mouse_event((Win32API.MOUSEEVENTF_ABSOLUTE | Win32API.MOUSEEVENTF_MOVE),
-                    value.X, value.Y, 0, 0);
+                //Win32API.mouse_event((Win32API.MOUSEEVENTF_ABSOLUTE | Win32API.MOUSEEVENTF_MOVE),
+                //    value.X, value.Y, 0, 0);
+                Cursor.Position = value;
             }
         }
 
@@ -44,15 +45,18 @@ namespace WPMote_Desk.Win32
             }
             set
             {
-                if (value)
+                if (RightButtonDown != value)
                 {
-                    Win32API.mouse_event((SystemInformation.MouseButtonsSwapped) ?
-                        Win32API.MOUSEEVENTF_LEFTDOWN : Win32API.MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-                }
-                else
-                {
-                    Win32API.mouse_event((SystemInformation.MouseButtonsSwapped) ?
-                        Win32API.MOUSEEVENTF_LEFTUP : Win32API.MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+                    if (value)
+                    {
+                        Win32API.mouse_event((SystemInformation.MouseButtonsSwapped) ?
+                            Win32API.MOUSEEVENTF_LEFTDOWN : Win32API.MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
+                    }
+                    else
+                    {
+                        Win32API.mouse_event((SystemInformation.MouseButtonsSwapped) ?
+                            Win32API.MOUSEEVENTF_LEFTUP : Win32API.MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+                    }
                 }
             }
         }
@@ -72,24 +76,34 @@ namespace WPMote_Desk.Win32
             }
             set
             {
-                if (value)
+                if (LeftButtonDown!=value)
                 {
-                    Win32API.mouse_event((SystemInformation.MouseButtonsSwapped) ?
-                        Win32API.MOUSEEVENTF_RIGHTDOWN : Win32API.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-                }
-                else
-                {
-                    Win32API.mouse_event((SystemInformation.MouseButtonsSwapped) ?
-                        Win32API.MOUSEEVENTF_RIGHTUP : Win32API.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+                    if (value)
+                    {
+                        Win32API.mouse_event((SystemInformation.MouseButtonsSwapped) ?
+                            Win32API.MOUSEEVENTF_RIGHTDOWN : Win32API.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+                    }
+                    else
+                    {
+                        Win32API.mouse_event((SystemInformation.MouseButtonsSwapped) ?
+                            Win32API.MOUSEEVENTF_RIGHTUP : Win32API.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+                    }
                 }
             }
         }
 
         //Set relative coordinates
-        public static void Move(Point MoveBy)
+        public static void APIMove(Point MoveBy)
         {
             Win32API.mouse_event(Win32API.MOUSEEVENTF_MOVE,
                 MoveBy.X, MoveBy.Y, 0, 0);
+        }
+
+        public static void Move(Point MoveBy)
+        {
+            Point pos=Win32.MousePointer.Position;
+            Win32.MousePointer.Position = new Point(pos.X + MoveBy.X,
+                                                    pos.Y + MoveBy.Y);
         }
     }
 }

@@ -40,21 +40,48 @@
          -->
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" Visibility="Collapsed">
+            <TextBlock Text="Future Gadget Lab" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
+            <TextBlock Text="test app" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
-            <Button x:Name="btn1" Content="Connect" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-            <Button x:Name="btn2" Content="Close" HorizontalAlignment="Left" Margin="140,38,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-            <TextBox x:Name="txt1" HorizontalAlignment="Left" Margin="10,104,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="380"/>
-            <Button x:Name="btn3" Content="Send" HorizontalAlignment="Left" Margin="281,38,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-            <TextBlock x:Name="txt2" HorizontalAlignment="Left" Margin="25,202,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="100" Width="380"/>
-            <TextBox x:Name="txt3" HorizontalAlignment="Left" Margin="10,339,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="420" Height="217"/>
-            <CheckBox x:Name="chk1" Content="Send accelerometer data" HorizontalAlignment="Left" Margin="25,255,0,0" VerticalAlignment="Top" Width="380"/>
+            <Button x:Name="btn1" Content="Connect" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Click="Button_Click" Visibility="Collapsed"/>
+            <Button x:Name="btn2" Content="Close" HorizontalAlignment="Left" Margin="140,38,0,0" VerticalAlignment="Top" Click="Button_Click_1" Visibility="Collapsed"/>
+            <TextBox x:Name="txt1" HorizontalAlignment="Left" Margin="10,104,0,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="380" Visibility="Collapsed"/>
+            <Button x:Name="btn3" Content="Look for client" HorizontalAlignment="Left" Margin="25,10,0,0" VerticalAlignment="Top" Click="Button_Click_2" Width="405"/>
+            <TextBlock x:Name="txt2" HorizontalAlignment="Left" Margin="25,115,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="68" Width="380" Visibility="Collapsed"/>
+            <TextBox x:Name="txt3" HorizontalAlignment="Left" Margin="10,332,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="420" Height="86" Visibility="Collapsed"/>
+            <CheckBox x:Name="chk1" Content="Send accelerometer data" HorizontalAlignment="Left" Margin="27,678,0,0" VerticalAlignment="Top" Width="403"/>
+            <Button x:Name="rBtn" Content="RClick" HorizontalAlignment="Left" Margin="222,488,0,0" VerticalAlignment="Top" Height="137" Width="208" MouseLeftButtonDown="rBtn_MouseLeftButtonDown" MouseLeftButtonUp="rBtn_MouseLeftButtonUp"/>
+            <Button x:Name="lBtn" Content="LClick" HorizontalAlignment="Left" Margin="25,488,0,0" VerticalAlignment="Top" Height="137" Width="207" MouseLeftButtonDown="lBtn_MouseLeftButtonDown" MouseLeftButtonUp="lBtn_MouseLeftButtonUp"/>
+            <Button Content="Calibrate" HorizontalAlignment="Left" Margin="203,110,0,0" VerticalAlignment="Top" Width="168" Click="Button_Click_3" Visibility="Collapsed"/>
+
+            <Grid HorizontalAlignment="Left" Height="379" VerticalAlignment="Top" Width="456" Margin="0,82,0,0" Visibility="Collapsed">
+                <Button x:Name="wBtn" Content="W" HorizontalAlignment="Left" Height="100" Margin="168,57,0,0" VerticalAlignment="Top" Width="113"/>
+                <Button x:Name="aBtn" Content="A" HorizontalAlignment="Left" Height="100" Margin="73,141,0,0" VerticalAlignment="Top" Width="113"/>
+                <Button x:Name="dBtn" Content="D" HorizontalAlignment="Left" Height="100" Margin="261,141,0,0" VerticalAlignment="Top" Width="113"/>
+                <Button x:Name="sBtn" Content="S" HorizontalAlignment="Left" Height="100" Margin="168,141,0,0" VerticalAlignment="Top" Width="113"/>
+                <Button x:Name="qBtn" Content="Q" HorizontalAlignment="Left" Height="100" Margin="55,36,0,0" VerticalAlignment="Top" Width="113"/>
+                <Button x:Name="eBtn" Content="E" HorizontalAlignment="Left" Height="100" Margin="281,36,0,0" VerticalAlignment="Top" Width="113"/>
+                <Button x:Name="spaceBtn" Content="Space" HorizontalAlignment="Left" Height="100" Margin="73,269,0,0" VerticalAlignment="Top" Width="301"/>
+            </Grid>
+
+            <Grid HorizontalAlignment="Left" Height="379" VerticalAlignment="Top" Width="456" Margin="0,82,0,0">
+                <Button x:Name="zBtn" Content="Z" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="175" Width="202"/>
+                <Button x:Name="xBtn" Content="X" HorizontalAlignment="Left" Margin="248,45,0,0" VerticalAlignment="Top" Height="171" Width="198"/>
+                <Button x:Name="shiftBtn" Content="Shift" HorizontalAlignment="Left" Margin="65,242,0,0" VerticalAlignment="Top" Height="127" Width="330"/>
+            </Grid>
+
+
+            <Grid HorizontalAlignment="Left" Height="379" VerticalAlignment="Top" Width="456" Margin="0,82,0,0" Visibility="Collapsed">
+                <Button x:Name="playBtn" Content="Play" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="175" Width="202"/>
+                <Button x:Name="nextBtn" Content="Next" HorizontalAlignment="Left" Margin="248,45,0,0" VerticalAlignment="Top" Height="171" Width="198"/>
+                <Button x:Name="volUpBtn" Content="Vol+" HorizontalAlignment="Left" Margin="248,270,0,0" VerticalAlignment="Top" Height="99" Width="166"/>
+                <Button x:Name="volDownBtn" Content="Vol-" HorizontalAlignment="Left" Margin="46,270,0,0" VerticalAlignment="Top" Height="99" Width="166"/>
+            </Grid>
 
         </Grid>
 
