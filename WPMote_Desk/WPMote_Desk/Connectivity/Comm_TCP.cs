@@ -120,6 +120,8 @@ namespace WPMote_Desk.Connectivity
 
             while (true)
             {
+                Thread.Sleep(10);
+
                 objClient = objServer.AcceptTcpClient();
 
                 strHostName = ((IPEndPoint)objClient.Client.RemoteEndPoint).Address.ToString();

@@ -109,6 +109,7 @@ namespace WPMote_Desk.Connectivity
 
                 while (true)
                 {
+                    Thread.Sleep(10);
                     if (objCancelToken.IsCancellationRequested) return;
                 }
             }
