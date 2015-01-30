@@ -69,6 +69,24 @@ namespace WPMote
                 eBtn.Tag = 0x12;
                 spaceBtn.Tag = 0x39;
 
+                AddInputBtn(zBtn);
+                AddInputBtn(xBtn);
+                AddInputBtn(shiftBtn);
+
+                zBtn.Tag = 0x2C;
+                xBtn.Tag = 0x2D;
+                shiftBtn.Tag = 0x2A;
+
+                AddInputBtn(playBtn);
+                AddInputBtn(volUpBtn);
+                AddInputBtn(volDownBtn);
+                AddInputBtn(nextBtn);
+
+                playBtn.Tag = 0xA2;
+                nextBtn.Tag = 0x99;
+                volUpBtn.Tag = 0xB0;
+                volDownBtn.Tag = 0xAE;
+
                 objComm = new Comm_Common(Comm_Common.CommMode.TCP);
                 objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             //}
