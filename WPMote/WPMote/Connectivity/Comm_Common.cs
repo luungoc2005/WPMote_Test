@@ -211,6 +211,8 @@ namespace WPMote.Connectivity
             {
                 while (true)
                 {
+                    Thread.Sleep(10);
+
                     objCancelToken.ThrowIfCancellationRequested();
 
                     try
