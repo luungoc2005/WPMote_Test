@@ -22,7 +22,7 @@ namespace WPMote.Connectivity.Messages
             {150,3*sizeof(float)+sizeof(Int32)+1}, //AccelerometerData: XYZ + (int)flags
             {151,3*sizeof(Int16)+1}, //CompressedAccelData: XYZ
             {152,2*sizeof(bool)+1}, //ClickReceived: RClick & LClick
-            {153,2*sizeof(byte)+sizeof(bool)+1} //KeyBDReceived: Key & state
+            {153,2*sizeof(byte)+sizeof(bool)+sizeof(bool)+1} //KeyBDReceived: Key & state
         };
 
         #endregion
@@ -366,6 +366,7 @@ namespace WPMote.Connectivity.Messages
             public byte ID = 153;
             public byte KeyBD;
             public bool KeyState;
+            public bool extended;
 
             //Constructors
             public KeyBDReceived(byte[] bData)
@@ -378,6 +379,7 @@ namespace WPMote.Connectivity.Messages
 
                     KeyBD = objRead.ReadByte();
                     KeyState = objRead.ReadBoolean();
+                    extended = objRead.ReadBoolean();
                 }
                 catch
                 {
@@ -390,7 +392,7 @@ namespace WPMote.Connectivity.Messages
                 }
             }
 
-            public KeyBDReceived(byte dKeyBD, bool dKeyState)
+            public KeyBDReceived(byte dKeyBD, bool dKeyState, bool extended)
             {
                 KeyBD = dKeyBD;
                 KeyState = dKeyState;
@@ -411,6 +413,7 @@ namespace WPMote.Connectivity.Messages
 
                         objWrite.Write(KeyBD);
                         objWrite.Write(KeyState);
+                        objWrite.Write(extended);
                         objWrite.Flush();
                     }
                     catch

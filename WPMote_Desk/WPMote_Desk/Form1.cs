@@ -112,9 +112,11 @@ namespace WPMote_Desk
             }
         }
 
-        void Events_OnKeyBDReceived(byte KeyBD, bool KeyState)
+        void Events_OnKeyBDReceived(byte KeyBD, bool KeyState, bool extended)
         {
-            Win32.Win32API.keybd_event(0, KeyBD, Win32.Win32API.KEYEVENTF_SCANCODE | (KeyState ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+            Win32.Win32API.keybd_event(0, KeyBD, Win32.Win32API.KEYEVENTF_SCANCODE | 
+                                                (KeyState ? 0 : Win32.Win32API.KEYEVENTF_KEYUP) | 
+                                                (extended? Win32.Win32API.KEYEVENTF_EXTENDEDKEY : 0), 0);
         }
 
         private void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)

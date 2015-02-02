@@ -53,58 +53,54 @@ namespace WPMote
                 rBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
                     new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonUp), true);
 
-                AddInputBtn(wBtn);
-                AddInputBtn(aBtn);
-                AddInputBtn(sBtn);
-                AddInputBtn(dBtn);
-                AddInputBtn(qBtn);
-                AddInputBtn(eBtn);
-                AddInputBtn(spaceBtn);
+                AddInputBtn(wBtn, 0x11);
+                AddInputBtn(aBtn, 0x1E);
+                AddInputBtn(sBtn, 0x1F);
+                AddInputBtn(dBtn, 0x20);
+                AddInputBtn(qBtn, 0x10);
+                AddInputBtn(eBtn, 0x12);
+                AddInputBtn(spaceBtn, 0x39);
 
-                wBtn.Tag = 0x11;
-                aBtn.Tag = 0x1E;
-                dBtn.Tag = 0x20;
-                sBtn.Tag = 0x1F;
-                qBtn.Tag = 0x10;
-                eBtn.Tag = 0x12;
-                spaceBtn.Tag = 0x39;
+                AddInputBtn(zBtn, 0x2C);
+                AddInputBtn(xBtn, 0x2D);
+                AddInputBtn(shiftBtn, 0x2A);
 
-                AddInputBtn(zBtn);
-                AddInputBtn(xBtn);
-                AddInputBtn(shiftBtn);
-
-                zBtn.Tag = 0x2C;
-                xBtn.Tag = 0x2D;
-                shiftBtn.Tag = 0x2A;
-
-                AddInputBtn(playBtn);
-                AddInputBtn(volUpBtn);
-                AddInputBtn(volDownBtn);
-                AddInputBtn(nextBtn);
-
-                playBtn.Tag = 0xA2;
-                nextBtn.Tag = 0x99;
-                volUpBtn.Tag = 0xB0;
-                volDownBtn.Tag = 0xAE;
+                AddInputBtn(playBtn, 0xA2, true);
+                AddInputBtn(volUpBtn, 0x99, true);
+                AddInputBtn(volDownBtn, 0xB0, true);
+                AddInputBtn(nextBtn, 0xAE, true);
 
                 objComm = new Comm_Common(Comm_Common.CommMode.TCP);
                 objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
             //}
         }
 
-        private void AddInputBtn(Button targetButton)
+        private void AddInputBtn(Button targetButton, byte scanCode, bool extended = false)
         {
             targetButton.AddHandler(UIElement.MouseLeftButtonUpEvent,
                 new System.Windows.Input.MouseButtonEventHandler(InputBtn_MouseLeftButtonDown), true);
             targetButton.AddHandler(UIElement.MouseLeftButtonDownEvent,
                 new System.Windows.Input.MouseButtonEventHandler(InputBtn_MouseLeftButtonUp), true);
+            targetButton.Tag = new inputData(scanCode, extended);
+        }
+
+        private struct inputData
+        {
+            public byte scanCode = 0;
+            public bool extended = false;
+            public inputData(byte c, bool e = false)
+            {
+                scanCode = c;
+                extended = e;
+            }
         }
 
         private void InputBtn_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             try
             {
-                objComm.SendBytes(new MsgCommon.KeyBDReceived(Convert.ToByte(((Button)sender).Tag), ((Button)sender).IsPressed).ToByteArray);
+                inputData data = (inputData)((Button)sender).Tag;
+                objComm.SendBytes(new MsgCommon.KeyBDReceived(data.scanCode, ((Button)sender).IsPressed, data.extended).ToByteArray);
             }
             catch
             {
@@ -115,7 +111,8 @@ namespace WPMote
         {
             try
             {
-                objComm.SendBytes(new MsgCommon.KeyBDReceived(Convert.ToByte(((Button)sender).Tag), ((Button)sender).IsPressed).ToByteArray);
+                inputData data = (inputData)((Button)sender).Tag;
+                objComm.SendBytes(new MsgCommon.KeyBDReceived(data.scanCode, ((Button)sender).IsPressed, data.extended).ToByteArray);
             }
             catch
             {
