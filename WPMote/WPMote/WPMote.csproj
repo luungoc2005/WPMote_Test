@@ -165,10 +165,6 @@
     </Content>
     <Content Include="D-Mote_icon.png" />
     <Content Include="D-Mote_icon_transparent.png" />
-    <Content Include="Grid separation_2.png" />
-    <Content Include="Icon1.png" />
-    <Content Include="Penguin.png" />
-    <Content Include="SOTW145_Light.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">
