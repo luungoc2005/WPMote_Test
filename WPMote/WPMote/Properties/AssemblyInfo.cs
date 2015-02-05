@@ -6,10 +6,10 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WPMote")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("BitRapp")]
+[assembly: AssemblyDescription("Basic integration to remote application")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Future gadget lab")]
 [assembly: AssemblyProduct("WPMote")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
