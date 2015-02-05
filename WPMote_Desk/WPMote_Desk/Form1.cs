@@ -95,16 +95,16 @@ namespace WPMote_Desk
                 switch (direction)
                 {
                     case MouseProcessor.TiltDirections.Forward:
-                        Win32.Win32API.keybd_event(0, 0xC8, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+                        Win32.Win32API.keybd_event(0, 0xC8, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP) | Win32.Win32API.KEYEVENTF_EXTENDEDKEY, 0);
                         break;
                     case MouseProcessor.TiltDirections.Backward:
-                        Win32.Win32API.keybd_event(0, 0xD0, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+                        Win32.Win32API.keybd_event(0, 0xD0, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP) | Win32.Win32API.KEYEVENTF_EXTENDEDKEY, 0);
                         break;
                     case MouseProcessor.TiltDirections.Left:
-                        Win32.Win32API.keybd_event(0, 0xCB, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+                        Win32.Win32API.keybd_event(0, 0xCB, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP) | Win32.Win32API.KEYEVENTF_EXTENDEDKEY, 0);
                         break;
                     case MouseProcessor.TiltDirections.Right:
-                        Win32.Win32API.keybd_event(0, 0xCD, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+                        Win32.Win32API.keybd_event(0, 0xCD, Win32.Win32API.KEYEVENTF_SCANCODE | (value ? 0 : Win32.Win32API.KEYEVENTF_KEYUP) | Win32.Win32API.KEYEVENTF_EXTENDEDKEY, 0);
                         break;
                     default:
                         break;
@@ -112,9 +112,11 @@ namespace WPMote_Desk
             }
         }
 
-        void Events_OnKeyBDReceived(byte KeyBD, bool KeyState)
+        void Events_OnKeyBDReceived(byte KeyBD, bool KeyState, bool extended)
         {
-            Win32.Win32API.keybd_event(0, KeyBD, Win32.Win32API.KEYEVENTF_SCANCODE | (KeyState ? 0 : Win32.Win32API.KEYEVENTF_KEYUP), 0);
+            Win32.Win32API.keybd_event(0, KeyBD, Win32.Win32API.KEYEVENTF_SCANCODE | 
+                                                (KeyState ? 0 : Win32.Win32API.KEYEVENTF_KEYUP) | 
+                                                (extended? Win32.Win32API.KEYEVENTF_EXTENDEDKEY : 0), 0);
         }
 
         private void Events_OnAccelerometerDataReceived(float X, float Y, float Z, int flags)
@@ -135,6 +137,11 @@ namespace WPMote_Desk
                 "Y: " + objProc.currentVelocity.Y.ToString() + "\r\n" +
                 "Z: " + objProc.currentVelocity.Z.ToString() + "\r\n" +
                 "lag: " + objProc.lngAvgPing.ToString(); ;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            objProc.IsMouseEnabled = checkBox2.Checked;
         }
 
     }

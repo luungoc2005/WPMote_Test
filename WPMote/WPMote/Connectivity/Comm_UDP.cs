@@ -110,6 +110,7 @@ namespace WPMote.Connectivity
 
                 while (true)
                 {
+                    Thread.Sleep(10);
                     if (objCancelToken.IsCancellationRequested) return;
                 }
             }
