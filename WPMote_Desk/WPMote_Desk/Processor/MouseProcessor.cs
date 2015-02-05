@@ -46,6 +46,8 @@ namespace WPMote_Desk.Processor
 
         bool _init = false;
 
+        public bool IsMouseEnabled { get; set; }
+
         #endregion
 
         #region "Class constructor"
@@ -132,7 +134,7 @@ namespace WPMote_Desk.Processor
                     isMoving = true;
                 }
 
-                if (isMoving)
+                if (isMoving && IsMouseEnabled)
                 {
                     Win32.MousePointer.Move(new Point((int)(roll * coordinateMulFactor),
                                                         (int)(pitch * coordinateMulFactor *
