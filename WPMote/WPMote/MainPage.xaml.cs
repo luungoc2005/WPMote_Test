@@ -86,8 +86,8 @@ namespace WPMote
 
         private struct inputData
         {
-            public byte scanCode = 0;
-            public bool extended = false;
+            public byte scanCode;
+            public bool extended;
             public inputData(byte c, bool e = false)
             {
                 scanCode = c;
