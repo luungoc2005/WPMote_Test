@@ -2,7 +2,7 @@
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2014/deployment" AppPlatformVersion="8.1">
   <DefaultLanguage xmlns="" code="en-US" />
   <App xmlns="" ProductID="{de7f7c4e-a5df-4987-9c8b-db4b99585573}" Title="D-Mote" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Future gadget lab" Description="D-Mote allows a smartphone to transmit sensory data as user inputs across platform to supported applications via wireless connection." SDOptOut="false" BackUpOptOut="false" Publisher="" PublisherID="{f57a27bc-5adc-428d-893d-00919b10b6a9}">
-    <IconPath IsRelative="true" IsResource="false">D-Mote_icon.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Assets\D-Mote_icon_transparent.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
@@ -16,9 +16,9 @@
     <Tokens>
       <PrimaryToken TokenID="WPMoteToken" TaskName="_default">
         <TemplateFlip>
-          <SmallImageURI IsRelative="true" IsResource="false">D-Mote_icon_transparent.png</SmallImageURI>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets\D-Mote_icon.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsRelative="true" IsResource="false">D-Mote_icon_transparent.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Assets\D-Mote_icon.png</BackgroundImageURI>
           <Title>D-Mote</Title>
           <BackContent>
           </BackContent>
