@@ -11,6 +11,7 @@ using WPMote.Resources;
 using WPMote.Connectivity;
 using WPMote.Connectivity.Messages;
 using Microsoft.Phone.Applications.Common;
+using System.Windows.ControlsEx;
 
 namespace WPMote
 {
@@ -44,14 +45,14 @@ namespace WPMote
                 objAccel.ReadingChanged += objAccel_ReadingChanged;
                 objAccel.Active = true;
 
-                lBtn.AddHandler(UIElement.MouseLeftButtonDownEvent, 
-                    new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonDown), true);
-                lBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
-                    new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonUp), true);
-                rBtn.AddHandler(UIElement.MouseLeftButtonDownEvent,
-                    new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonDown), true);
-                rBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
-                    new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonUp), true);
+                //lBtn.AddHandler(UIElement.MouseLeftButtonDownEvent, 
+                //    new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonDown), true);
+                //lBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
+                //    new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonUp), true);
+                //rBtn.AddHandler(UIElement.MouseLeftButtonDownEvent,
+                //    new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonDown), true);
+                //rBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
+                //    new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonUp), true);
 
                 AddInputBtn(wBtn, 0x11);
                 AddInputBtn(aBtn, 0x1E);
@@ -75,12 +76,16 @@ namespace WPMote
             //}
         }
 
-        private void AddInputBtn(Button targetButton, byte scanCode, bool extended = false)
+        private void AddInputBtn(ButtonEx targetButton, byte scanCode, bool extended = false)
         {
-            targetButton.AddHandler(UIElement.MouseLeftButtonUpEvent,
-                new System.Windows.Input.MouseButtonEventHandler(InputBtn_MouseLeftButtonDown), true);
-            targetButton.AddHandler(UIElement.MouseLeftButtonDownEvent,
-                new System.Windows.Input.MouseButtonEventHandler(InputBtn_MouseLeftButtonUp), true);
+            targetButton.TouchDown += new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonDown);
+            targetButton.TouchDragOutside += new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonUp);
+            targetButton.TouchUpInside += new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonUp);
+
+            //targetButton.AddHandler(ButtonEx.MouseLeftButtonDownEvent,
+            //    new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonDown), true);
+            //targetButton.AddHandler(ButtonEx.MouseLeftButtonUpEvent,
+            //    new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonUp), true);
             targetButton.Tag = new inputData(scanCode, extended);
         }
 
@@ -95,24 +100,24 @@ namespace WPMote
             }
         }
 
-        private void InputBtn_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void InputBtn_MouseLeftButtonDown(object sender, Point e)
         {
             try
             {
-                inputData data = (inputData)((Button)sender).Tag;
-                objComm.SendBytes(new MsgCommon.KeyBDReceived(data.scanCode, ((Button)sender).IsPressed, data.extended).ToByteArray);
+                inputData data = (inputData)((ButtonEx)sender).Tag;
+                objComm.SendBytes(new MsgCommon.KeyBDReceived(data.scanCode, ((ButtonEx)sender).IsPressed, data.extended).ToByteArray);
             }
             catch
             {
             }
         }
 
-        private void InputBtn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void InputBtn_MouseLeftButtonUp(object sender, Point e)
         {
             try
             {
-                inputData data = (inputData)((Button)sender).Tag;
-                objComm.SendBytes(new MsgCommon.KeyBDReceived(data.scanCode, ((Button)sender).IsPressed, data.extended).ToByteArray);
+                inputData data = (inputData)((ButtonEx)sender).Tag;
+                objComm.SendBytes(new MsgCommon.KeyBDReceived(data.scanCode, ((ButtonEx)sender).IsPressed, data.extended).ToByteArray);
             }
             catch
             {
@@ -209,22 +214,22 @@ namespace WPMote
             objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(),Microsoft.Phone.Info.DeviceStatus.DeviceName).ToByteArray,true,true);
         }
 
-        private void lBtn_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void lBtn_MouseLeftButtonDown(object sender, Point e)
         {
             objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
         }
 
-        private void lBtn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void lBtn_MouseLeftButtonUp(object sender, Point e)
         {
             objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
         }
 
-        private void rBtn_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void rBtn_MouseLeftButtonDown(object sender, Point e)
         {
             objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
         }
 
-        private void rBtn_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void rBtn_MouseLeftButtonUp(object sender, Point e)
         {
             objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
         }
