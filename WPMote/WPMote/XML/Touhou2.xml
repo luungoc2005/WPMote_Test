@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<XmlData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <XAML>PEdyaWQgeG1sbnM9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd2luZngvMjAwNi94YW1sL3ByZXNlbnRhdGlvbiIgeG1sbnM6eD0iaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93aW5meC8yMDA2L3hhbWwiIHhtbG5zOmNFeD0iY2xyLW5hbWVzcGFjZTpTeXN0ZW0uV2luZG93cy5Db250cm9sc0V4O2Fzc2VtYmx5PUNvbnRyb2xzRXgiPg0KICAgICAgICAgICAgICAgIDxjRXg6QnV0dG9uRXggeDpOYW1lPSJ6QnRuIiBDb250ZW50PSJaIiBUYWc9IjJDIiBIb3Jpem9udGFsQWxpZ25tZW50PSJMZWZ0IiBNYXJnaW49IjIwLDEwLDAsMCIgVmVydGljYWxBbGlnbm1lbnQ9IlRvcCIgSGVpZ2h0PSIxNzUiIFdpZHRoPSIyMDAiLz4NCiAgICAgICAgICAgICAgICA8Y0V4OkJ1dHRvbkV4IHg6TmFtZT0ieEJ0biIgQ29udGVudD0iWCIgVGFnPSIyRCIgSG9yaXpvbnRhbEFsaWdubWVudD0iUmlnaHQiIE1hcmdpbj0iMCwxMCwxMCwwIiBWZXJ0aWNhbEFsaWdubWVudD0iVG9wIiBIZWlnaHQ9IjE3NSIgV2lkdGg9IjIwMCIvPg0KICAgICAgICAgICAgICAgIDxjRXg6QnV0dG9uRXggeDpOYW1lPSJzaGlmdEJ0biIgQ29udGVudD0iU2hpZnQiIFRhZz0iMkEiIEhvcml6b250YWxBbGlnbm1lbnQ9IkNlbnRlciIgTWFyZ2luPSI3MCwwLDU2LDIwNSIgVmVydGljYWxBbGlnbm1lbnQ9IkJvdHRvbSIgSGVpZ2h0PSIxMjciIFdpZHRoPSIzMzAiLz4NCiAgICAgICAgICAgICAgICA8Y0V4OkJ1dHRvbkV4IHg6TmFtZT0ibEJ0biIgQ29udGVudD0iTENsaWNrIiBIb3Jpem9udGFsQWxpZ25tZW50PSJMZWZ0IiBWZXJ0aWNhbEFsaWdubWVudD0iQm90dG9tIiBIZWlnaHQ9IjE1MCIgV2lkdGg9IjIwMCIgTWFyZ2luPSIyMCwwLDAsMzgiLz4NCiAgICAgICAgICAgICAgICA8Y0V4OkJ1dHRvbkV4IHg6TmFtZT0ickJ0biIgQ29udGVudD0iUkNsaWNrIiBIb3Jpem9udGFsQWxpZ25tZW50PSJSaWdodCIgVmVydGljYWxBbGlnbm1lbnQ9IkJvdHRvbSIgSGVpZ2h0PSIxNTAiIFdpZHRoPSIyMDAiIE1hcmdpbj0iMCwwLDEwLDM4Ii8+DQo8L0dyaWQ+</XAML>
+  <ModuleName>Touhou</ModuleName>
+  <data>
+    <XmlBindingData>
+      <name>rBtn</name>
+      <type>ButtonEx</type>
+      <handler>RightMouseClick	</handler>
+    </XmlBindingData>
+    <XmlBindingData>
+      <name>rBtn</name>
+      <type>ButtonEx</type>
+      <handler>RightMouseClick	</handler>
+    </XmlBindingData>
+    <XmlBindingData>
+      <name>rBtn</name>
+      <type>ButtonEx</type>
+      <handler>RightMouseClick	</handler>
+    </XmlBindingData>
+    <XmlBindingData>
+      <name>rBtn</name>
+      <type>ButtonEx</type>
+      <handler>RightMouseClick	</handler>
+    </XmlBindingData>
+    <XmlBindingData>
+      <name>rBtn</name>
+      <type>ButtonEx</type>
+      <handler>RightMouseClick	</handler>
+    </XmlBindingData>
+  </data>
+</XmlData>
