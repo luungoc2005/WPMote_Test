@@ -1,0 +1,41 @@
+﻿<ApplicationData>
+<Info>
+	<ModuleName>Touhou</ModuleName>
+</Info>
+
+<XAML><Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cEx="clr-namespace:System.Windows.ControlsEx;assembly=ControlsEx">
+                <cEx:ButtonEx x:Name="zBtn" Content="Z" Tag="2C" HorizontalAlignment="Left" Margin="20,10,0,0" VerticalAlignment="Top" Height="175" Width="200"/>
+                <cEx:ButtonEx x:Name="xBtn" Content="X" Tag="2D" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="175" Width="200"/>
+                <cEx:ButtonEx x:Name="shiftBtn" Content="Shift" Tag="2A" HorizontalAlignment="Center" Margin="70,0,56,205" VerticalAlignment="Bottom" Height="127" Width="330"/>
+                <cEx:ButtonEx x:Name="lBtn" Content="LClick" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="150" Width="200" Margin="20,0,0,38"/>
+                <cEx:ButtonEx x:Name="rBtn" Content="RClick" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="150" Width="200" Margin="0,0,10,38"/>
+</Grid></XAML>
+
+<Code>
+  <Object>
+    <Name>zBtn</Name>
+    <Type>ButtonEx</Type>
+    <Handler>ScanCode</Handler>
+  </Object>
+  <Object>
+    <Name>xBtn</Name>
+    <Type>ButtonEx</Type>
+    <Handler>ScanCode</Handler>
+  </Object>
+  <Object>
+    <Name>shiftBtn</Name>
+    <Type>ButtonEx</Type>
+    <Handler>ScanCode</Handler>
+  </Object>
+  <Object>
+    <Name>lBtn</Name>
+    <Type>ButtonEx</Type>
+    <Handler>LeftMouseClick</Handler>
+  </Object>
+  <Object>
+    <Name>rBtn</Name>
+    <Type>ButtonEx</Type>
+    <Handler>RightMouseClick</Handler>
+  </Object>
+</Code>
+</ApplicationData>

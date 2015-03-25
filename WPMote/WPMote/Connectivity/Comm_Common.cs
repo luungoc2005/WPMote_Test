@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace WPMote.Connectivity
 {
-    class Comm_Common
+    public class Comm_Common
         //Note: this class also handles closing of sockets
     {
         #region "Common variables"

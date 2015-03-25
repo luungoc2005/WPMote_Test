@@ -7,11 +7,21 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+
+using System.IO;
+using System.Windows.Markup;
+using System.Threading.Tasks;
+using Windows.Storage;
+using System.Xml.Linq;
+using System.Xml;
+using System.Windows.Resources;
+using System.Text;
+using System.Windows.ControlsEx;
 using WPMote.Resources;
 using WPMote.Connectivity;
 using WPMote.Connectivity.Messages;
 using Microsoft.Phone.Applications.Common;
-using System.Windows.ControlsEx;
+using WPMote.XML;
 
 namespace WPMote
 {
@@ -21,118 +31,83 @@ namespace WPMote
         //Motion objMotion;
         AccelerometerHelper objAccel;
         bool ChkChecked;
-
         const Int32 MsgInterval = 100;
+        CheckBox check;
 
-        // Constructor
+        public TextBlock NewText;
+        xamlBinder ContentBinder = new xamlBinder();
+
+
         public MainPage()
         {
             InitializeComponent();
-            
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
+            check = chk1;
 
-            //if (Motion.IsSupported)
-            //{
-            //    objMotion = new Motion();
-            //    objMotion.TimeBetweenUpdates = TimeSpan.FromMilliseconds(50);
-            //    objMotion.CurrentValueChanged += motion_CurrentValueChanged;
-            //    objMotion.Start();
-            //}
-            //else
-            //{
-                objAccel = AccelerometerHelper.Instance;
-                objAccel.ReadingChanged += objAccel_ReadingChanged;
-                objAccel.Active = true;
+            #region InitializeCommunication
+            objAccel = AccelerometerHelper.Instance;
+            objAccel.ReadingChanged += objAccel_ReadingChanged;
+            objAccel.Active = true;
+            objComm = new Comm_Common(Comm_Common.CommMode.TCP);
+            objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
+            #endregion
 
-                //lBtn.AddHandler(UIElement.MouseLeftButtonDownEvent, 
-                //    new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonDown), true);
-                //lBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
-                //    new System.Windows.Input.MouseButtonEventHandler(lBtn_MouseLeftButtonUp), true);
-                //rBtn.AddHandler(UIElement.MouseLeftButtonDownEvent,
-                //    new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonDown), true);
-                //rBtn.AddHandler(UIElement.MouseLeftButtonUpEvent,
-                //    new System.Windows.Input.MouseButtonEventHandler(rBtn_MouseLeftButtonUp), true);
-
-                AddInputBtn(wBtn, 0x11);
-                AddInputBtn(aBtn, 0x1E);
-                AddInputBtn(sBtn, 0x1F);
-                AddInputBtn(dBtn, 0x20);
-                AddInputBtn(qBtn, 0x10);
-                AddInputBtn(eBtn, 0x12);
-                AddInputBtn(spaceBtn, 0x39);
-
-                AddInputBtn(zBtn, 0x2C);
-                AddInputBtn(xBtn, 0x2D);
-                AddInputBtn(shiftBtn, 0x2A);
-
-                AddInputBtn(playBtn, 0xA2, true);
-                AddInputBtn(volUpBtn, 0x99, true);
-                AddInputBtn(volDownBtn, 0xB0, true);
-                AddInputBtn(nextBtn, 0xAE, true);
-
-                objComm = new Comm_Common(Comm_Common.CommMode.TCP);
-                objComm.Events.OnClientInfoReceived += OnClientInfoReceived;
-            //}
+            ContentBinder.Communicator = objComm;
         }
 
-        private void AddInputBtn(ButtonEx targetButton, byte scanCode, bool extended = false)
-        {
-            targetButton.TouchDown += new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonDown);
-            targetButton.TouchDragOutside += new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonUp);
-            targetButton.TouchUpInside += new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonUp);
+        //#region XML parser
+        //private void ReadXML()
+        //{
 
-            //targetButton.AddHandler(ButtonEx.MouseLeftButtonDownEvent,
-            //    new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonDown), true);
-            //targetButton.AddHandler(ButtonEx.MouseLeftButtonUpEvent,
-            //    new ButtonEx.TouchEventHandler(InputBtn_MouseLeftButtonUp), true);
-            targetButton.Tag = new inputData(scanCode, extended);
-        }
+        //    //Process <XAML> tag into string
+        //    XElement x = loadXamlFromFile();
+        //    IEnumerable<XElement> elList1 = from el in x.Elements("XAML").Elements() select el;
+        //    string s_Xaml = "";
+        //    foreach (XElement el in elList1)
+        //    {
+        //        s_Xaml = s_Xaml + el.ToString();
+        //    }
 
-        private struct inputData
-        {
-            public byte scanCode;
-            public bool extended;
-            public inputData(byte c, bool e = false)
-            {
-                scanCode = c;
-                extended = e;
-            }
-        }
+        //    //Save new visual content
+        //    FrameworkElement NewContent = (FrameworkElement)XamlReader.Load(s_Xaml);
 
-        private void InputBtn_MouseLeftButtonDown(object sender, Point e)
-        {
-            try
-            {
-                inputData data = (inputData)((ButtonEx)sender).Tag;
-                objComm.SendBytes(new MsgCommon.KeyBDReceived(data.scanCode, ((ButtonEx)sender).IsPressed, data.extended).ToByteArray);
-            }
-            catch
-            {
-            }
-        }
+        //    //Process <Info> tags
+        //    ModuleName.Text = x.Element("Info").Element("ModuleName").Value;
 
-        private void InputBtn_MouseLeftButtonUp(object sender, Point e)
-        {
-            try
-            {
-                inputData data = (inputData)((ButtonEx)sender).Tag;
-                objComm.SendBytes(new MsgCommon.KeyBDReceived(data.scanCode, ((ButtonEx)sender).IsPressed, data.extended).ToByteArray);
-            }
-            catch
-            {
-            }
-        }
+        //    //Process <Code>.<Object> tags
+        //    elList1 = (from el in x.Elements("Code").Elements("Object") select el);
+        //    foreach (XElement el in elList1)
+        //    {
+        //        ContentBinder.assignHandler(el.Element("Name").Value, el.Element("Type").Value, el.Element("Handler").Value, NewContent);
+        //    }
+
+        //    //check = (CheckBox)NewContent.FindName("chk1");
+
+        //    //Add visual elements
+        //    ContentPanel.Children.Clear();
+        //    ContentPanel.Children.Add(NewContent as UIElement); 
+        //}
+        //#endregion
+
+        //#region xamlLoader
+        //private XElement loadXamlFromFile()
+        //{
+        //    Uri uri = new Uri("XML/Touhou.xml", UriKind.Relative);
+        //    StreamResourceInfo strm = Application.GetResourceStream(uri);
+        //    XElement x = XElement.Load(strm.Stream);
+        //    return x;
+        //}
+
+        //#endregion
 
         int icount;
-
+        #region Establish Communicator
         void objAccel_ReadingChanged(object sender, AccelerometerHelperReadingEventArgs e)
         {
             Dispatcher.BeginInvoke((Action)(() =>
             {
                 //txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
                 //   "\r\nZ:" + e.OptimalyFilteredAcceleration.Z;
-                txt3.Text = objAccel.CanCalibrate(true, true).ToString();
+                //txt3.Text = objAccel.CanCalibrate(true, true).ToString();
                 ChkChecked = (bool)chk1.IsChecked;
             }));
             lock (this)
@@ -153,13 +128,14 @@ namespace WPMote
                 //txt3.Text = objAccel.CanCalibrate(true, true).ToString();
                 //ChkChecked = (bool)chk1.IsChecked;
                 Dispatcher.BeginInvoke((Action)(() =>
-                { ChkChecked = (bool)chk1.IsChecked;
-                txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
-"\r\nZ:" + e.OptimalyFilteredAcceleration.Z;
+                {
+                    ChkChecked = (bool)chk1.IsChecked;
+    //                txt3.Text = "X:" + e.OptimalyFilteredAcceleration.X + "\r\nY:" + e.OptimalyFilteredAcceleration.Y +
+    //"\r\nZ:" + e.OptimalyFilteredAcceleration.Z;
                 }));
             }
             icount += 1;
-            if (icount>=3)
+            if (icount >= 3)
             {
                 lock (this)
                 {
@@ -180,9 +156,19 @@ namespace WPMote
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OnClientInfoReceived(string IPAddress, string DeviceName)
         {
-            TCPConnect(txt1.Text);
+            if (DeviceName == Microsoft.Phone.Info.DeviceStatus.DeviceName) return;
+            Dispatcher.BeginInvoke((Action)(() =>
+            {
+                //txt2.Text = DateTime.Now.Ticks + " ClientInfo received: " + IPAddress + " (" + DeviceName + ")";
+                if (MessageBox.Show("Client info received. Attempt connect?", "Connection request", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                {
+                    Dispatcher.BeginInvoke((Action)(() =>
+                    { txt1.Text = IPAddress;}));
+                    TCPConnect(IPAddress);
+                }
+            }));
         }
 
         private void TCPConnect(string host)
@@ -190,20 +176,13 @@ namespace WPMote
             objComm.Connect(host);
         }
 
-        private void OnClientInfoReceived(string IPAddress, string DeviceName)
-        {
-            if (DeviceName == Microsoft.Phone.Info.DeviceStatus.DeviceName) return;
-            Dispatcher.BeginInvoke((Action)(() =>
-            { txt2.Text = DateTime.Now.Ticks + " ClientInfo received: " + IPAddress + " (" + DeviceName + ")"; 
-            if (MessageBox.Show("Client info received. Attempt connect?", "Connection request", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
-            {
-                Dispatcher.BeginInvoke((Action)(() =>
-                { txt1.Text = IPAddress; }));
-                TCPConnect(IPAddress);
-            }
-            }));
-        }
+        #endregion
 
+        #region Default Handlers
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            TCPConnect(txt1.Text);
+        }
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (objComm != null) objComm.Close();
@@ -211,48 +190,32 @@ namespace WPMote
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(),Microsoft.Phone.Info.DeviceStatus.DeviceName).ToByteArray,true,true);
-        }
-
-        private void lBtn_MouseLeftButtonDown(object sender, Point e)
-        {
-            objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
-        }
-
-        private void lBtn_MouseLeftButtonUp(object sender, Point e)
-        {
-            objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
-        }
-
-        private void rBtn_MouseLeftButtonDown(object sender, Point e)
-        {
-            objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
-        }
-
-        private void rBtn_MouseLeftButtonUp(object sender, Point e)
-        {
-            objComm.SendBytes(new MsgCommon.ClickReceived(rBtn.IsPressed, lBtn.IsPressed).ToByteArray);
+            objComm.SendBytes(new MsgCommon.Msg_ClientInfo(Comm_TCP.LocalIPAddress(), Microsoft.Phone.Info.DeviceStatus.DeviceName).ToByteArray, true, true);
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             objAccel.Calibrate(true, true);
         }
-        
-        // Sample code for building a localized ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-        //    ApplicationBar = new ApplicationBar();
+         
+        private void Load_XML(object sender, RoutedEventArgs e)
+        {
+            //ReadXML();
+            XmlData data = XmlSerialize.Deserialize();
+            FrameworkElement NewContent = (FrameworkElement)XamlReader.Load(Encoding.UTF8.GetString(data.XAML, 0, data.XAML.Length));
 
-        //    // Create a new button and set the text value to the localized string from AppResources.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
+            foreach (XmlBindingData xbd in data.data)
+            {
+                ContentBinder.assignHandler(xbd.name, xbd.type, xbd.handler, NewContent);
+            }
 
-        //    // Create a new menu item with the localized string from AppResources.
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+            ContentPanel.Children.Clear();
+            ContentPanel.Children.Add(NewContent as UIElement); 
+
+
+        }
+
+
+        #endregion
     }
 }
